@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/feature/account/presentation/login_screen.dart';
+import 'package:grocery_helper/feature/account/presentation/screen/login_screen.dart';
 
 void main() {
   runApp(const MainApp());
