@@ -10,6 +10,16 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Navigation
+  go_router: ^14.2.0
+
+  # State
+  flutter_bloc: ^8.1.6
+  flutter_hooks: ^0.20.5
+
+  # UI
+  google_fonts: ^6.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

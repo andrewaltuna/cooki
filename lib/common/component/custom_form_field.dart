@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/theme/app_colors.dart';
+import 'package:grocery_helper/theme/app_color.dart';
+import 'package:grocery_helper/theme/app_text_style.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({
@@ -20,17 +21,25 @@ class CustomFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null) Text(label ?? ''),
+        if (label != null) ...[
+          Text(
+            label ?? '',
+            style: AppTextStyle.label,
+          ),
+          const SizedBox(height: 3),
+        ],
         TextFormField(
           obscureText: obscureText,
+          style: AppTextStyle.body,
           decoration: InputDecoration(
-            hintText: hintText,
+            hintText: hintText ?? 'Aa',
             filled: true,
-            fillColor: AppColors.textfieldBackground,
+            fillColor: AppColor.textfieldBackground,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
           ),
         ),
       ],

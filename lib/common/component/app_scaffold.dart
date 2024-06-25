@@ -12,14 +12,14 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: title != null
-            ? AppBar(
-                title: Text(title ?? ''),
-              )
-            : null,
-        body: Padding(
+    return Scaffold(
+      appBar: title != null
+          ? AppBar(
+              title: Text(title ?? ''),
+            )
+          : null,
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Align(
             child: body,
