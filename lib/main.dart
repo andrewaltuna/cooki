@@ -1,8 +1,24 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/feature/account/presentation/screen/login_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_helper/common/component/global_blocs.dart';
+import 'package:grocery_helper/common/navigation/app_router.dart';
+import 'package:grocery_helper/feature/account/presentation/view_model/auth_view_model.dart';
+import 'package:grocery_helper/firebase_options.dart';
+import 'package:grocery_helper/common/theme/app_colors.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(
+    const GlobalBlocs(
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -10,8 +26,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginScreen(),
+    return BlocListener<AuthViewModel, AuthState>(
+      listenWhen: (previous, current) =>
+          previous.isAuthenticated != current.isAuthenticated,
+      listener: (context, state) => appRouter.refresh(),
+      child: MaterialApp.router(
+        routerConfig: appRouter,
+        theme: ThemeData(scaffoldBackgroundColor: AppColors.backgroundPrimary),
+      ),
     );
   }
 }

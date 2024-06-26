@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "891419497965",
+    "project_id": "beacon-e7c30",
+    "storage_bucket": "beacon-e7c30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891419497965:android:47f5f71f4f52b62da943e4",
+        "android_client_info": {
+          "package_name": "com.example.grocery_helper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhe1gMJoge4Sa1adOFPWACqedq4StOYSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
