@@ -1,49 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/component/app_scaffold.dart';
-import 'package:grocery_helper/common/component/custom_form_field.dart';
-import 'package:grocery_helper/common/component/primary_button.dart';
-import 'package:grocery_helper/feature/account/presentation/component/auth_redirect_cta.dart';
-import 'package:grocery_helper/theme/app_text_style.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:grocery_helper/common/component/scaffold/app_scaffold.dart';
+import 'package:grocery_helper/feature/account/presentation/component/login_form.dart';
+import 'package:grocery_helper/feature/account/presentation/view_model/login_form_errors_view_model.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends HookWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+
     return AppScaffold(
       body: Align(
         child: SingleChildScrollView(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 350),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Login',
-                  style: AppTextStyle.title,
-                ),
-                const SizedBox(height: 32),
-                CustomFormField(
-                  label: 'Email',
-                ),
-                const SizedBox(height: 16),
-                CustomFormField(
-                  label: 'Password',
-                  obscureText: true,
-                ),
-                const SizedBox(height: 40),
-                PrimaryButton(
-                  label: 'Sign In',
-                  width: double.infinity,
-                  onPress: () {},
-                ),
-                const SizedBox(height: 16),
-                AuthRedirectCTA(
-                  description: "Don't have an account?",
-                  label: 'Register',
-                  onPress: () {},
-                ),
-              ],
+            constraints: const BoxConstraints(maxWidth: 300),
+            child: BlocProvider(
+              create: (_) => LoginFormErrorsViewModel(),
+              child: LoginForm(
+                emailController: emailController,
+                passwordController: passwordController,
+              ),
             ),
           ),
         ),

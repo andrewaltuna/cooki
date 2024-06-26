@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/theme/app_text_style.dart';
+import 'package:grocery_helper/common/theme/app_text_styles.dart';
 
 class AuthRedirectCTA extends StatelessWidget {
   const AuthRedirectCTA({
@@ -20,14 +20,14 @@ class AuthRedirectCTA extends StatelessWidget {
       children: [
         Text(
           description,
-          style: AppTextStyle.label,
+          style: AppTextStyles.label,
         ),
         const SizedBox(width: 4),
         GestureDetector(
           onTap: onPress,
           child: Text(
             label,
-            style: AppTextStyle.label.copyWith(
+            style: AppTextStyles.label.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
