@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/component/custom_loading_indicator.dart';
+import 'package:grocery_helper/common/component/indicator/custom_loading_indicator.dart';
 import 'package:grocery_helper/common/enum/button_state.dart';
 import 'package:grocery_helper/common/theme/app_colors.dart';
 import 'package:grocery_helper/common/theme/app_text_styles.dart';

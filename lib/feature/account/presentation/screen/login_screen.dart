@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:grocery_helper/common/component/scaffold/app_scaffold.dart';
+import 'package:grocery_helper/common/component/main_scaffold.dart';
 import 'package:grocery_helper/feature/account/presentation/component/login_form.dart';
 import 'package:grocery_helper/feature/account/presentation/view_model/login_form_errors_view_model.dart';
 
@@ -13,7 +13,7 @@ class LoginScreen extends HookWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
 
-    return AppScaffold(
+    return MainScaffold(
       body: Align(
         child: SingleChildScrollView(
           child: ConstrainedBox(

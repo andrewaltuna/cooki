@@ -12,9 +12,10 @@ class AppColors {
   static const backgroundPrimary = Color(0xFFECEDE7);
   static const backgroundTextField = Color(0xFFD9D9D9);
 
-  // static const toastBackground =
-
   // Font
   static const fontPrimary = Color(0xFF000000);
   static const fontSecondary = backgroundPrimary;
+
+  // Shadow
+  static const shadow = Color(0x33000000);
 }
