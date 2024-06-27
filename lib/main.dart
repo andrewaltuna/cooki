@@ -28,8 +28,13 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthViewModel, AuthState>(
       listenWhen: (previous, current) =>
+          previous.status != current.status ||
           previous.isAuthenticated != current.isAuthenticated,
-      listener: (context, state) => appRouter.refresh(),
+      listener: (context, state) {
+        if (state.status.isInitial) return;
+
+        appRouter.refresh();
+      },
       child: MaterialApp.router(
         routerConfig: appRouter,
         theme: ThemeData(scaffoldBackgroundColor: AppColors.backgroundPrimary),

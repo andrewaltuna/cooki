@@ -22,9 +22,12 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
   ) async {
     await emit.forEach(
       _authRepository.authStateChanges,
-      onData: (user) => state.copyWith(
-        isAuthenticated: user != null,
-      ),
+      onData: (user) {
+        return state.copyWith(
+          isAuthenticated: user != null,
+          status: ViewModelStatus.success,
+        );
+      },
     );
   }
 

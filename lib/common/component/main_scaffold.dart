@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_helper/common/component/main_navigation_bar.dart';
 
-class AppScaffold extends StatelessWidget {
-  const AppScaffold({
+class MainScaffold extends StatelessWidget {
+  const MainScaffold({
     required this.body,
     this.title,
     super.key,
@@ -22,10 +23,13 @@ class AppScaffold extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Align(
-            child: body,
+            child: SingleChildScrollView(
+              child: body,
+            ),
           ),
         ),
       ),
+      bottomNavigationBar: const MainNavigationBar(),
     );
   }
 }

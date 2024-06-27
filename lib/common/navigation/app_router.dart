@@ -8,7 +8,6 @@ import 'package:grocery_helper/feature/account/presentation/screen/registration_
 import 'package:grocery_helper/feature/home/presentation/screen/home_screen.dart';
 
 final appRouter = GoRouter(
-  initialLocation: AppRoutes.login,
   routes: [
     GoRoute(
       path: AppRoutes.home,
@@ -27,7 +26,11 @@ final appRouter = GoRouter(
     ),
   ],
   redirect: (context, state) {
-    final isAuthenticated = context.read<AuthViewModel>().state.isAuthenticated;
+    final authState = context.read<AuthViewModel>().state;
+
+    if (!authState.status.isSuccess) return null;
+
+    final isAuthenticated = authState.isAuthenticated;
 
     final isAuthScreen = state.fullPath == AppRoutes.login ||
         state.fullPath == AppRoutes.registration;
