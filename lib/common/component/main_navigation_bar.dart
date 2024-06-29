@@ -82,7 +82,7 @@ class _MainNavBarItem extends StatelessWidget {
         onPressed: isSelected ? null : onPressed,
         icon: Icon(
           isSelected ? selectedIcon : icon,
-          size: !isSelected ? 32 : 28,
+          size: 32,
         ),
       ),
     );

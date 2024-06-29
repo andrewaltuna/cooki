@@ -14,17 +14,15 @@ class LoginScreen extends HookWidget {
     final passwordController = useTextEditingController();
 
     return MainScaffold(
-      body: Align(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 300),
-            child: BlocProvider(
-              create: (_) => LoginFormErrorsViewModel(),
-              child: LoginForm(
-                emailController: emailController,
-                passwordController: passwordController,
-              ),
-            ),
+      hasNavBar: false,
+      alignment: Alignment.center,
+      body: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 300),
+        child: BlocProvider(
+          create: (_) => LoginFormErrorsViewModel(),
+          child: LoginForm(
+            emailController: emailController,
+            passwordController: passwordController,
           ),
         ),
       ),

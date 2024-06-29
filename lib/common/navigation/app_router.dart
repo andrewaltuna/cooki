@@ -6,6 +6,7 @@ import 'package:grocery_helper/feature/account/presentation/view_model/auth_view
 import 'package:grocery_helper/feature/account/presentation/screen/login_screen.dart';
 import 'package:grocery_helper/feature/account/presentation/screen/registration_screen.dart';
 import 'package:grocery_helper/feature/home/presentation/screen/home_screen.dart';
+import 'package:grocery_helper/feature/settings/presentation/screen/settings_screen.dart';
 
 final appRouter = GoRouter(
   routes: [
@@ -23,6 +24,11 @@ final appRouter = GoRouter(
       path: AppRoutes.registration,
       pageBuilder: (_, state) =>
           _pageWithDefaultTransition(state, child: const RegistrationScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.settings,
+      pageBuilder: (_, state) =>
+          _pageWithDefaultTransition(state, child: const SettingsScreen()),
     ),
   ],
   redirect: (context, state) {
