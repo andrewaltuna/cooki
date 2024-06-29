@@ -15,18 +15,16 @@ class RegistrationScreen extends HookWidget {
     final confirmPasswordController = useTextEditingController();
 
     return MainScaffold(
-      body: Align(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 300),
-            child: BlocProvider(
-              create: (_) => RegFormErrorsViewModel(),
-              child: RegistrationForm(
-                emailController: emailController,
-                passwordController: passwordController,
-                confirmPasswordController: confirmPasswordController,
-              ),
-            ),
+      hasNavBar: false,
+      alignment: Alignment.center,
+      body: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 300),
+        child: BlocProvider(
+          create: (_) => RegFormErrorsViewModel(),
+          child: RegistrationForm(
+            emailController: emailController,
+            passwordController: passwordController,
+            confirmPasswordController: confirmPasswordController,
           ),
         ),
       ),

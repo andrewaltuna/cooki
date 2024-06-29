@@ -16,6 +16,9 @@ dependencies:
   # Authentication
   firebase_auth: ^5.1.0
 
+  # Beacon
+  flutter_beacon: ^0.5.1
+
   # Navigation
   go_router: ^14.2.0
 
@@ -23,6 +26,9 @@ dependencies:
   flutter_bloc: ^8.1.6
   flutter_hooks: ^0.20.5
   equatable: ^2.0.5
+
+  # Permissions
+  permission_handler: ^11.3.1
 
   # UI
   google_fonts: ^6.2.1

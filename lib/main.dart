@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_beacon/flutter_beacon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_helper/common/component/global_blocs.dart';
+import 'package:grocery_helper/common/helper/permission_helper.dart';
 import 'package:grocery_helper/common/navigation/app_router.dart';
 import 'package:grocery_helper/feature/account/presentation/view_model/auth_view_model.dart';
 import 'package:grocery_helper/firebase_options.dart';
@@ -13,6 +16,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  try {
+    await flutterBeacon.initializeAndCheckScanning;
+  } on PlatformException catch (error) {
+    print('flutterBeacon ERROR: ${error.toString()}');
+  }
+
+  await PermissionHelper.checkBluetoothPermission();
+  await PermissionHelper.checkLocationPermission();
 
   runApp(
     const GlobalBlocs(
