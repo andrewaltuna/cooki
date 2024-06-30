@@ -10,3 +10,7 @@ sealed class BeaconEvent extends Equatable {
 class BeaconSubscriptionInitialized extends BeaconEvent {
   const BeaconSubscriptionInitialized();
 }
+
+class BeaconPermissionsValidated extends BeaconEvent {
+  const BeaconPermissionsValidated();
+}

@@ -1,29 +1,48 @@
+import 'package:app_settings/app_settings.dart';
+import 'package:flutter/material.dart';
+import 'package:grocery_helper/common/helper/dialog_helper.dart';
 import 'package:grocery_helper/common/service/permission_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PermissionHelper {
-  const PermissionHelper._();
+  const PermissionHelper._(this._context);
+
+  factory PermissionHelper.of(BuildContext context) =>
+      PermissionHelper._(context);
 
   static const _permissionService = PermissionService();
 
-  static Future<void> checkBluetoothPermission() async {
-    final isGranted = await _permissionService.isBluetoothPermissionGranted();
+  final BuildContext _context;
 
-    if (!isGranted) {
-      await _permissionService.requestBluetoothPermission();
-    }
+  static Future<bool> requestBeaconPermissions() async {
+    final arePermissionsGranted = [
+      await _permissionService.requestBluetoothPermission(),
+      await _permissionService.requestBluetoothScanPermission(),
+      await _permissionService.requestLocationPermission(),
+    ].every((status) => status.isGranted);
 
-    final isScanGranted =
-        await _permissionService.isBluetoothScanPermissionGranted();
-    if (!isScanGranted) {
-      await _permissionService.requestBluetoothScanPermission();
-    }
+    return arePermissionsGranted;
   }
 
-  static Future<void> checkLocationPermission() async {
-    final isGranted = await _permissionService.isLocationPermissionGranted();
+  static Future<bool> validateBeaconPermissions() async {
+    final arePermissionsGranted = [
+      await _permissionService.checkBluetoothPermission(),
+      await _permissionService.checkBluetoothScanPermission(),
+      await _permissionService.checkLocationPermission(),
+    ].every((status) => status.isGranted);
 
-    if (!isGranted) {
-      await _permissionService.requestLocationPermission();
-    }
+    return arePermissionsGranted;
+  }
+
+  Future<void> requestBeaconPermissionsWithModal() async {
+    await DialogHelper.of(_context).show(
+      DialogArguments(
+        title: 'Permissions required',
+        message:
+            'Cooki uses Bluetooth and Location services to track and suggest products within your vicinity.\n\nAllow access to these permissions for a smoother experience.',
+        confirmText: 'Open settings',
+        onConfirm: () => AppSettings.openAppSettings(),
+      ),
+    );
   }
 }

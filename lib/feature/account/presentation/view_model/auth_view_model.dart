@@ -47,7 +47,6 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
 
       emit(state.copyWith(status: ViewModelStatus.success));
     } on Exception catch (error) {
-      print(error);
       emit(
         state.copyWith(
           status: ViewModelStatus.error,
