@@ -5,18 +5,18 @@ class PermissionService implements PermissionServiceInterface {
   const PermissionService();
 
   @override
-  Future<bool> isBluetoothPermissionGranted() async {
-    return await Permission.bluetooth.status.isGranted;
+  Future<PermissionStatus> checkBluetoothPermission() async {
+    return await Permission.bluetooth.status;
   }
 
   @override
-  Future<bool> isBluetoothScanPermissionGranted() async {
-    return await Permission.bluetoothScan.status.isGranted;
+  Future<PermissionStatus> checkBluetoothScanPermission() async {
+    return await Permission.bluetoothScan.status;
   }
 
   @override
-  Future<bool> isLocationPermissionGranted() async {
-    return await Permission.locationWhenInUse.status.isGranted;
+  Future<PermissionStatus> checkLocationPermission() async {
+    return await Permission.locationWhenInUse.status;
   }
 
   @override

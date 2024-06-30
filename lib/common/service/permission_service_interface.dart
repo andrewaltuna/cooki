@@ -1,11 +1,11 @@
 import 'package:permission_handler/permission_handler.dart';
 
 abstract interface class PermissionServiceInterface {
-  Future<bool> isLocationPermissionGranted();
+  Future<PermissionStatus> checkLocationPermission();
 
-  Future<bool> isBluetoothPermissionGranted();
+  Future<PermissionStatus> checkBluetoothPermission();
 
-  Future<bool> isBluetoothScanPermissionGranted();
+  Future<PermissionStatus> checkBluetoothScanPermission();
 
   Future<PermissionStatus> requestLocationPermission();
 

@@ -25,9 +25,8 @@ class GlobalBlocs extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => BeaconViewModel(beaconRepository)
-            ..add(
-              const BeaconSubscriptionInitialized(),
-            ),
+            ..add(const BeaconSubscriptionInitialized())
+            ..add(const BeaconPermissionsValidated()),
         )
       ],
       child: child,

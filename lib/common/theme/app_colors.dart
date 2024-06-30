@@ -15,6 +15,7 @@ class AppColors {
   // Font
   static const fontPrimary = Color(0xFF000000);
   static const fontSecondary = backgroundPrimary;
+  static const fontWarning = Color(0xFFE57373);
 
   // Shadow
   static const shadow = Color(0x33000000);
