@@ -1,4 +1,4 @@
-import 'package:grocery_helper/common/service/permission_service_interface.dart';
+import 'package:cooki/common/service/permission_service_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService implements PermissionServiceInterface {

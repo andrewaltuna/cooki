@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
+import 'package:cooki/common/theme/app_colors.dart';
 
 class CustomLoadingIndicator extends StatelessWidget {
   const CustomLoadingIndicator({

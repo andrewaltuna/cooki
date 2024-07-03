@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/component/indicator/custom_loading_indicator.dart';
-import 'package:grocery_helper/common/enum/button_state.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
-import 'package:grocery_helper/common/theme/app_text_styles.dart';
+import 'package:cooki/common/component/indicator/custom_loading_indicator.dart';
+import 'package:cooki/common/enum/button_state.dart';
+import 'package:cooki/common/theme/app_colors.dart';
+import 'package:cooki/common/theme/app_text_styles.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({

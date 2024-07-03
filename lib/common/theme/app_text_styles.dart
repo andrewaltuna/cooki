@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
+import 'package:cooki/common/theme/app_colors.dart';
 
 class AppTextStyles {
   const AppTextStyles._();

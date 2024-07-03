@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grocery_helper/common/navigation/app_routes.dart';
-import 'package:grocery_helper/feature/account/presentation/view_model/auth_view_model.dart';
-import 'package:grocery_helper/feature/account/presentation/screen/login_screen.dart';
-import 'package:grocery_helper/feature/account/presentation/screen/registration_screen.dart';
-import 'package:grocery_helper/feature/home/presentation/screen/home_screen.dart';
-import 'package:grocery_helper/feature/settings/presentation/screen/settings_screen.dart';
+import 'package:cooki/common/navigation/app_routes.dart';
+import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
+import 'package:cooki/feature/account/presentation/screen/login_screen.dart';
+import 'package:cooki/feature/account/presentation/screen/registration_screen.dart';
+import 'package:cooki/feature/home/presentation/screen/home_screen.dart';
+import 'package:cooki/feature/settings/presentation/screen/settings_screen.dart';
 
 final appRouter = GoRouter(
   routes: [

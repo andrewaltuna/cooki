@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_helper/common/helper/permission_helper.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
-import 'package:grocery_helper/common/theme/app_text_styles.dart';
-import 'package:grocery_helper/feature/beacon/presentation/view_model/beacon_view_model.dart';
+import 'package:cooki/common/helper/permission_helper.dart';
+import 'package:cooki/common/theme/app_colors.dart';
+import 'package:cooki/common/theme/app_text_styles.dart';
+import 'package:cooki/feature/beacon/presentation/view_model/beacon_view_model.dart';
 import 'package:ionicons/ionicons.dart';
 
 class BeaconProximityIndicator extends StatelessWidget {

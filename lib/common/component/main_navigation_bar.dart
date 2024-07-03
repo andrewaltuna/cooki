@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grocery_helper/common/extension/context_route.dart';
-import 'package:grocery_helper/common/navigation/app_routes.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
+import 'package:cooki/common/extension/context_route.dart';
+import 'package:cooki/common/navigation/app_routes.dart';
+import 'package:cooki/common/theme/app_colors.dart';
 import 'package:ionicons/ionicons.dart';
 
 class MainNavigationBar extends StatelessWidget {

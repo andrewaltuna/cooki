@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
-import 'package:grocery_helper/common/component/global_blocs.dart';
-import 'package:grocery_helper/common/component/global_listeners.dart';
-import 'package:grocery_helper/common/helper/permission_helper.dart';
-import 'package:grocery_helper/common/navigation/app_router.dart';
-import 'package:grocery_helper/firebase_options.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
+import 'package:cooki/common/component/global_blocs.dart';
+import 'package:cooki/common/component/global_listeners.dart';
+import 'package:cooki/common/helper/permission_helper.dart';
+import 'package:cooki/common/navigation/app_router.dart';
+import 'package:cooki/firebase_options.dart';
+import 'package:cooki/common/theme/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

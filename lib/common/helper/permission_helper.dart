@@ -1,7 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/helper/dialog_helper.dart';
-import 'package:grocery_helper/common/service/permission_service.dart';
+import 'package:cooki/common/helper/dialog_helper.dart';
+import 'package:cooki/common/service/permission_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionHelper {

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grocery_helper/common/enum/view_model_status.dart';
-import 'package:grocery_helper/feature/account/data/repository/auth_repository_interface.dart';
+import 'package:cooki/common/enum/view_model_status.dart';
+import 'package:cooki/feature/account/data/repository/auth_repository_interface.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

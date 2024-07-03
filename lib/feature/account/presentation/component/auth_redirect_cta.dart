@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/theme/app_text_styles.dart';
+import 'package:cooki/common/theme/app_text_styles.dart';
 
 class AuthRedirectCTA extends StatelessWidget {
   const AuthRedirectCTA({
