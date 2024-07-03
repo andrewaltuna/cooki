@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: 16),
-          ProximityIndicator(),
+          BeaconProximityIndicator(),
         ],
       ),
     );

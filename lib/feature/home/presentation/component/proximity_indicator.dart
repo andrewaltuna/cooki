@@ -6,8 +6,8 @@ import 'package:grocery_helper/common/theme/app_text_styles.dart';
 import 'package:grocery_helper/feature/beacon/presentation/view_model/beacon_view_model.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ProximityIndicator extends StatelessWidget {
-  const ProximityIndicator({super.key});
+class BeaconProximityIndicator extends StatelessWidget {
+  const BeaconProximityIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +66,8 @@ class ProximityIndicator extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  beacon.proximityUUID,
+                  '#${beacon.identifier}, RSSI: ${beacon.rssi}, Dist: ${beacon.distanceInMeter.toStringAsFixed(2)}',
                   textAlign: TextAlign.center,
-                  style: textStyle,
-                ),
-                Text(
-                  'Distance: ${beacon.accuracy}m',
                   style: textStyle,
                 ),
               ],

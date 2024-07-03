@@ -7,14 +7,14 @@ class BeaconState extends Equatable {
     this.arePermissionsGranted = false,
   });
 
-  final List<Beacon> beacons;
+  final List<BeaconDetails> beacons;
 
   // Permissions
   final ViewModelStatus permissionStatus;
   final bool arePermissionsGranted;
 
   BeaconState copyWith({
-    List<Beacon>? beacons,
+    List<BeaconDetails>? beacons,
     bool? arePermissionsGranted,
     ViewModelStatus? permissionStatus,
   }) {
