@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_helper/common/enum/view_model_status.dart';
-import 'package:grocery_helper/common/helper/permission_helper.dart';
-import 'package:grocery_helper/feature/beacon/data/model/entity/beacon_details.dart';
-import 'package:grocery_helper/feature/beacon/data/model/entity/kalman_filter.dart';
-import 'package:grocery_helper/feature/beacon/data/repository/beacon_repository_interface.dart';
+import 'package:cooki/common/enum/view_model_status.dart';
+import 'package:cooki/common/helper/permission_helper.dart';
+import 'package:cooki/feature/beacon/data/model/entity/beacon_details.dart';
+import 'package:cooki/feature/beacon/data/model/entity/kalman_filter.dart';
+import 'package:cooki/feature/beacon/data/repository/beacon_repository_interface.dart';
 
 part 'beacon_event.dart';
 part 'beacon_state.dart';

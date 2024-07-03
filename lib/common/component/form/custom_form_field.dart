@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
-import 'package:grocery_helper/common/theme/app_text_styles.dart';
+import 'package:cooki/common/theme/app_colors.dart';
+import 'package:cooki/common/theme/app_text_styles.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({

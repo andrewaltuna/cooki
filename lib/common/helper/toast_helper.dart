@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:grocery_helper/common/constants/app_strings.dart';
-import 'package:grocery_helper/common/theme/app_colors.dart';
+import 'package:cooki/common/constants/app_strings.dart';
+import 'package:cooki/common/theme/app_colors.dart';
 
 class ToastHelper {
   const ToastHelper._(this._context);

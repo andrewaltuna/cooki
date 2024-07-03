@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
-import 'package:grocery_helper/common/constants/beacon_constants.dart';
+import 'package:cooki/common/constants/beacon_constants.dart';
 
 class BeaconDetails extends Equatable {
   const BeaconDetails({

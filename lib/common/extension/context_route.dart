@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grocery_helper/common/navigation/app_routes.dart';
+import 'package:cooki/common/navigation/app_routes.dart';
 
 extension ContextRoute on BuildContext {
   GoRouterState get routerState => GoRouterState.of(this);

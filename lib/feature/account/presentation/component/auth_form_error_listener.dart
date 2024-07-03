@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_helper/feature/account/presentation/view_model/auth_view_model.dart';
+import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
 
 class AuthFormErrorListener extends StatelessWidget {
   const AuthFormErrorListener({

@@ -1,4 +1,4 @@
-package com.example.grocery_helper
+package com.example.cooki
 
 import io.flutter.embedding.android.FlutterActivity
 

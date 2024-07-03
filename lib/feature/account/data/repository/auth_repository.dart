@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:grocery_helper/feature/account/data/repository/auth_repository_interface.dart';
-import 'package:grocery_helper/feature/account/data/service/auth_service_interface.dart';
+import 'package:cooki/feature/account/data/repository/auth_repository_interface.dart';
+import 'package:cooki/feature/account/data/service/auth_service_interface.dart';
 
 class AuthRepository implements AuthRepositoryInterface {
   AuthRepository(this._authService);

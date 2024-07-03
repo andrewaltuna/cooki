@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_helper/common/component/main_scaffold.dart';
-import 'package:grocery_helper/feature/home/presentation/component/proximity_indicator.dart';
+import 'package:cooki/common/component/main_scaffold.dart';
+import 'package:cooki/feature/home/presentation/component/proximity_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
