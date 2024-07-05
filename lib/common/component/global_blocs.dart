@@ -1,3 +1,5 @@
+import 'package:cooki/feature/chat/data/di/chat_service_locator.dart';
+import 'package:cooki/feature/chat/presentation/view_model/chat_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cooki/feature/account/data/di/auth_service_locator.dart';
@@ -27,7 +29,10 @@ class GlobalBlocs extends StatelessWidget {
           create: (_) => BeaconViewModel(beaconRepository)
             ..add(const BeaconSubscriptionInitialized())
             ..add(const BeaconPermissionsValidated()),
-        )
+        ),
+        BlocProvider(
+          create: (_) => ChatViewModel(chatRepository),
+        ),
       ],
       child: child,
     );

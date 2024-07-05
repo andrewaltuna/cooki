@@ -10,48 +10,51 @@ class MainNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: AppColors.accent,
-          borderRadius: BorderRadius.circular(50),
-          boxShadow: const [
-            BoxShadow(
-              color: AppColors.shadow,
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 2), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _MainNavBarItem(
-              label: 'Home',
-              icon: Ionicons.home_outline,
-              selectedIcon: Ionicons.home,
-              isSelected: context.isHomeRoute,
-              onPressed: () => context.go(AppRoutes.home),
-            ),
-            _MainNavBarItem(
-              label: 'Shopping List',
-              icon: Ionicons.cart_outline,
-              selectedIcon: Ionicons.cart,
-              isSelected: context.isShoppingListRoute,
-              onPressed: () => context.go(AppRoutes.shoppingList),
-            ),
-            _MainNavBarItem(
-              label: 'Settings',
-              icon: Ionicons.settings_outline,
-              selectedIcon: Ionicons.settings,
-              isSelected: context.isSettingsRoute,
-              onPressed: () => context.go(AppRoutes.settings),
-            ),
-          ],
-        ),
+    return Container(
+      height: 60,
+      decoration: const BoxDecoration(
+        color: AppColors.accent,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow,
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _MainNavBarItem(
+            label: 'Home',
+            icon: Ionicons.home_outline,
+            selectedIcon: Ionicons.home,
+            isSelected: context.isHomeRoute,
+            onPressed: () => context.go(AppRoutes.home),
+          ),
+          _MainNavBarItem(
+            label: 'Map',
+            icon: Ionicons.compass_outline,
+            selectedIcon: Ionicons.compass,
+            isSelected: context.isMapRoute,
+            onPressed: () => context.go(AppRoutes.map),
+          ),
+          _MainNavBarItem(
+            label: 'Shopping List',
+            icon: Ionicons.cart_outline,
+            selectedIcon: Ionicons.cart,
+            isSelected: context.isShoppingListRoute,
+            onPressed: () => context.go(AppRoutes.shoppingList),
+          ),
+          _MainNavBarItem(
+            label: 'Settings',
+            icon: Ionicons.settings_outline,
+            selectedIcon: Ionicons.settings,
+            isSelected: context.isSettingsRoute,
+            onPressed: () => context.go(AppRoutes.settings),
+          ),
+        ],
       ),
     );
   }
