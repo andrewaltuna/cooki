@@ -16,6 +16,7 @@ class LoginScreen extends HookWidget {
     return MainScaffold(
       hasNavBar: false,
       alignment: Alignment.center,
+      isScrollable: true,
       body: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 300),
         child: BlocProvider(

@@ -36,6 +36,9 @@ dependencies:
   fluttertoast: ^8.2.6
   ionicons: ^0.2.2
 
+  # API
+  graphql_flutter: ^5.2.0-beta.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

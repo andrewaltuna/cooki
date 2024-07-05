@@ -8,6 +8,8 @@ class MainScaffold extends StatelessWidget {
     this.title,
     this.alignment = Alignment.topCenter,
     this.hasNavBar = true,
+    this.isScrollable = false,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     super.key,
   });
 
@@ -15,6 +17,8 @@ class MainScaffold extends StatelessWidget {
   final Widget body;
   final Alignment alignment;
   final bool hasNavBar;
+  final bool isScrollable;
+  final EdgeInsetsGeometry contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +35,35 @@ class MainScaffold extends StatelessWidget {
       body: SafeArea(
         child: Align(
           alignment: alignment,
-          child: SingleChildScrollView(
+          child: _OptionalScrollView(
+            isScrollable: isScrollable,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: contentPadding,
               child: body,
             ),
           ),
         ),
       ),
       bottomNavigationBar: hasNavBar ? const MainNavigationBar() : null,
+    );
+  }
+}
+
+class _OptionalScrollView extends StatelessWidget {
+  const _OptionalScrollView({
+    required this.isScrollable,
+    required this.child,
+  });
+
+  final bool isScrollable;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isScrollable) return child;
+
+    return SingleChildScrollView(
+      child: child,
     );
   }
 }

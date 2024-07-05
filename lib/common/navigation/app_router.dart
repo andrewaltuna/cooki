@@ -1,3 +1,4 @@
+import 'package:cooki/common/map/presentation/screen/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,16 +6,11 @@ import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
 import 'package:cooki/feature/account/presentation/screen/login_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/registration_screen.dart';
-import 'package:cooki/feature/home/presentation/screen/home_screen.dart';
+import 'package:cooki/feature/chat/presentation/screen/chat_screen.dart';
 import 'package:cooki/feature/settings/presentation/screen/settings_screen.dart';
 
 final appRouter = GoRouter(
   routes: [
-    GoRoute(
-      path: AppRoutes.home,
-      pageBuilder: (_, state) =>
-          _pageWithDefaultTransition(state, child: const HomeScreen()),
-    ),
     GoRoute(
       path: AppRoutes.login,
       pageBuilder: (_, state) =>
@@ -24,6 +20,16 @@ final appRouter = GoRouter(
       path: AppRoutes.registration,
       pageBuilder: (_, state) =>
           _pageWithDefaultTransition(state, child: const RegistrationScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.home,
+      pageBuilder: (_, state) =>
+          _pageWithDefaultTransition(state, child: const ChatScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.map,
+      pageBuilder: (_, state) =>
+          _pageWithDefaultTransition(state, child: const MapScreen()),
     ),
     GoRoute(
       path: AppRoutes.settings,

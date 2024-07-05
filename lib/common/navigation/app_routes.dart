@@ -5,6 +5,7 @@ class AppRoutes {
   static const registration = '/register';
 
   static const home = '/';
+  static const map = '/map';
   static const shoppingList = '/shopping-list';
   static const settings = '/settings';
 }
