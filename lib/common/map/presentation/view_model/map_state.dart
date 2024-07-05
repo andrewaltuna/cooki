@@ -4,7 +4,7 @@ class MapState extends Equatable {
   const MapState({
     this.scale = 1.0,
     // TODO: change from placeholders
-    this.size = const Size(350, 350),
+    this.size = const Size(3000, 3000),
     this.userCoords = const Offset(0, 0),
     this.shouldFetchUserCoords = false,
   });

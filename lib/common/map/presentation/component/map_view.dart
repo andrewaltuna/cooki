@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:cooki/common/hook/use_on_widget_load.dart';
-import 'package:cooki/common/map/presentation/component/map_painter.dart';
-import 'package:cooki/common/map/presentation/component/map_user_indicator.dart';
+import 'package:cooki/common/map/presentation/component/interactive_map.dart';
 import 'package:cooki/common/map/presentation/view_model/map_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,33 +15,44 @@ const pointsOfInterest = [
 const userPosition = Offset(100, 150);
 
 class MapView extends HookWidget {
-  const MapView({super.key});
+  const MapView({
+    required this.controller,
+    required this.constraints,
+    super.key,
+  });
 
-  void _controllerListener(
-    BuildContext context,
-    TransformationController controller,
-  ) {
+  final TransformationController controller;
+  final BoxConstraints constraints;
+
+  void _controllerListener(BuildContext context) {
     final scale = controller.value.getMaxScaleOnAxis();
 
     context.read<MapViewModel>().add(MapScaleUpdated(scale));
   }
 
-  // TODO: Revise/improve
-  void _initialMapZoom(
-    BuildContext context,
-    TransformationController mapController,
-    BoxConstraints constraint,
-  ) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final renderBox = context.findRenderObject() as RenderBox;
-      final childSize = renderBox.size;
-      final coverRatio = _coverRatio(constraint.biggest, childSize);
+  void _onRecenter(BuildContext context) {
+    final mapState = context.read<MapViewModel>().state;
 
-      mapController.value = Matrix4.identity() * coverRatio;
-    });
+    // Get minimum scale to cover the view with the map
+    final coverRatio = _minScale(constraints.biggest, mapState.size);
+    controller.value = Matrix4.identity()..scale(max(1.2, coverRatio));
+
+    // Get map coordinates visible at the view's center
+    final centerScreenOffset = Offset(
+      constraints.maxWidth / 2,
+      constraints.maxHeight / 2,
+    );
+    final coordAtScreenCenter = controller.toScene(centerScreenOffset);
+
+    // Get difference between coords of map center and coords at screen
+    // center to find offset needed to center the map
+    final centerCoords = mapState.centerCoords;
+    final offset = coordAtScreenCenter - centerCoords;
+
+    controller.value.translate(offset.dx, offset.dy);
   }
 
-  double _coverRatio(Size outside, Size inside) {
+  double _minScale(Size outside, Size inside) {
     if (outside.width / outside.height > inside.width / inside.height) {
       return outside.width / inside.width;
     } else {
@@ -50,77 +62,50 @@ class MapView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mapController = useTransformationController();
-
     useOnWidgetLoad(
-      () {
-        mapController.addListener(
-          () => _controllerListener(context, mapController),
-        );
-      },
-      cleanup: () => mapController.removeListener(
-        () => _controllerListener(context, mapController),
+      () => controller.addListener(
+        () => _controllerListener(context),
+      ),
+      cleanup: () => controller.removeListener(
+        () => _controllerListener(context),
       ),
     );
 
-    return BlocSelector<MapViewModel, MapState, Size>(
-      selector: (state) => state.size,
-      builder: (_, size) {
-        return LayoutBuilder(
-          builder: (_, constraints) {
-            return InteractiveViewer(
-              constrained: false,
-              maxScale: 4,
-              minScale: 1,
-              transformationController: mapController,
-              child: SizedBox(
-                width: size.width,
-                height: size.height,
-                child: CustomPaint(
-                  painter: const MapPainter(),
-                  child: Builder(
-                    builder: (context) {
-                      _initialMapZoom(context, mapController, constraints);
-
-                      return const _MapIndicators();
-                    },
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return Stack(
+      children: [
+        InteractiveMap(
+          controller: controller,
+          onLoad: () => _onRecenter(context),
+        ),
+        _MapOverlay(
+          onRecenter: () => _onRecenter(context),
+        )
+      ],
     );
   }
 }
 
-class _MapIndicators extends HookWidget {
-  const _MapIndicators();
+class _MapOverlay extends StatelessWidget {
+  const _MapOverlay({
+    required this.onRecenter,
+  });
+
+  final VoidCallback onRecenter;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapViewModel, MapState>(
-      builder: (context, state) {
-        return Stack(
-          children: [
-            // POIs go before the user indicator
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              left: state.userCoordsFromCenter.dx,
-              bottom: state.userCoordsFromCenter.dy,
-              child: FractionalTranslation(
-                translation: const Offset(-0.5, 0.5),
-                child: MapUserIndicator(
-                  size: 20,
-                  inverseScale: state.inverseScale,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+    return Positioned(
+      bottom: 16,
+      right: 16,
+      child: IconButton(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(Colors.white),
+        ),
+        icon: const Icon(
+          Icons.center_focus_strong_rounded,
+        ),
+        onPressed: onRecenter,
+      ),
     );
   }
 }
