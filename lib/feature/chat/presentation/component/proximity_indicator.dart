@@ -11,7 +11,7 @@ class BeaconProximityIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = AppTextStyles.label.copyWith(
+    final textStyle = AppTextStyles.bodySmall.copyWith(
       color: AppColors.fontSecondary,
     );
 

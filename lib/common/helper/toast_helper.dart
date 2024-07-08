@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:cooki/common/constants/app_strings.dart';
+import 'package:cooki/constant/app_strings.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 
 class ToastHelper {
@@ -10,7 +10,7 @@ class ToastHelper {
 
   final BuildContext _context;
 
-  void show(
+  void showToast(
     String message, {
     bool dismissable = true,
     bool clearQueue = true,
@@ -43,5 +43,5 @@ class ToastHelper {
     );
   }
 
-  void showGenericError() => show(AppStrings.errorGeneric);
+  void showGenericError() => showToast(AppStrings.errorGeneric);
 }

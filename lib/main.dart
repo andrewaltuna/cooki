@@ -1,3 +1,4 @@
+import 'package:cooki/common/theme/app_theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +8,6 @@ import 'package:cooki/common/component/global_listeners.dart';
 import 'package:cooki/common/helper/permission_helper.dart';
 import 'package:cooki/common/navigation/app_router.dart';
 import 'package:cooki/firebase_options.dart';
-import 'package:cooki/common/theme/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,9 +39,7 @@ class MainApp extends StatelessWidget {
     return GlobalListeners(
       child: MaterialApp.router(
         routerConfig: appRouter,
-        theme: ThemeData(
-          scaffoldBackgroundColor: AppColors.backgroundPrimary,
-        ),
+        theme: appThemeData,
       ),
     );
   }

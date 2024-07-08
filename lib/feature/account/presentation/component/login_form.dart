@@ -1,9 +1,9 @@
+import 'package:cooki/constant/auth_form_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/component/button/primary_button.dart';
-import 'package:cooki/common/constants/app_strings.dart';
 import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/common/helper/toast_helper.dart';
@@ -12,7 +12,6 @@ import 'package:cooki/feature/account/presentation/component/auth_form_error_lis
 import 'package:cooki/feature/account/presentation/component/auth_redirect_cta.dart';
 import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
 import 'package:cooki/feature/account/presentation/view_model/login_form_errors_view_model.dart';
-import 'package:cooki/common/theme/app_text_styles.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
@@ -21,10 +20,20 @@ class LoginForm extends StatelessWidget {
     super.key,
   });
 
+  static final _formKey = GlobalKey<FormState>();
+
   final TextEditingController emailController;
   final TextEditingController passwordController;
 
-  void _submitForm(BuildContext context) {
+  void _onSubmitted(BuildContext context) {
+    FocusScope.of(context).unfocus();
+
+    _formKey.currentState!.validate();
+
+    final isValid = !context.read<LoginFormErrorsViewModel>().state.hasErrors;
+
+    if (!isValid) return;
+
     context.read<AuthViewModel>().add(
           AuthSignedIn(
             email: emailController.text,
@@ -41,10 +50,10 @@ class LoginForm extends StatelessWidget {
 
     switch (code) {
       case 'invalid-credential':
-        viewModel.emailError(AppStrings.invalidCredentials);
+        viewModel.emailError(AuthFormErrors.invalidCredentials);
         break;
       case 'invalid-email':
-        viewModel.emailError(AppStrings.invalidEmail);
+        viewModel.emailError(AuthFormErrors.invalidEmail);
         break;
       default:
         ToastHelper.of(context).showGenericError();
@@ -52,35 +61,18 @@ class LoginForm extends StatelessWidget {
     }
   }
 
-  void _onEmailChanged(BuildContext context) =>
-      context.read<LoginFormErrorsViewModel>().emailError(null);
-
-  void _onPasswordChanged(
-    BuildContext context,
-    String? emailError,
-  ) {
-    context.read<LoginFormErrorsViewModel>().passwordError(null);
-
-    if (emailError == AppStrings.invalidCredentials) {
-      context.read<LoginFormErrorsViewModel>().emailError(null);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.read<LoginFormErrorsViewModel>();
+
     return AuthFormErrorListener(
       onFireAuthException: (code) => _onFireAuthException(context, code),
       child: BlocBuilder<LoginFormErrorsViewModel, LoginFormErrorsState>(
         builder: (context, state) {
           return Form(
+            key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Login',
-                  style: AppTextStyles.title,
-                ),
-                const SizedBox(height: 32),
                 CustomFormField(
                   controller: emailController,
                   hintText: 'Email',
@@ -88,7 +80,14 @@ class LoginForm extends StatelessWidget {
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   errorText: state.emailError,
-                  onChanged: (_) => _onEmailChanged(context),
+                  onChanged: (_) => viewModel.emailError(null),
+                  validator: (value) {
+                    if (value == '') {
+                      viewModel.emailError(AuthFormErrors.emailRequired);
+                    }
+
+                    return;
+                  },
                 ),
                 const SizedBox(height: 16),
                 CustomFormField(
@@ -98,10 +97,21 @@ class LoginForm extends StatelessWidget {
                   obscureText: true,
                   textInputAction: TextInputAction.next,
                   errorText: state.passwordError,
-                  onChanged: (_) => _onPasswordChanged(
-                    context,
-                    state.emailError,
-                  ),
+                  onChanged: (_) {
+                    viewModel.passwordError(null);
+
+                    if (state.emailError == AuthFormErrors.invalidCredentials) {
+                      viewModel.emailError(null);
+                    }
+                  },
+                  onSubmitted: (_) => _onSubmitted(context),
+                  validator: (value) {
+                    if (value == '') {
+                      viewModel.passwordError(AuthFormErrors.passwordRequired);
+                    }
+
+                    return;
+                  },
                 ),
                 const SizedBox(height: 40),
                 BlocSelector<AuthViewModel, AuthState, ViewModelStatus>(
@@ -110,23 +120,17 @@ class LoginForm extends StatelessWidget {
                     return PrimaryButton(
                       label: 'Sign In',
                       width: double.infinity,
-                      onPress: () {
-                        FocusScope.of(context).unfocus();
-                        _submitForm(context);
-                      },
+                      onPress: () => _onSubmitted(context),
                       state: status.isLoading
                           ? ButtonState.loading
                           : ButtonState.idle,
                     );
                   },
                 ),
-                const SizedBox(height: 16),
                 AuthRedirectCTA(
                   description: "Don't have an account?",
                   label: 'Register',
-                  onPress: () {
-                    context.go(AppRoutes.registration);
-                  },
+                  onPress: () => context.go(AppRoutes.registration),
                 ),
               ],
             ),

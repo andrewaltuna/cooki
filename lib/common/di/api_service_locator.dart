@@ -1,4 +1,4 @@
-import 'package:cooki/common/constants/app_constants.dart';
+import 'package:cooki/constant/app_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -7,7 +7,12 @@ final _authLink = AuthLink(
     try {
       final token = await FirebaseAuth.instance.currentUser?.getIdToken() ?? '';
 
-      return 'Bearer $token';
+      final bearerToken = 'Bearer $token';
+
+      // For debugging
+      print(bearerToken);
+
+      return bearerToken;
     } catch (error) {
       rethrow;
     }

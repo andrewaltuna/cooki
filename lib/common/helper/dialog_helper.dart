@@ -23,14 +23,14 @@ class DialogHelper {
                 Text(
                   args.title,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.subtitle,
+                  style: AppTextStyles.titleSmall,
                 ),
                 const SizedBox(height: 16),
                 Flexible(
                   child: Text(
                     args.message,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.body,
+                    style: AppTextStyles.bodyMedium,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -51,7 +51,7 @@ class DialogHelper {
                   },
                   child: Text(
                     args.dismissText,
-                    style: AppTextStyles.body,
+                    style: AppTextStyles.bodyMedium,
                   ),
                 ),
               ],

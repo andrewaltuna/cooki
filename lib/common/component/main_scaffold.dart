@@ -10,6 +10,7 @@ class MainScaffold extends StatelessWidget {
     this.hasNavBar = true,
     this.isScrollable = false,
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
+    this.backgroundColor,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class MainScaffold extends StatelessWidget {
   final bool hasNavBar;
   final bool isScrollable;
   final EdgeInsetsGeometry contentPadding;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class MainScaffold extends StatelessWidget {
           ? AppBar(
               title: Text(
                 title ?? '',
-                style: AppTextStyles.title,
+                style: AppTextStyles.titleLarge,
               ),
               centerTitle: true,
             )
@@ -44,6 +46,7 @@ class MainScaffold extends StatelessWidget {
           ),
         ),
       ),
+      backgroundColor: backgroundColor,
       bottomNavigationBar: hasNavBar ? const MainNavigationBar() : null,
     );
   }

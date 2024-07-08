@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
+import 'package:flutter/services.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({
@@ -12,6 +13,9 @@ class CustomFormField extends StatelessWidget {
     this.obscureText = false,
     this.keyboardType,
     this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
+    this.inputFormatters,
+    this.autovalidateMode,
     this.onChanged,
     this.onSubmitted,
     this.validator,
@@ -26,6 +30,9 @@ class CustomFormField extends StatelessWidget {
   final bool obscureText;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
+  final AutovalidateMode? autovalidateMode;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
   final String? Function(String?)? validator;
@@ -38,11 +45,12 @@ class CustomFormField extends StatelessWidget {
         if (label != null) ...[
           Text(
             label ?? '',
-            style: AppTextStyles.label,
+            style: AppTextStyles.bodyMedium,
           ),
           const SizedBox(height: 3),
         ],
         TextFormField(
+          autovalidateMode: autovalidateMode,
           controller: controller,
           onChanged: onChanged,
           onFieldSubmitted: onSubmitted,
@@ -50,7 +58,9 @@ class CustomFormField extends StatelessWidget {
           obscureText: obscureText,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
-          style: AppTextStyles.body,
+          textCapitalization: textCapitalization,
+          style: AppTextStyles.bodyMedium,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             hintText: hintText ?? 'Aa',
             errorText: errorText,

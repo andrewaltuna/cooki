@@ -1,4 +1,4 @@
-import 'package:cooki/common/constants/beacon_constants.dart';
+import 'package:cooki/constant/beacon_constants.dart';
 
 class KalmanFilter {
   KalmanFilter({
