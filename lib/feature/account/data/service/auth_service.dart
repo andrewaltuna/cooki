@@ -12,14 +12,27 @@ class AuthService implements AuthServiceInterface {
   bool get isAuthenticated => _firebaseAuth.currentUser != null;
 
   @override
+  Future<void> reloadUser() async {
+    try {
+      await _firebaseAuth.currentUser?.reload();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  @override
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -27,14 +40,22 @@ class AuthService implements AuthServiceInterface {
     required String email,
     required String password,
   }) async {
-    await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    try {
+      await _firebaseAuth.signOut();
+    } catch (error) {
+      print(error);
+    }
   }
 }

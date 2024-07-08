@@ -1,4 +1,6 @@
+import 'package:cooki/common/component/authenticated_blocs.dart';
 import 'package:cooki/common/map/presentation/screen/map_screen.dart';
+import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -9,51 +11,83 @@ import 'package:cooki/feature/account/presentation/screen/registration_screen.da
 import 'package:cooki/feature/chat/presentation/screen/chat_screen.dart';
 import 'package:cooki/feature/settings/presentation/screen/settings_screen.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _authShellNavigatorKey = GlobalKey<NavigatorState>();
+
 final appRouter = GoRouter(
+  navigatorKey: _rootNavigatorKey,
   routes: [
-    GoRoute(
+    // Unauthenticated routes
+    _goRoute(
       path: AppRoutes.login,
-      pageBuilder: (_, state) =>
-          _pageWithDefaultTransition(state, child: const LoginScreen()),
+      child: const LoginScreen(),
     ),
-    GoRoute(
+    _goRoute(
       path: AppRoutes.registration,
-      pageBuilder: (_, state) =>
-          _pageWithDefaultTransition(state, child: const RegistrationScreen()),
+      child: const RegistrationScreen(),
     ),
-    GoRoute(
-      path: AppRoutes.home,
-      pageBuilder: (_, state) =>
-          _pageWithDefaultTransition(state, child: const ChatScreen()),
+    _goRoute(
+      path: AppRoutes.completeRegistration,
+      child: const CompleteRegistrationScreen(),
     ),
-    GoRoute(
-      path: AppRoutes.map,
-      pageBuilder: (_, state) =>
-          _pageWithDefaultTransition(state, child: const MapScreen()),
-    ),
-    GoRoute(
-      path: AppRoutes.settings,
-      pageBuilder: (_, state) =>
-          _pageWithDefaultTransition(state, child: const SettingsScreen()),
+
+    // Authenticated routes
+    ShellRoute(
+      navigatorKey: _authShellNavigatorKey,
+      builder: (_, __, child) {
+        return AuthenticatedBlocs(
+          child: child,
+        );
+      },
+      routes: [
+        _goRoute(
+          path: AppRoutes.home,
+          child: const ChatScreen(),
+        ),
+        _goRoute(
+          path: AppRoutes.map,
+          child: const MapScreen(),
+        ),
+        _goRoute(
+          path: AppRoutes.settings,
+          child: const SettingsScreen(),
+        ),
+      ],
     ),
   ],
   redirect: (context, state) {
     final authState = context.read<AuthViewModel>().state;
 
-    if (!authState.status.isSuccess) return null;
-
-    final isAuthenticated = authState.isAuthenticated;
+    final isAuthenticated = authState.isFireAuth;
+    final isRegistered = authState.isRegistered;
 
     final isAuthScreen = state.fullPath == AppRoutes.login ||
-        state.fullPath == AppRoutes.registration;
+        state.fullPath == AppRoutes.registration ||
+        state.fullPath == AppRoutes.completeRegistration;
 
-    if (isAuthenticated && isAuthScreen) return AppRoutes.home;
-
-    if (!isAuthenticated && !isAuthScreen) return AppRoutes.login;
+    if (isAuthenticated) {
+      if (!isRegistered) return AppRoutes.completeRegistration;
+      if (isAuthScreen) return AppRoutes.home;
+    } else {
+      if (!isAuthScreen) return AppRoutes.login;
+    }
 
     return null;
   },
 );
+
+GoRoute _goRoute({
+  required String path,
+  required Widget child,
+}) {
+  return GoRoute(
+    path: path,
+    pageBuilder: (_, state) => _pageWithDefaultTransition(
+      state,
+      child: child,
+    ),
+  );
+}
 
 CustomTransitionPage _pageWithDefaultTransition(
   GoRouterState state, {

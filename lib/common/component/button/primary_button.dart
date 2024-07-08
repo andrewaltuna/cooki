@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cooki/common/component/indicator/custom_loading_indicator.dart';
+import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
@@ -9,7 +9,7 @@ class PrimaryButton extends StatelessWidget {
     required this.label,
     required this.onPress,
     this.width,
-    this.height = 50,
+    this.height = 44,
     this.state = ButtonState.idle,
     super.key,
   });
@@ -29,12 +29,13 @@ class PrimaryButton extends StatelessWidget {
         onPressed: onPress,
         style: TextButton.styleFrom(
           backgroundColor: AppColors.accent,
+          padding: EdgeInsets.zero,
         ),
         child: state.isLoading
-            ? const CustomLoadingIndicator()
+            ? const LoadingIndicator()
             : Text(
                 label,
-                style: AppTextStyles.body,
+                style: AppTextStyles.bodyMedium,
               ),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 
-class CustomLoadingIndicator extends StatelessWidget {
-  const CustomLoadingIndicator({
+class LoadingIndicator extends StatelessWidget {
+  const LoadingIndicator({
     this.size = 16,
     super.key,
   });

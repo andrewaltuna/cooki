@@ -1,37 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 
 class AppTextStyles {
   const AppTextStyles._();
 
-  static final _primaryFont = GoogleFonts.poppins();
-  static final _secondaryFont = GoogleFonts.roboto();
+  static const _primaryFontFamily = 'Poppins';
+  static const _secondaryFontFamily = 'Roboto';
 
-  static final TextStyle title = _primaryFont.copyWith(
+  static const _primaryFontStyle = TextStyle(
+    fontFamily: _primaryFontFamily,
+    color: AppColors.fontPrimary,
+  );
+
+  static const _secondaryFontStyle = TextStyle(
+    fontFamily: _secondaryFontFamily,
+    color: AppColors.fontPrimary,
+  );
+
+  // Title
+  static final titleLarge = _primaryFontStyle.copyWith(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: AppColors.fontPrimary,
   );
-
-  static final TextStyle subtitle = _primaryFont.copyWith(
+  static final titleMedium = _primaryFontStyle.copyWith(
     fontSize: 20,
     fontWeight: FontWeight.bold,
-    color: AppColors.fontPrimary,
   );
-
-  static final TextStyle body = _secondaryFont.copyWith(
+  static final titleSmall = _primaryFontStyle.copyWith(
     fontSize: 16,
-    color: AppColors.fontPrimary,
+    fontWeight: FontWeight.bold,
   );
 
-  static final TextStyle label = _secondaryFont.copyWith(
+  // Body
+  static final bodyLarge = _secondaryFontStyle.copyWith(
+    fontSize: 16,
+  );
+  static final bodyMedium = _secondaryFontStyle.copyWith(
     fontSize: 14,
-    color: AppColors.fontPrimary,
   );
-
-  static final TextStyle hint = _secondaryFont.copyWith(
+  static final bodySmall = _secondaryFontStyle.copyWith(
     fontSize: 12,
-    color: AppColors.fontPrimary,
   );
 }

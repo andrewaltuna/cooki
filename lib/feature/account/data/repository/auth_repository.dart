@@ -3,7 +3,7 @@ import 'package:cooki/feature/account/data/repository/auth_repository_interface.
 import 'package:cooki/feature/account/data/service/auth_service_interface.dart';
 
 class AuthRepository implements AuthRepositoryInterface {
-  AuthRepository(this._authService);
+  const AuthRepository(this._authService);
 
   final AuthServiceInterface _authService;
 
@@ -12,6 +12,11 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Stream<User?> get authStateChanges => _authService.authStateChanges;
+
+  @override
+  Future<void> reloadUser() async {
+    await _authService.reloadUser();
+  }
 
   @override
   Future<void> signInWithEmailAndPassword({

@@ -5,6 +5,8 @@ abstract interface class AuthRepositoryInterface {
 
   Stream<User?> get authStateChanges;
 
+  Future<void> reloadUser();
+
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,

@@ -1,3 +1,4 @@
+/// Contains values generally used across features.
 class AppConstants {
   const AppConstants._();
 

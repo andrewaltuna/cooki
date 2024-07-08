@@ -1,11 +1,15 @@
-class AppStrings {
-  const AppStrings._();
+class AuthFormErrors {
+  const AuthFormErrors._();
 
   // General
-  static const errorGeneric = 'Oops! Something went wrong';
+  static const nameRequired = 'Nickname is required';
+  static const emailRequired = 'Email is required';
+  static const passwordRequired = 'Password is required';
 
-  // Authentication
+  // Login
   static const invalidCredentials = 'Email or password is incorrect';
+
+  // Registration
   static const passwordMismatch = 'Passwords do not match';
   static const invalidEmail = 'Invalid email address';
   static const emailInUse = 'Email already in use';

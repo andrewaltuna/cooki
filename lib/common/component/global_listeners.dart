@@ -26,7 +26,8 @@ class GlobalListeners extends HookWidget {
         BlocListener<AuthViewModel, AuthState>(
           listenWhen: (previous, current) =>
               previous.status != current.status ||
-              previous.isAuthenticated != current.isAuthenticated,
+              previous.isFireAuth != current.isFireAuth ||
+              previous.user != current.user,
           listener: (context, state) {
             if (state.status.isInitial) return;
 
