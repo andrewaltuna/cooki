@@ -49,13 +49,7 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
       final isAuth = event.firebaseUser != null;
 
       if (isAuth) {
-        // Refresh token to ensure it belongs to the current logged in
-        // user when calling backend APIs
-        await _authRepository.getTokenId(true);
-
         final userOutput = await _accountRepository.getUserProfile();
-
-        print('User Output: $userOutput');
 
         emit(
           state.copyWith(
@@ -71,6 +65,7 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
       emit(
         state.copyWith(
           isFireAuth: isAuth,
+          user: UserOutput.empty,
           status: ViewModelStatus.success,
         ),
       );
@@ -177,9 +172,6 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(status: ViewModelStatus.loading));
 
       await _authRepository.signOut();
-
-      // Reset state to initial
-      emit(const AuthState());
     } on Exception catch (error) {
       emit(
         state.copyWith(
