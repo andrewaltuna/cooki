@@ -1,8 +1,10 @@
-import 'package:cooki/feature/account/data/model/user_output.dart';
-import 'package:cooki/feature/preferences/data/model/input/edit_user_profile_input.dart';
+import 'package:cooki/feature/preferences/data/model/input/update_preferences_input.dart';
+import 'package:cooki/feature/preferences/data/model/output/preferences_output.dart';
 
 abstract interface class PreferencesRepositoryInterface {
-  Future<UserOutput> updateUserProfile(
-    EditUserProfileInput input,
+  Future<PreferencesOutput> getPreferences();
+
+  Future<PreferencesOutput> updatePreferences(
+    UpdatePreferencesInput input,
   );
 }

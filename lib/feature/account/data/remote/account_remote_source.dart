@@ -1,5 +1,6 @@
 import 'package:cooki/common/extension/graphql_extensions.dart';
-import 'package:cooki/feature/account/data/model/user_output.dart';
+import 'package:cooki/feature/account/data/model/input/edit_user_profile_input.dart';
+import 'package:cooki/feature/account/data/model/output/user_output.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AccountRemoteSource {
@@ -51,33 +52,38 @@ class AccountRemoteSource {
       },
     );
   }
+
+  Future<UserOutput> editUserProfile(
+    EditUserProfileInput input,
+  ) async {
+    final response = await _graphQLClient.mutate(
+      MutationOptions(
+        document: gql(_editUserProfileMutation),
+        variables: {
+          'editUserProfileInput': input.toJson(),
+        },
+      ),
+    );
+
+    return response.result(
+      onSuccess: (data) {
+        final result = data['editUserProfile'];
+
+        return UserOutput.fromJson(result);
+      },
+      onError: (error) {
+        throw Exception(error.toString());
+      },
+    );
+  }
 }
 
 const _getUserQuery = r'''
   query GetUser {
     getUser {
-      name
       userId
-      preferences {
-        dietary_restrictions {
-          restriction_name
-        }
-        brand {
-          brand_name
-        }
-        general {
-          general_name
-        }
-        medication {
-          brand_name
-          generic_name
-        }
-        promo_notifications
-        updatedAt
-      }
-      createdAt
+      name
       hasSeenInitialPreferencesModal
-      profilePicture
     }
   }
 ''';
@@ -85,25 +91,19 @@ const _getUserQuery = r'''
 const _createUserMutation = r'''
   mutation CreateUser($createUserInput: CreateUserInput!) {
     createUser(createUserInput: $createUserInput) {
+      userId
+      name
+      hasSeenInitialPreferencesModal
+    }
+  }
+''';
+
+const _editUserProfileMutation = r'''
+  mutation EditUserProfile($input: EditUserProfileInput!) {
+    editUserProfile(editUserProfileInput: $input) {
       name
       userId
-      preferences {
-        brand {
-          brand_name
-        }
-        general {
-          general_name
-        }
-        medication {
-          brand_name
-          generic_name
-        }
-        promo_notifications
-        updatedAt
-      }
-      createdAt
       hasSeenInitialPreferencesModal
-      profilePicture
     }
   }
 ''';

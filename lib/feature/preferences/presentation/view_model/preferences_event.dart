@@ -8,13 +8,8 @@ sealed class PreferencesEvent extends Equatable {
 }
 
 /// Sets initial values based on user preferences
-class PreferencesInitalized extends PreferencesEvent {
-  const PreferencesInitalized(this.user);
-
-  final UserOutput user;
-
-  @override
-  List<Object> get props => [user];
+class PreferencesRequested extends PreferencesEvent {
+  const PreferencesRequested();
 }
 
 class PreferencesProductCategorySelected extends PreferencesEvent {
@@ -36,17 +31,5 @@ class PreferencesDietaryRestrictionSelected extends PreferencesEvent {
 }
 
 class PreferencesSaved extends PreferencesEvent {
-  const PreferencesSaved({
-    this.hasSeenInitalPreferencesModal,
-    this.isSkip = false,
-  });
-
-  final bool? hasSeenInitalPreferencesModal;
-  final bool isSkip;
-
-  @override
-  List<Object?> get props => [
-        hasSeenInitalPreferencesModal,
-        isSkip,
-      ];
+  const PreferencesSaved();
 }

@@ -1,8 +1,7 @@
 import 'package:cooki/common/enum/view_model_status.dart';
-import 'package:cooki/feature/account/data/model/user_output.dart';
 import 'package:cooki/feature/preferences/data/enum/dietary_restriction.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
-import 'package:cooki/feature/preferences/data/model/input/edit_user_profile_input.dart';
+import 'package:cooki/feature/preferences/data/model/input/update_preferences_input.dart';
 import 'package:cooki/feature/preferences/data/repository/preferences_repository_interface.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,7 @@ part 'preferences_state.dart';
 
 class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
   PreferencesViewModel(this._repository) : super(const PreferencesState()) {
-    on<PreferencesInitalized>(_onInitialized);
+    on<PreferencesRequested>(_onRequested);
     on<PreferencesProductCategorySelected>(_onProductCategorySelected);
     on<PreferencesDietaryRestrictionSelected>(_onDietaryRestrictionSelected);
     on<PreferencesSaved>(_onSaved);
@@ -20,11 +19,31 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
 
   final PreferencesRepositoryInterface _repository;
 
-  // TODO implement
-  void _onInitialized(
-    PreferencesInitalized event,
+  Future<void> _onRequested(
+    PreferencesRequested event,
     Emitter<PreferencesState> emit,
-  ) {}
+  ) async {
+    try {
+      emit(state.copyWith(status: ViewModelStatus.loading));
+
+      final result = await _repository.getPreferences();
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          productCategories: result.productCategories,
+          dietaryRestrictions: result.dietaryRestrictions,
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
 
   void _onProductCategorySelected(
     PreferencesProductCategorySelected event,
@@ -65,13 +84,12 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
 
       emit(state.copyWith(status: ViewModelStatus.loading));
 
-      final input = EditUserProfileInput(
-        productCategories: event.isSkip ? null : state.productCategories,
-        dietaryRestrictions: event.isSkip ? null : state.dietaryRestrictions,
-        hasSeenInitialPreferencesModal: event.hasSeenInitalPreferencesModal,
+      final input = UpdatePreferencesInput(
+        productCategories: state.productCategories,
+        dietaryRestrictions: state.dietaryRestrictions,
       );
 
-      await _repository.updateUserProfile(input);
+      await _repository.updatePreferences(input);
 
       emit(state.copyWith(status: ViewModelStatus.success));
     } on Exception catch (_) {
