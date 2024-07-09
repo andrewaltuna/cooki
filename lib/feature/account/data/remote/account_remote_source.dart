@@ -22,8 +22,9 @@ class AccountRemoteSource {
         return UserOutput.fromJson(result);
       },
       onError: (error) {
-        error.graphqlErrors.first.extensions?['code'];
         // TODO: add proper handling for user not found error
+        final code = error.graphqlErrors.first.extensions?['code'];
+        print(code);
         return null;
       },
     );
@@ -34,7 +35,7 @@ class AccountRemoteSource {
       MutationOptions(
         document: gql(_createUserMutation),
         variables: {
-          'createUserInput': {
+          'input': {
             'name': name,
           },
         },
@@ -60,7 +61,7 @@ class AccountRemoteSource {
       MutationOptions(
         document: gql(_editUserProfileMutation),
         variables: {
-          'editUserProfileInput': input.toJson(),
+          'input': input.toJson(),
         },
       ),
     );
@@ -89,8 +90,8 @@ const _getUserQuery = r'''
 ''';
 
 const _createUserMutation = r'''
-  mutation CreateUser($createUserInput: CreateUserInput!) {
-    createUser(createUserInput: $createUserInput) {
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(createUserInput: $input) {
       userId
       name
       hasSeenInitialPreferencesModal

@@ -1,6 +1,5 @@
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
-import 'package:cooki/feature/preferences/data/di/preferences_service_locator.dart';
 import 'package:cooki/feature/preferences/presentation/component/preferences_modal_content.dart';
 import 'package:cooki/feature/preferences/presentation/view_model/preferences_view_model.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +25,8 @@ class PreferencesHelper {
               BlocProvider.value(
                 value: BlocProvider.of<AccountViewModel>(_context),
               ),
-              BlocProvider(
-                create: (_) => PreferencesViewModel(preferencesRepository),
+              BlocProvider.value(
+                value: BlocProvider.of<PreferencesViewModel>(_context),
               ),
             ],
             child: const Dialog(

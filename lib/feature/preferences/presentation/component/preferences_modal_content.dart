@@ -93,7 +93,9 @@ class PreferencesModalContent extends HookWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: _contentPadding),
+              padding: const EdgeInsets.symmetric(
+                horizontal: _contentPadding,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

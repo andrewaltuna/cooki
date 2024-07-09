@@ -5,11 +5,14 @@ class AuthService implements AuthServiceInterface {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
-  final Stream<User?> authStateChanges =
-      FirebaseAuth.instance.authStateChanges();
+  bool get isAuthenticated => currentUser != null;
 
   @override
-  bool get isAuthenticated => _firebaseAuth.currentUser != null;
+  User? get currentUser => _firebaseAuth.currentUser;
+
+  @override
+  final Stream<User?> authStateChanges =
+      FirebaseAuth.instance.authStateChanges();
 
   @override
   Future<void> reloadUser() async {
@@ -17,6 +20,16 @@ class AuthService implements AuthServiceInterface {
       await _firebaseAuth.currentUser?.reload();
     } catch (error) {
       print(error);
+    }
+  }
+
+  @override
+  Future<String?> getTokenId(bool refresh) async {
+    try {
+      return await currentUser?.getIdToken(refresh);
+    } catch (error) {
+      print(error);
+      rethrow;
     }
   }
 
