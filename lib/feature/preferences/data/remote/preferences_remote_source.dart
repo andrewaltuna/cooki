@@ -53,25 +53,19 @@ class PreferencesRemoteSource {
 const _getPreferencesQuery = r'''
   query GetLatestPreference {
     getLatestPreference {
-      dietary_restrictions {
-        restriction_name
-        key_ingredients {
-          key_ingredient_name
-        }
+      productCategories {
+        name
+      }
+      dietaryRestrictions {
+        name
       }
       brand {
-        brand_name
-      }
-      general {
-        general_name
+        name
       }
       medication {
-        brand_name
-        generic_name
+        name
       }
-      promo_notifications
-      createdAt
-      updatedAt
+      promoNotifications
     }
   }
 ''';
@@ -79,25 +73,19 @@ const _getPreferencesQuery = r'''
 const _updatePreferencesMutation = r'''
   mutation UpdatePreference($input: PreferencesInput!) {
     updatePreference(preferenceInput: $input) {
-      dietary_restrictions {
-        restriction_name
-        key_ingredients {
-          key_ingredient_name
-        }
+      productCategories {
+        name
+      }
+      dietaryRestrictions {
+        name
       }
       brand {
-        brand_name
-      }
-      general {
-        general_name
+        name
       }
       medication {
-        brand_name
-        generic_name
+        name
       }
-      promo_notifications
-      createdAt
-      updatedAt
+      promoNotifications
     }
   }
 ''';

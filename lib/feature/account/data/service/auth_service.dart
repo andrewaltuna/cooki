@@ -38,14 +38,10 @@ class AuthService implements AuthServiceInterface {
     required String email,
     required String password,
   }) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (error) {
-      print(error);
-    }
+    await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   @override
@@ -53,22 +49,14 @@ class AuthService implements AuthServiceInterface {
     required String email,
     required String password,
   }) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (error) {
-      print(error);
-    }
+    await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   @override
   Future<void> signOut() async {
-    try {
-      await _firebaseAuth.signOut();
-    } catch (error) {
-      print(error);
-    }
+    await _firebaseAuth.signOut();
   }
 }
