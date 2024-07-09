@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:cooki/feature/account/data/model/user_output.dart';
+import 'package:cooki/feature/account/data/model/output/user_output.dart';
 import 'package:cooki/feature/account/data/repository/account_repository_interface.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

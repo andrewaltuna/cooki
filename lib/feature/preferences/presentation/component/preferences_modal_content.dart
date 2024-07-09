@@ -35,26 +35,15 @@ class PreferencesModalContent extends HookWidget {
     );
   }
 
-  // TODO revise all submission methods
-  void _onSubmitted(BuildContext context) {
-    _onInitialPreferencesSet(context);
-    // TODO Add event to update preferences API
-  }
-
-  void _onSkipped(BuildContext context) {
-    _onInitialPreferencesSet(context);
-  }
-
   void _onInitialPreferencesSet(
     BuildContext context, {
     bool isSkip = false,
   }) {
-    context.read<PreferencesViewModel>().add(
-          PreferencesSaved(
-            hasSeenInitalPreferencesModal: true,
-            isSkip: isSkip,
-          ),
-        );
+    if (!isSkip) {
+      context.read<PreferencesViewModel>().add(
+            const PreferencesSaved(),
+          );
+    }
 
     context.read<AccountViewModel>().add(
           const AccountInitialPrefsSet(),
@@ -129,7 +118,10 @@ class PreferencesModalContent extends HookWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                        onPressed: () => _onSkipped(context),
+                        onPressed: () => _onInitialPreferencesSet(
+                          context,
+                          isSkip: true,
+                        ),
                         child: Text(
                           'Set up later',
                           style: AppTextStyles.bodyMedium,
@@ -151,7 +143,7 @@ class PreferencesModalContent extends HookWidget {
                                 ? ButtonState.loading
                                 : ButtonState.idle,
                             onPress: () => isLastPage
-                                ? _onSubmitted(context)
+                                ? _onInitialPreferencesSet(context)
                                 : _onNextPressed(pageController),
                           );
                         },
