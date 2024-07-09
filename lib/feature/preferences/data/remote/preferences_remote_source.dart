@@ -31,7 +31,7 @@ class PreferencesRemoteSource {
       MutationOptions(
         document: gql(_updatePreferencesMutation),
         variables: {
-          'preferenceInput': input.toJson(),
+          'input': input.toJson(),
         },
       ),
     );

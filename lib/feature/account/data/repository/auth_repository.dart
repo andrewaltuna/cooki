@@ -11,11 +11,19 @@ class AuthRepository implements AuthRepositoryInterface {
   bool get isAuthenticated => _authService.isAuthenticated;
 
   @override
+  User? get currentUser => _authService.currentUser;
+
+  @override
   Stream<User?> get authStateChanges => _authService.authStateChanges;
 
   @override
   Future<void> reloadUser() async {
     await _authService.reloadUser();
+  }
+
+  @override
+  Future<String?> getTokenId([bool refresh = false]) async {
+    return await _authService.getTokenId(refresh);
   }
 
   @override

@@ -49,6 +49,10 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
       final isAuth = event.firebaseUser != null;
 
       if (isAuth) {
+        // Refresh token to ensure it belongs to the current logged in
+        // user when calling backend APIs
+        await _authRepository.getTokenId(true);
+
         final userOutput = await _accountRepository.getUserProfile();
 
         print('User Output: $userOutput');
