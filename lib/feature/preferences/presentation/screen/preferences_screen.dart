@@ -37,24 +37,22 @@ class PreferencesScreen extends StatelessWidget {
           onPressed: () => _onSignedOut(context),
         ),
       ],
-      body: Expanded(
-        child: PreferencesPageView(
-          footerBuilder: (_, __) {
-            return BlocSelector<PreferencesViewModel, PreferencesState,
-                ViewModelStatus>(
-              selector: (state) => state.submissionStatus,
-              builder: (context, submissionStatus) {
-                return PrimaryButton(
-                  label: 'Save',
-                  state: submissionStatus.isLoading
-                      ? ButtonState.loading
-                      : ButtonState.idle,
-                  onPress: () => _onSaved(context),
-                );
-              },
-            );
-          },
-        ),
+      body: PreferencesPageView(
+        footerBuilder: (_, __) {
+          return BlocSelector<PreferencesViewModel, PreferencesState,
+              ViewModelStatus>(
+            selector: (state) => state.submissionStatus,
+            builder: (context, submissionStatus) {
+              return PrimaryButton(
+                label: 'Save',
+                state: submissionStatus.isLoading
+                    ? ButtonState.loading
+                    : ButtonState.idle,
+                onPress: () => _onSaved(context),
+              );
+            },
+          );
+        },
       ),
     );
   }
