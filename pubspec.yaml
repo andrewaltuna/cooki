@@ -41,6 +41,9 @@ dependencies:
   # API
   graphql_flutter: ^5.2.0-beta.7
 
+  # Utils
+  collection: ^1.18.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

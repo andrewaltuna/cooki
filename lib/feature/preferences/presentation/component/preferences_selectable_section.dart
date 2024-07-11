@@ -34,12 +34,16 @@ class PreferencesSelectableSection extends StatelessWidget {
           ),
         ],
         const SizedBox(height: 16),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: List.generate(
-            itemCount,
-            (index) => builder(index),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: List.generate(
+                itemCount,
+                (index) => builder(index),
+              ),
+            ),
           ),
         ),
       ],

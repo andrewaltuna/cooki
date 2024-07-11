@@ -10,7 +10,7 @@ final _authLink = AuthLink(
       final bearerToken = 'Bearer $token';
 
       // For debugging
-      print('FETCHING WITH TOKEN: \n$bearerToken');
+      print('FETCHING WITH TOKEN: $bearerToken');
 
       return bearerToken;
     } catch (error) {

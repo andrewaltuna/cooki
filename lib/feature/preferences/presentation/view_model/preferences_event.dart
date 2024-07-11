@@ -30,6 +30,32 @@ class PreferencesDietaryRestrictionSelected extends PreferencesEvent {
   List<Object> get props => [restriction];
 }
 
+class PreferencesMedicationAdded extends PreferencesEvent {
+  const PreferencesMedicationAdded({
+    required this.medication,
+  });
+
+  final Medication medication;
+
+  @override
+  List<Object> get props => [
+        medication,
+      ];
+}
+
+class PreferencesMedicationRemoved extends PreferencesEvent {
+  const PreferencesMedicationRemoved(this.index);
+
+  final int index;
+
+  @override
+  List<Object> get props => [index];
+}
+
+class PreferencesPromoNotificationsToggled extends PreferencesEvent {
+  const PreferencesPromoNotificationsToggled();
+}
+
 class PreferencesSaved extends PreferencesEvent {
   const PreferencesSaved();
 }
