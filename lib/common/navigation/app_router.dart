@@ -1,6 +1,7 @@
 import 'package:cooki/common/component/authenticated_blocs.dart';
 import 'package:cooki/common/map/presentation/screen/map_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
+import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -52,6 +53,10 @@ final appRouter = GoRouter(
           path: AppRoutes.settings,
           child: const SettingsScreen(),
         ),
+        _goRoute(
+          path: AppRoutes.shoppingList,
+          child: const ShoppingListScreen(),
+        )
       ],
     ),
   ],
