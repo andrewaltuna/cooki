@@ -54,16 +54,16 @@ const _getPreferencesQuery = r'''
   query GetLatestPreference {
     getLatestPreference {
       productCategories {
-        name
+        categoryName
       }
       dietaryRestrictions {
-        name
+        restrictionName
       }
-      brand {
-        name
+      brands {
+        brandName
       }
-      medication {
-        name
+      medications {
+        genericName
       }
       promoNotifications
     }
@@ -74,16 +74,16 @@ const _updatePreferencesMutation = r'''
   mutation UpdatePreference($input: PreferencesInput!) {
     updatePreference(preferenceInput: $input) {
       productCategories {
-        name
+        categoryName
       }
       dietaryRestrictions {
-        name
+        restrictionName
       }
-      brand {
-        name
+      brands {
+        brandName
       }
-      medication {
-        name
+      medications {
+        genericName
       }
       promoNotifications
     }

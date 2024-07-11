@@ -13,6 +13,10 @@ class AppColors {
   static const backgroundSecondary = Color(0xFFDEE2E6);
   static const backgroundTextField = backgroundSecondary;
 
+  // Dropdown
+  static const dropdownBorder = secondary;
+  static const dropdownFocusedBorder = primary;
+
   // Font
   static const fontPrimary = Color(0xFF212529);
   static const fontSecondary = backgroundPrimary;

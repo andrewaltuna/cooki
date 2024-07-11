@@ -1,29 +1,46 @@
 import 'package:cooki/common/extension/enum_extension.dart';
 import 'package:cooki/feature/preferences/data/enum/dietary_restriction.dart';
+import 'package:cooki/feature/preferences/data/enum/medication.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:equatable/equatable.dart';
 
 class UpdatePreferencesInput extends Equatable {
   const UpdatePreferencesInput({
-    this.productCategories,
-    this.dietaryRestrictions,
+    required this.productCategories,
+    required this.dietaryRestrictions,
+    required this.medications,
+    required this.promoNotifications,
   });
 
-  final List<ProductCategory>? productCategories;
-  final List<DietaryRestriction>? dietaryRestrictions;
+  final Set<ProductCategory> productCategories;
+  final Set<DietaryRestriction> dietaryRestrictions;
+  final Set<Medication> medications;
+  final bool promoNotifications;
 
   Map<String, dynamic> toJson() {
     return {
-      'general': productCategories
-          ?.map(
-            (category) => category.apiValue,
+      'productCategories': productCategories
+          .map(
+            (category) => {
+              'categoryName': category.apiValue,
+            },
           )
           .toList(),
-      'dietary_restrictions': dietaryRestrictions
-          ?.map(
-            (restriction) => restriction.apiValue,
+      'dietaryRestrictions': dietaryRestrictions
+          .map(
+            (restriction) => {
+              'restrictionName': restriction.apiValue,
+            },
           )
           .toList(),
+      'medications': medications
+          .map(
+            (medication) => {
+              'genericName': medication.apiValue,
+            },
+          )
+          .toList(),
+      'promoNotifications': promoNotifications,
     };
   }
 
@@ -31,5 +48,7 @@ class UpdatePreferencesInput extends Equatable {
   List<Object?> get props => [
         productCategories,
         dietaryRestrictions,
+        medications,
+        promoNotifications,
       ];
 }

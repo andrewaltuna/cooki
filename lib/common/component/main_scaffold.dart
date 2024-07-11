@@ -1,3 +1,4 @@
+import 'package:cooki/common/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cooki/common/component/main_navigation_bar.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
@@ -11,6 +12,7 @@ class MainScaffold extends StatelessWidget {
     this.isScrollable = false,
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     this.backgroundColor,
+    this.actions,
     super.key,
   });
 
@@ -22,6 +24,9 @@ class MainScaffold extends StatelessWidget {
   final EdgeInsetsGeometry contentPadding;
   final Color? backgroundColor;
 
+  /// Optional actions to be displayed in the app bar. Has no effect if [title] is null.
+  final List<Widget>? actions;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +34,14 @@ class MainScaffold extends StatelessWidget {
           ? AppBar(
               title: Text(
                 title ?? '',
-                style: AppTextStyles.titleLarge,
+                style: AppTextStyles.titleMedium,
               ),
               centerTitle: true,
+              elevation: 10,
+              backgroundColor: AppColors.backgroundPrimary,
+              surfaceTintColor: Colors.transparent,
+              shadowColor: AppColors.shadow,
+              actions: actions,
             )
           : null,
       body: SafeArea(
