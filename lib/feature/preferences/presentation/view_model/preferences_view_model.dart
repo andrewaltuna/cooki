@@ -1,5 +1,6 @@
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/preferences/data/enum/dietary_restriction.dart';
+import 'package:cooki/feature/preferences/data/enum/medication.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:cooki/feature/preferences/data/model/input/update_preferences_input.dart';
 import 'package:cooki/feature/preferences/data/repository/preferences_repository_interface.dart';
@@ -14,6 +15,9 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
     on<PreferencesRequested>(_onRequested);
     on<PreferencesProductCategorySelected>(_onProductCategorySelected);
     on<PreferencesDietaryRestrictionSelected>(_onDietaryRestrictionSelected);
+    on<PreferencesPromoNotificationsToggled>(_onPromoNotificationsToggled);
+    on<PreferencesMedicationAdded>(_onMedicationAdded);
+    on<PreferencesMedicationRemoved>(_onMedicationRemoved);
     on<PreferencesSaved>(_onSaved);
   }
 
@@ -33,6 +37,8 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
           status: ViewModelStatus.success,
           productCategories: result.productCategories,
           dietaryRestrictions: result.dietaryRestrictions,
+          promoNotifications: result.promoNotifications,
+          medications: result.medications,
         ),
       );
     } on Exception catch (error) {
@@ -75,6 +81,36 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
     emit(state.copyWith(dietaryRestrictions: updatedRestrictions));
   }
 
+  void _onMedicationAdded(
+    PreferencesMedicationAdded event,
+    Emitter<PreferencesState> emit,
+  ) {
+    final updatedMedications = [
+      ...state.medications,
+      event.medication,
+    ];
+
+    emit(state.copyWith(medications: updatedMedications));
+  }
+
+  void _onMedicationRemoved(
+    PreferencesMedicationRemoved event,
+    Emitter<PreferencesState> emit,
+  ) {
+    final updatedMedications = [...state.medications];
+
+    updatedMedications.removeAt(event.index);
+
+    emit(state.copyWith(medications: updatedMedications));
+  }
+
+  void _onPromoNotificationsToggled(
+    PreferencesPromoNotificationsToggled event,
+    Emitter<PreferencesState> emit,
+  ) {
+    emit(state.copyWith(promoNotifications: !state.promoNotifications));
+  }
+
   Future<void> _onSaved(
     PreferencesSaved event,
     Emitter<PreferencesState> emit,
@@ -82,18 +118,20 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
     try {
       if (state.status.isLoading) return;
 
-      emit(state.copyWith(status: ViewModelStatus.loading));
+      emit(state.copyWith(submissionStatus: ViewModelStatus.loading));
 
       final input = UpdatePreferencesInput(
-        productCategories: state.productCategories,
-        dietaryRestrictions: state.dietaryRestrictions,
+        productCategories: Set.from(state.productCategories),
+        dietaryRestrictions: Set.from(state.dietaryRestrictions),
+        medications: Set.from(state.medications),
+        promoNotifications: state.promoNotifications,
       );
 
       await _repository.updatePreferences(input);
 
-      emit(state.copyWith(status: ViewModelStatus.success));
+      emit(state.copyWith(submissionStatus: ViewModelStatus.success));
     } on Exception catch (_) {
-      emit(state.copyWith(status: ViewModelStatus.error));
+      emit(state.copyWith(submissionStatus: ViewModelStatus.error));
     }
   }
 }

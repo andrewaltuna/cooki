@@ -10,6 +10,9 @@ class PrimaryButton extends StatelessWidget {
     required this.onPress,
     this.width,
     this.height = 44,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.style,
     this.state = ButtonState.idle,
     super.key,
   });
@@ -18,13 +21,16 @@ class PrimaryButton extends StatelessWidget {
   final VoidCallback onPress;
   final double? width;
   final double height;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final TextStyle? style;
   final ButtonState state;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: height,
-      width: width,
+      width: width ?? double.infinity,
       child: TextButton(
         onPressed: onPress,
         style: TextButton.styleFrom(
@@ -33,9 +39,22 @@ class PrimaryButton extends StatelessWidget {
         ),
         child: state.isLoading
             ? const LoadingIndicator()
-            : Text(
-                label,
-                style: AppTextStyles.bodyMedium,
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (prefixIcon != null) ...[
+                    const SizedBox(width: 4),
+                    prefixIcon!,
+                  ],
+                  Text(
+                    label,
+                    style: style ?? AppTextStyles.bodyMedium,
+                  ),
+                  if (suffixIcon != null) ...[
+                    const SizedBox(width: 4),
+                    suffixIcon!,
+                  ],
+                ],
               ),
       ),
     );

@@ -15,11 +15,11 @@ class PreferencesSubmissionHandler extends StatelessWidget {
     BuildContext context,
     PreferencesState state,
   ) {
-    if (state.status.isSuccess) {
+    if (state.submissionStatus.isSuccess) {
       ToastHelper.of(context).showToast('Saved');
     }
 
-    if (state.status.isError) {
+    if (state.submissionStatus.isError) {
       ToastHelper.of(context).showGenericError();
     }
   }
@@ -27,7 +27,8 @@ class PreferencesSubmissionHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<PreferencesViewModel, PreferencesState>(
-      listenWhen: (previous, current) => previous.status != current.status,
+      listenWhen: (previous, current) =>
+          previous.submissionStatus != current.submissionStatus,
       listener: _listener,
       child: child,
     );
