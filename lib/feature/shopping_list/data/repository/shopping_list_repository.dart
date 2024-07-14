@@ -11,4 +11,9 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   Future<List<ShoppingListOutput>> getShoppingLists() {
     return _remoteSource.getShoppingLists();
   }
+
+  @override
+  Future<ShoppingListOutput> createShoppingList(String name) {
+    return _remoteSource.createShoppingList(name);
+  }
 }

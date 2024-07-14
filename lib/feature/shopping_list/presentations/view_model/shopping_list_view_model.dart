@@ -10,6 +10,7 @@ part 'shopping_list_state.dart';
 class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
   ShoppingListViewModel(this._repository) : super(const ShoppingListState()) {
     on<ShoppingListsRequested>(_onRequested);
+    on<ShoppingListCreated>(_onCreated);
   }
 
   final ShoppingListRepositoryInterface _repository;
@@ -22,19 +23,25 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       emit(state.copyWith(status: ViewModelStatus.loading));
 
       final result = await _repository.getShoppingLists();
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          shoppingLists: result
-        )
-      );
+      emit(state.copyWith(
+          status: ViewModelStatus.success, shoppingLists: result));
     } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error
-        )
-      );
+      emit(state.copyWith(status: ViewModelStatus.error, error: error));
+    }
+  }
+
+  Future<void> _onCreated(
+      ShoppingListCreated event, Emitter<ShoppingListState> emit) async {
+    try {
+      emit(state.copyWith(status: ViewModelStatus.loading));
+
+      // TODO: Pass in data
+      final result = await _repository.createShoppingList(event.name);
+      emit(state.copyWith(
+          status: ViewModelStatus.success,
+          shoppingLists: [...state.shoppingLists, result]));
+    } on Exception catch (error) {
+      emit(state.copyWith(status: ViewModelStatus.error, error: error));
     }
   }
 }

@@ -10,3 +10,12 @@ sealed class ShoppingListEvent extends Equatable {
 class ShoppingListsRequested extends ShoppingListEvent {
   const ShoppingListsRequested();
 }
+
+class ShoppingListCreated extends ShoppingListEvent {
+  const ShoppingListCreated(this.name);
+
+  final String name;
+
+  @override
+  List<Object?> get props => [name];
+}
