@@ -1,3 +1,4 @@
+import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_catalog.dart';
@@ -24,18 +25,21 @@ class ShoppingListScreen extends HookWidget {
 
     return MainScaffold(
         title: 'Shopping List',
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const SizedBox(height: 16),
-            const Expanded(
-              child: ShoppingListCatalog(),
-            ),
-            TextButton(
-              onPressed: () => _onSubmitted(context),
-              child: const Text('Create List'),
-            ),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(height: 16),
+              const Expanded(
+                child: ShoppingListCatalog(),
+              ),
+              PrimaryButton(
+                label: 'Create List',
+                onPress: () => _onSubmitted(context),
+              ),
+            ],
+          ),
         ));
   }
 }
