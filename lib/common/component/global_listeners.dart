@@ -1,8 +1,7 @@
+import 'package:cooki/common/navigation/routing_listeners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:cooki/common/navigation/app_router.dart';
-import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
 import 'package:cooki/feature/beacon/presentation/view_model/beacon_view_model.dart';
 
 class GlobalListeners extends HookWidget {
@@ -23,17 +22,7 @@ class GlobalListeners extends HookWidget {
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<AuthViewModel, AuthState>(
-          listenWhen: (previous, current) =>
-              previous.status != current.status ||
-              previous.isFireAuth != current.isFireAuth ||
-              previous.user != current.user,
-          listener: (context, state) {
-            if (state.isFetchingAuthStatus) return;
-
-            appRouter.refresh();
-          },
-        ),
+        ...routingListeners,
       ],
       child: child,
     );

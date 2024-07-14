@@ -7,15 +7,23 @@ sealed class AccountEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AccountInitialized extends AccountEvent {
-  const AccountInitialized(this.user);
+class AccountRequested extends AccountEvent {
+  const AccountRequested();
+}
 
-  final UserOutput user;
+class AccountRegistered extends AccountEvent {
+  const AccountRegistered(this.name);
+
+  final String name;
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [name];
 }
 
 class AccountInitialPrefsSet extends AccountEvent {
   const AccountInitialPrefsSet();
+}
+
+class AccountCleared extends AccountEvent {
+  const AccountCleared();
 }

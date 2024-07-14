@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cooki/feature/account/data/model/output/user_output.dart';
 import 'package:cooki/feature/account/data/repository/account_repository_interface.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,8 +17,8 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
   ) : super(const AuthState()) {
     on<AuthStreamInitialized>(_onStreamInitialized);
     on<AuthStatusUpdated>(_onStatusUpdated);
-    on<AuthRegistered>(_onRegistered);
-    on<AuthUserProfileCreated>(_onUserProfileCreated);
+    on<AuthUserCreated>(_onUserCreated);
+    on<AuthRegistrationStatusUpdated>(_onRegistrationStatusUpdated);
     on<AuthSignedIn>(_onSignedIn);
     on<AuthSignedOut>(_onSignedOut);
   }
@@ -48,15 +47,17 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
       // Reload user to ensure token is not expired
       await _authRepository.reloadUser();
 
-      final isAuth = event.firebaseUser != null;
+      final isAuthenticated = event.firebaseUser != null;
 
-      if (isAuth) {
-        final userOutput = await _accountRepository.getUserProfile();
+      if (isAuthenticated) {
+        final user = await _accountRepository.getUserProfile();
+
+        print('User: $user');
 
         emit(
           state.copyWith(
-            isFireAuth: isAuth,
-            user: userOutput,
+            isAuthenticated: isAuthenticated,
+            isRegistered: user != null,
             status: ViewModelStatus.success,
           ),
         );
@@ -66,8 +67,8 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
 
       emit(
         state.copyWith(
-          isFireAuth: isAuth,
-          user: UserOutput.empty,
+          isAuthenticated: false,
+          isRegistered: false,
           status: ViewModelStatus.success,
         ),
       );
@@ -81,8 +82,8 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onRegistered(
-    AuthRegistered event,
+  Future<void> _onUserCreated(
+    AuthUserCreated event,
     Emitter<AuthState> emit,
   ) async {
     try {
@@ -111,32 +112,15 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onUserProfileCreated(
-    AuthUserProfileCreated event,
+  void _onRegistrationStatusUpdated(
+    AuthRegistrationStatusUpdated _,
     Emitter<AuthState> emit,
-  ) async {
-    try {
-      if (state.status.isLoading) return;
-
-      emit(state.copyWith(status: ViewModelStatus.loading));
-
-      final userOutput = await _accountRepository.createUserProfile(event.name);
-
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          user: userOutput,
-        ),
-      );
-    } on Exception catch (error) {
-      print(error);
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
+  ) {
+    emit(
+      state.copyWith(
+        isRegistered: true,
+      ),
+    );
   }
 
   Future<void> _onSignedIn(
