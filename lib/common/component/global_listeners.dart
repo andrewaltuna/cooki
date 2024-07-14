@@ -29,7 +29,7 @@ class GlobalListeners extends HookWidget {
               previous.isFireAuth != current.isFireAuth ||
               previous.user != current.user,
           listener: (context, state) {
-            if (state.status.isInitial) return;
+            if (state.isFetchingAuthStatus) return;
 
             appRouter.refresh();
           },

@@ -29,6 +29,8 @@ class AuthState extends Equatable {
     );
   }
 
+  bool get isFetchingAuthStatus => status.isInitial || status.isLoading;
+
   bool get isRegistered => user.isNotEmpty;
 
   @override

@@ -43,6 +43,8 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
+      emit(state.copyWith(status: ViewModelStatus.loading));
+
       // Reload user to ensure token is not expired
       await _authRepository.reloadUser();
 
