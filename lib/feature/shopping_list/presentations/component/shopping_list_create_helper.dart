@@ -27,7 +27,6 @@ class ShoppingListCreateModal {
                 ],
                 child: const Dialog(
                   backgroundColor: AppColors.backgroundPrimary,
-                  insetPadding: EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(16),
