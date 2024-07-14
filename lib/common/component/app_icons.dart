@@ -6,6 +6,7 @@ class AppIcons {
   static const _basePath = 'assets/icons';
 
   static const _prefsPath = '$_basePath/preferences';
+  static const _chatPath = '$_basePath/chat';
 
   // Product category
   static SvgPicture get frozen => SvgPicture.asset('$_prefsPath/frozen.svg');
@@ -25,4 +26,13 @@ class AppIcons {
   static SvgPicture get soyFree => SvgPicture.asset('$_prefsPath/deli.svg');
   static SvgPicture get nutFree => SvgPicture.asset('$_prefsPath/nut_free.svg');
   static SvgPicture get eggFree => SvgPicture.asset('$_prefsPath/egg_free.svg');
+
+  // Chat presets
+  static SvgPicture get activity => SvgPicture.asset('$_chatPath/activity.svg');
+  static SvgPicture get ecoWarrior =>
+      SvgPicture.asset('$_chatPath/eco_warrior.svg');
+  static SvgPicture get recipeGenerator =>
+      SvgPicture.asset('$_chatPath/recipe_generator.svg');
+  static SvgPicture get specialOffers =>
+      SvgPicture.asset('$_chatPath/special_offers.svg');
 }

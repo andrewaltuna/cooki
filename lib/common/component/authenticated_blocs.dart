@@ -1,4 +1,3 @@
-import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/feature/account/data/di/account_service_locator.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
 import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
@@ -51,11 +50,7 @@ class AuthenticatedBlocs extends StatelessWidget {
             previous.user.isEmpty || current.user.isEmpty,
         builder: (context, state) {
           if (state.user.isEmpty) {
-            return const Scaffold(
-              body: Center(
-                child: LoadingIndicator(),
-              ),
-            );
+            return const Scaffold();
           }
 
           return child;

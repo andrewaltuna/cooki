@@ -7,11 +7,11 @@ class ChatState extends Equatable {
   });
 
   final ViewModelStatus messagingStatus;
-  final List<String> history;
+  final List<ChatMessageDetails> history;
 
   ChatState copyWith({
     ViewModelStatus? messagingStatus,
-    List<String>? history,
+    List<ChatMessageDetails>? history,
   }) {
     return ChatState(
       messagingStatus: messagingStatus ?? this.messagingStatus,

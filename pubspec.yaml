@@ -33,6 +33,7 @@ dependencies:
 
   # UI
   fluttertoast: ^8.2.6
+  flutter_markdown: ^0.7.3
 
   # Assets
   ionicons: ^0.2.2
@@ -55,6 +56,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/icons/preferences/
+    - assets/icons/chat/
 
   fonts:
   - family: Poppins

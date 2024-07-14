@@ -31,6 +31,12 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
   );
 
+  // Subtitle
+  static final subtitle = _primaryFontStyle.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+
   // Body
   static final bodyLarge = _secondaryFontStyle.copyWith(
     fontSize: 16,

@@ -29,35 +29,38 @@ class MainScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: title != null
-          ? AppBar(
-              title: Text(
-                title ?? '',
-                style: AppTextStyles.titleMedium,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: title != null
+            ? AppBar(
+                title: Text(
+                  title ?? '',
+                  style: AppTextStyles.titleMedium,
+                ),
+                centerTitle: true,
+                elevation: 10,
+                backgroundColor: AppColors.backgroundPrimary,
+                surfaceTintColor: Colors.transparent,
+                shadowColor: AppColors.shadow,
+                actions: actions,
+              )
+            : null,
+        body: SafeArea(
+          child: Align(
+            alignment: alignment,
+            child: _OptionalScrollView(
+              isScrollable: isScrollable,
+              child: Padding(
+                padding: contentPadding,
+                child: body,
               ),
-              centerTitle: true,
-              elevation: 10,
-              backgroundColor: AppColors.backgroundPrimary,
-              surfaceTintColor: Colors.transparent,
-              shadowColor: AppColors.shadow,
-              actions: actions,
-            )
-          : null,
-      body: SafeArea(
-        child: Align(
-          alignment: alignment,
-          child: _OptionalScrollView(
-            isScrollable: isScrollable,
-            child: Padding(
-              padding: contentPadding,
-              child: body,
             ),
           ),
         ),
+        backgroundColor: backgroundColor,
+        bottomNavigationBar: hasNavBar ? const MainNavigationBar() : null,
       ),
-      backgroundColor: backgroundColor,
-      bottomNavigationBar: hasNavBar ? const MainNavigationBar() : null,
     );
   }
 }
