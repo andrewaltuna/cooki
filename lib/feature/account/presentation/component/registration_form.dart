@@ -39,7 +39,7 @@ class RegistrationForm extends StatelessWidget {
 
     if (isValid) {
       context.read<AuthViewModel>().add(
-            AuthRegistered(
+            AuthUserCreated(
               email: emailController.text,
               password: passwordController.text,
             ),

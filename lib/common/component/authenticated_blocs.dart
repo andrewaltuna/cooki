@@ -1,6 +1,3 @@
-import 'package:cooki/feature/account/data/di/account_service_locator.dart';
-import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
-import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
 import 'package:cooki/feature/beacon/data/di/beacon_service_locator.dart';
 import 'package:cooki/feature/beacon/presentation/view_model/beacon_view_model.dart';
 import 'package:cooki/feature/chat/data/di/chat_service_locator.dart';
@@ -24,15 +21,6 @@ class AuthenticatedBlocs extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          lazy: false,
-          create: (_) {
-            final initialUser = context.read<AuthViewModel>().state.user;
-
-            return AccountViewModel(accountRepository)
-              ..add(AccountInitialized(initialUser));
-          },
-        ),
-        BlocProvider(
           create: (_) => BeaconViewModel(beaconRepository)
             ..add(const BeaconSubscriptionInitialized())
             ..add(const BeaconPermissionsValidated()),
@@ -45,17 +33,7 @@ class AuthenticatedBlocs extends StatelessWidget {
             ..add(const PreferencesRequested()),
         )
       ],
-      child: BlocBuilder<AccountViewModel, AccountState>(
-        buildWhen: (previous, current) =>
-            previous.user.isEmpty || current.user.isEmpty,
-        builder: (context, state) {
-          if (state.user.isEmpty) {
-            return const Scaffold();
-          }
-
-          return child;
-        },
-      ),
+      child: child,
     );
   }
 }

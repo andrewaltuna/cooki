@@ -2,6 +2,7 @@ import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/enum/view_model_status.dart';
+import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
 import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
 import 'package:cooki/feature/preferences/presentation/component/preferences_page_view.dart';
 import 'package:cooki/feature/preferences/presentation/view_model/preferences_view_model.dart';
@@ -14,6 +15,9 @@ class PreferencesScreen extends StatelessWidget {
   void _onSignedOut(BuildContext context) {
     context.read<AuthViewModel>().add(
           const AuthSignedOut(),
+        );
+    context.read<AccountViewModel>().add(
+          const AccountCleared(),
         );
   }
 

@@ -33,8 +33,8 @@ class AuthSignedIn extends AuthEvent {
   List<Object> get props => [email, password];
 }
 
-class AuthRegistered extends AuthEvent {
-  const AuthRegistered({
+class AuthUserCreated extends AuthEvent {
+  const AuthUserCreated({
     required this.email,
     required this.password,
   });
@@ -46,13 +46,8 @@ class AuthRegistered extends AuthEvent {
   List<Object> get props => [email, password];
 }
 
-class AuthUserProfileCreated extends AuthEvent {
-  const AuthUserProfileCreated(this.name);
-
-  final String name;
-
-  @override
-  List<Object> get props => [name];
+class AuthRegistrationStatusUpdated extends AuthEvent {
+  const AuthRegistrationStatusUpdated();
 }
 
 class AuthSignedOut extends AuthEvent {

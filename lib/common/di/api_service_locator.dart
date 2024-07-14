@@ -10,7 +10,7 @@ final _authLink = AuthLink(
       final bearerToken = 'Bearer $token';
 
       // For debugging
-      print('FETCHING WITH TOKEN: $bearerToken');
+      print('REQUEST WITH TOKEN: $bearerToken');
 
       return bearerToken;
     } catch (error) {
@@ -25,5 +25,12 @@ final _httpLink = HttpLink(
 
 final graphQlClient = GraphQLClient(
   link: _authLink.concat(_httpLink),
+  defaultPolicies: DefaultPolicies(
+    query: Policies.safe(
+      FetchPolicy.networkOnly,
+      ErrorPolicy.none,
+      CacheRereadPolicy.ignoreAll,
+    ),
+  ),
   cache: GraphQLCache(),
 );
