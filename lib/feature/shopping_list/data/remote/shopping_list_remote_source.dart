@@ -13,17 +13,24 @@ class ShoppingListRemoteSource {
       ShoppingListOutput(
           id: '1',
           name: 'Weekly Groceries',
+          budget: 980.00,
           items: ShoppingListItemOutput.getDummyItems()),
       ShoppingListOutput(
           id: '2',
           name: 'Weekly Dinner',
+          budget: 1023.00,
           items: ShoppingListItemOutput.getDummyItems()),
     ];
   }
 
-  Future<ShoppingListOutput> createShoppingList(String name) async {
+  Future<ShoppingListOutput> createShoppingList(
+      String name, double budget) async {
     // TODO: Run actual query
     return ShoppingListOutput(
-        id: '3', name: name, items: ShoppingListItemOutput.getDummyItems());
+      id: '3',
+      name: name,
+      budget: budget,
+      items: ShoppingListItemOutput.getDummyItems(),
+    );
   }
 }

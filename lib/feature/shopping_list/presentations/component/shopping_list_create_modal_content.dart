@@ -2,6 +2,7 @@ import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -13,21 +14,27 @@ class ShoppingListCreateModalContent extends HookWidget {
     Navigator.pop(context);
   }
 
-  void _onCreate(TextEditingController controller, BuildContext context) {
+  void _onCreate(BuildContext context, TextEditingController nameController,
+      TextEditingController budgetController) {
     FocusScope.of(context).unfocus();
-    String name = controller.text;
     if (_formKey.currentState!.validate()) {
       context.read<ShoppingListViewModel>().add(
-            ShoppingListCreated(name),
+            ShoppingListCreated(nameController.text, budgetController.text),
           );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController();
+    final nameInputController = useTextEditingController();
+    final budgetInputController = useTextEditingController();
+
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.status.isSuccess) {
+          Navigator.pop(context);
+        }
+      },
       child: Column(
         children: [
           Text(
@@ -36,11 +43,26 @@ class ShoppingListCreateModalContent extends HookWidget {
           ),
           Form(
             key: _formKey,
-            child: CustomFormField(
-              controller: controller,
-              hintText: "List name",
-              icon: Icons.list,
-              textInputAction: TextInputAction.next,
+            child: Column(
+              children: [
+                CustomFormField(
+                  controller: nameInputController,
+                  hintText: "List name",
+                  icon: Icons.list,
+                  textInputAction: TextInputAction.next,
+                ),
+                const SizedBox(height: 16),
+                CustomFormField(
+                  controller: budgetInputController,
+                  keyboardType: TextInputType.number,
+                  icon: Icons.monetization_on,
+                  textInputAction: TextInputAction.next,
+                  hintText: "Budget (in PHP)",
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                )
+              ],
             ),
           ),
           Row(
@@ -51,7 +73,8 @@ class ShoppingListCreateModalContent extends HookWidget {
               ),
               TextButton(
                 child: Text("Create"),
-                onPressed: () => _onCreate(controller, context),
+                onPressed: () => _onCreate(
+                    context, nameInputController, budgetInputController),
               )
             ],
           )

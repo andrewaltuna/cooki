@@ -1,6 +1,5 @@
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 class ProductOutput extends Equatable {
   const ProductOutput({

@@ -12,9 +12,10 @@ class ShoppingListsRequested extends ShoppingListEvent {
 }
 
 class ShoppingListCreated extends ShoppingListEvent {
-  const ShoppingListCreated(this.name);
+  const ShoppingListCreated(this.name, this.budget);
 
   final String name;
+  final String budget;
 
   @override
   List<Object?> get props => [name];

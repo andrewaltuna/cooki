@@ -13,7 +13,7 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   }
 
   @override
-  Future<ShoppingListOutput> createShoppingList(String name) {
-    return _remoteSource.createShoppingList(name);
+  Future<ShoppingListOutput> createShoppingList(String name, double budget) {
+    return _remoteSource.createShoppingList(name, budget);
   }
 }

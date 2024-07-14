@@ -3,10 +3,13 @@ import 'package:equatable/equatable.dart';
 
 class ShoppingListOutput extends Equatable {
   const ShoppingListOutput(
-      {required this.id, required this.name, required this.items});
+      {required this.id,
+      required this.name,
+      required this.budget,
+      required this.items});
 
   static const ShoppingListOutput empty =
-      ShoppingListOutput(id: '', name: '', items: []);
+      ShoppingListOutput(id: '', name: '', budget: 0.0, items: []);
 
   factory ShoppingListOutput.fromJson(Map<String, dynamic> json) {
     return empty.copyWith(id: json['id'], name: json['name']);
@@ -15,15 +18,22 @@ class ShoppingListOutput extends Equatable {
   // TODO: Place shopping list items here
   final String id;
   final String name;
+  final double budget;
   final List<ShoppingListItemOutput> items;
 
   ShoppingListOutput copyWith(
-      {String? id, String? name, List<ShoppingListItemOutput>? items}) {
+      {String? id,
+      String? name,
+      double? budget,
+      List<ShoppingListItemOutput>? items}) {
     return ShoppingListOutput(
-        id: id ?? this.id, name: name ?? this.name, items: items ?? this.items);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      budget: budget ?? this.budget,
+      items: items ?? this.items,
+    );
   }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id, name, items];
+  List<Object?> get props => [id, name, budget, items];
 }

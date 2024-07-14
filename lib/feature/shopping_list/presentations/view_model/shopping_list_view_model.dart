@@ -36,7 +36,8 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       emit(state.copyWith(status: ViewModelStatus.loading));
 
       // TODO: Pass in data
-      final result = await _repository.createShoppingList(event.name);
+      final result = await _repository.createShoppingList(
+          event.name, double.parse(event.budget));
       emit(state.copyWith(
           status: ViewModelStatus.success,
           shoppingLists: [...state.shoppingLists, result]));

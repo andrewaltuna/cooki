@@ -7,11 +7,18 @@ class ShoppingListCatalog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ShoppingListViewModel, ShoppingListState>(builder: (context, state) {
+    return BlocBuilder<ShoppingListViewModel, ShoppingListState>(
+        builder: (context, state) {
       return SingleChildScrollView(
         child: Column(
           children: [
-            for (var list in state.shoppingLists) Text(list.name),
+            for (var list in state.shoppingLists)
+              Column(
+                children: [
+                  Text(list.name),
+                  Text(list.budget.toString()),
+                ],
+              ),
           ],
         ),
       );

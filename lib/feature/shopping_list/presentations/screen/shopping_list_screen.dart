@@ -3,7 +3,6 @@ import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_catalog.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_create_helper.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
