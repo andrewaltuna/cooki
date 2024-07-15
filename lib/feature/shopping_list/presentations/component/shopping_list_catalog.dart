@@ -17,7 +17,7 @@ class ShoppingListCatalog extends StatelessWidget {
       return SingleChildScrollView(
         child: Column(
           children: [
-            for (var list in state.shoppingLists) ShoppingListCard(list: list),
+            for (var list in state.shoppingLists) _ShoppingListCard(list: list),
           ],
         ),
       );
@@ -25,9 +25,8 @@ class ShoppingListCatalog extends StatelessWidget {
   }
 }
 
-class ShoppingListCard extends StatelessWidget {
-  const ShoppingListCard({
-    super.key,
+class _ShoppingListCard extends StatelessWidget {
+  const _ShoppingListCard({
     required this.list,
   });
 
@@ -48,7 +47,7 @@ class ShoppingListCard extends StatelessWidget {
               vertical: 24.0,
               horizontal: 16.0,
             ),
-            child: ShoppingListCardContent(list: list),
+            child: _ShoppingListCardContent(list: list),
           ),
         ),
         const SizedBox(
@@ -59,8 +58,8 @@ class ShoppingListCard extends StatelessWidget {
   }
 }
 
-class ShoppingListCardContent extends StatelessWidget {
-  const ShoppingListCardContent({
+class _ShoppingListCardContent extends StatelessWidget {
+  const _ShoppingListCardContent({
     super.key,
     required this.list,
   });
