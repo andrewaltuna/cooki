@@ -7,6 +7,43 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+class ShoppingListCreateModal {
+  const ShoppingListCreateModal._(this._context);
+
+  factory ShoppingListCreateModal.of(BuildContext context) =>
+      ShoppingListCreateModal._(context);
+
+  final BuildContext _context;
+
+  void showCreateShoppingListModal() async {
+    await showDialog(
+      context: _context,
+      barrierDismissible: false,
+      builder: (_) {
+        return PopScope(
+          canPop: false,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: BlocProvider.of<ShoppingListViewModel>(_context),
+              ),
+            ],
+            child: const Dialog(
+              backgroundColor: AppColors.backgroundPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
+                ),
+              ),
+              child: ShoppingListCreateModalContent(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class ShoppingListCreateModalContent extends HookWidget {
   const ShoppingListCreateModalContent({super.key});
 
