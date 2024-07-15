@@ -30,11 +30,28 @@ class ShoppingListCatalog extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            list.name,
-                            style: AppTextStyles.titleMedium.copyWith(
-                              color: Colors.white,
-                            ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () =>
+                                    context.read<ShoppingListViewModel>().add(
+                                          ShoppingListDeleted(list.id),
+                                        ),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                list.name,
+                                style: AppTextStyles.titleMedium.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                           Text(
                             '${list.items.length.toString()} items',

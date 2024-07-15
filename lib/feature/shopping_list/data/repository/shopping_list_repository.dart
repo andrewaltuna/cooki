@@ -16,4 +16,9 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   Future<ShoppingListOutput> createShoppingList(String name, double budget) {
     return _remoteSource.createShoppingList(name, budget);
   }
+
+  @override
+  Future<String> deleteShoppingList(String id) {
+    return _remoteSource.deleteShoppingList(id);
+  }
 }

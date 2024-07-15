@@ -11,6 +11,7 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
   ShoppingListViewModel(this._repository) : super(const ShoppingListState()) {
     on<ShoppingListsRequested>(_onRequested);
     on<ShoppingListCreated>(_onCreated);
+    on<ShoppingListDeleted>(_onDeleted);
   }
 
   final ShoppingListRepositoryInterface _repository;
@@ -41,6 +42,24 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       emit(state.copyWith(
           status: ViewModelStatus.success,
           shoppingLists: [...state.shoppingLists, result]));
+    } on Exception catch (error) {
+      emit(state.copyWith(status: ViewModelStatus.error, error: error));
+    }
+  }
+
+  Future<void> _onDeleted(
+    ShoppingListDeleted event,
+    Emitter<ShoppingListState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(status: ViewModelStatus.loading));
+
+      final result = await _repository.deleteShoppingList(event.id);
+      emit(state.copyWith(
+          status: ViewModelStatus.success,
+          shoppingLists: state.shoppingLists
+              .where((element) => element.id != result)
+              .toList()));
     } on Exception catch (error) {
       emit(state.copyWith(status: ViewModelStatus.error, error: error));
     }

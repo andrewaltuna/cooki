@@ -33,4 +33,9 @@ class ShoppingListRemoteSource {
       items: ShoppingListItemOutput.getDummyItems(),
     );
   }
+
+  Future<String> deleteShoppingList(String id) {
+    // TODO: Run actual query
+    return Future.value(id);
+  }
 }

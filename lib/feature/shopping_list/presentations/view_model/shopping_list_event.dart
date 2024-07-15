@@ -20,3 +20,12 @@ class ShoppingListCreated extends ShoppingListEvent {
   @override
   List<Object?> get props => [name];
 }
+
+class ShoppingListDeleted extends ShoppingListEvent {
+  const ShoppingListDeleted(this.id);
+
+  final String id;
+
+  @override
+  List<Object?> get props => [id];
+}
