@@ -18,11 +18,6 @@ class ShoppingListScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useOnWidgetLoad(() {
-      final testVar = context.read<ShoppingListViewModel>().state.shoppingLists;
-      print(testVar);
-    });
-
     return MainScaffold(
         title: 'Shopping List',
         body: Padding(
