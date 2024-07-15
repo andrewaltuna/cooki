@@ -44,7 +44,7 @@ class ShoppingListDeleteModal {
                     Radius.circular(16),
                   ),
                 ),
-                child: ShoppingListDeleteModalContent(
+                child: _ShoppingListDeleteModalContent(
                   shoppingListId: _shoppingListId,
                 ),
               ),
@@ -54,9 +54,8 @@ class ShoppingListDeleteModal {
   }
 }
 
-class ShoppingListDeleteModalContent extends HookWidget {
-  const ShoppingListDeleteModalContent({
-    super.key,
+class _ShoppingListDeleteModalContent extends HookWidget {
+  const _ShoppingListDeleteModalContent({
     required this.shoppingListId,
   });
 

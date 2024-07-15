@@ -35,7 +35,7 @@ class ShoppingListCreateModal {
                   Radius.circular(16),
                 ),
               ),
-              child: ShoppingListCreateModalContent(),
+              child: _ShoppingListCreateModalContent(),
             ),
           ),
         );
@@ -44,8 +44,8 @@ class ShoppingListCreateModal {
   }
 }
 
-class ShoppingListCreateModalContent extends HookWidget {
-  const ShoppingListCreateModalContent({super.key});
+class _ShoppingListCreateModalContent extends HookWidget {
+  const _ShoppingListCreateModalContent({super.key});
 
   static final _formKey = GlobalKey<FormState>();
   void _onClose(BuildContext context) {
