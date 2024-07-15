@@ -20,7 +20,10 @@ class ShoppingListCreateModalContent extends HookWidget {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       context.read<ShoppingListViewModel>().add(
-            ShoppingListCreated(nameController.text, budgetController.text),
+            ShoppingListCreated(
+              name: nameController.text,
+              budget: budgetController.text,
+            ),
           );
     }
   }

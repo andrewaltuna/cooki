@@ -14,27 +14,29 @@ class ShoppingListCreateModal {
 
   void showCreateShoppingListModal() async {
     await showDialog(
-        context: _context,
-        barrierDismissible: false,
-        builder: (_) {
-          return PopScope(
-              canPop: false,
-              child: MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: BlocProvider.of<ShoppingListViewModel>(_context),
-                  ),
-                ],
-                child: const Dialog(
-                  backgroundColor: AppColors.backgroundPrimary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(16),
-                    ),
-                  ),
-                  child: ShoppingListCreateModalContent(),
+      context: _context,
+      barrierDismissible: false,
+      builder: (_) {
+        return PopScope(
+          canPop: false,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: BlocProvider.of<ShoppingListViewModel>(_context),
+              ),
+            ],
+            child: const Dialog(
+              backgroundColor: AppColors.backgroundPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
                 ),
-              ));
-        });
+              ),
+              child: ShoppingListCreateModalContent(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -2,17 +2,25 @@ import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item
 import 'package:equatable/equatable.dart';
 
 class ShoppingListOutput extends Equatable {
-  const ShoppingListOutput(
-      {required this.id,
-      required this.name,
-      required this.budget,
-      required this.items});
+  const ShoppingListOutput({
+    required this.id,
+    required this.name,
+    required this.budget,
+    required this.items,
+  });
 
-  static const ShoppingListOutput empty =
-      ShoppingListOutput(id: '', name: '', budget: 0.0, items: []);
+  static const ShoppingListOutput empty = ShoppingListOutput(
+    id: '',
+    name: '',
+    budget: 0.0,
+    items: [],
+  );
 
   factory ShoppingListOutput.fromJson(Map<String, dynamic> json) {
-    return empty.copyWith(id: json['id'], name: json['name']);
+    return empty.copyWith(
+      id: json['id'],
+      name: json['name'],
+    );
   }
 
   // TODO: Place shopping list items here
@@ -35,5 +43,10 @@ class ShoppingListOutput extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name, budget, items];
+  List<Object?> get props => [
+        id,
+        name,
+        budget,
+        items,
+      ];
 }

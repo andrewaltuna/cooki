@@ -21,29 +21,52 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     Emitter<ShoppingListState> emit,
   ) async {
     try {
-      emit(state.copyWith(status: ViewModelStatus.loading));
+      emit(
+        state.copyWith(status: ViewModelStatus.loading),
+      );
 
       final result = await _repository.getShoppingLists();
-      emit(state.copyWith(
-          status: ViewModelStatus.success, shoppingLists: result));
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          shoppingLists: result,
+        ),
+      );
     } on Exception catch (error) {
-      emit(state.copyWith(status: ViewModelStatus.error, error: error));
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
     }
   }
 
   Future<void> _onCreated(
       ShoppingListCreated event, Emitter<ShoppingListState> emit) async {
     try {
-      emit(state.copyWith(status: ViewModelStatus.loading));
+      emit(
+        state.copyWith(status: ViewModelStatus.loading),
+      );
 
       // TODO: Pass in data
       final result = await _repository.createShoppingList(
-          event.name, double.parse(event.budget));
-      emit(state.copyWith(
+        event.name,
+        double.parse(event.budget),
+      );
+      emit(
+        state.copyWith(
           status: ViewModelStatus.success,
-          shoppingLists: [...state.shoppingLists, result]));
+          shoppingLists: [...state.shoppingLists, result],
+        ),
+      );
     } on Exception catch (error) {
-      emit(state.copyWith(status: ViewModelStatus.error, error: error));
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
     }
   }
 
@@ -52,16 +75,26 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     Emitter<ShoppingListState> emit,
   ) async {
     try {
-      emit(state.copyWith(status: ViewModelStatus.loading));
+      emit(
+        state.copyWith(status: ViewModelStatus.loading),
+      );
 
       final result = await _repository.deleteShoppingList(event.id);
-      emit(state.copyWith(
+      emit(
+        state.copyWith(
           status: ViewModelStatus.success,
           shoppingLists: state.shoppingLists
               .where((element) => element.id != result)
-              .toList()));
+              .toList(),
+        ),
+      );
     } on Exception catch (error) {
-      emit(state.copyWith(status: ViewModelStatus.error, error: error));
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
     }
   }
 }

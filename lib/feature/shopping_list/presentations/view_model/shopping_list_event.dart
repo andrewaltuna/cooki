@@ -12,7 +12,7 @@ class ShoppingListsRequested extends ShoppingListEvent {
 }
 
 class ShoppingListCreated extends ShoppingListEvent {
-  const ShoppingListCreated(this.name, this.budget);
+  const ShoppingListCreated({required this.name, required this.budget});
 
   final String name;
   final String budget;

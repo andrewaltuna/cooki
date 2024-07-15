@@ -8,17 +8,18 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   final ShoppingListRemoteSource _remoteSource;
 
   @override
-  Future<List<ShoppingListOutput>> getShoppingLists() {
+  Future<List<ShoppingListOutput>> getShoppingLists() async {
     return _remoteSource.getShoppingLists();
   }
 
   @override
-  Future<ShoppingListOutput> createShoppingList(String name, double budget) {
+  Future<ShoppingListOutput> createShoppingList(
+      String name, double budget) async {
     return _remoteSource.createShoppingList(name, budget);
   }
 
   @override
-  Future<String> deleteShoppingList(String id) {
+  Future<String> deleteShoppingList(String id) async {
     return _remoteSource.deleteShoppingList(id);
   }
 }
