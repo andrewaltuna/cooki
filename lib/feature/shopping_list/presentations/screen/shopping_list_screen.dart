@@ -1,7 +1,7 @@
 import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_catalog.dart';
-import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_create_modal.dart';
+import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,7 +10,7 @@ class ShoppingListScreen extends HookWidget {
   const ShoppingListScreen({super.key});
 
   void _onSubmitted(BuildContext context) {
-    ShoppingListCreateModal.of(context).showCreateShoppingListModal();
+    ShoppingListHelper.of(context).showCreateShoppingListModal();
   }
 
   @override
