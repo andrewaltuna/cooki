@@ -10,6 +10,6 @@ extension ContextRoute on BuildContext {
   // Route identifiers
   bool get isHomeRoute => topRoutePath == AppRoutes.home;
   bool get isMapRoute => topRoutePath == AppRoutes.map;
-  bool get isShoppingListRoute => topRoutePath == AppRoutes.shoppingList;
+  bool get isShoppingListRoute => topRoutePath == AppRoutes.shoppingLists;
   bool get isSettingsRoute => topRoutePath == AppRoutes.settings;
 }

@@ -1,3 +1,4 @@
+import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_output.dart';
@@ -5,6 +6,7 @@ import 'package:cooki/feature/shopping_list/presentations/component/shopping_lis
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ShoppingListCatalog extends StatelessWidget {
   const ShoppingListCatalog({super.key});
@@ -33,26 +35,43 @@ class _ShoppingListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: AppColors.accent,
-          ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 24.0,
-              horizontal: 16.0,
+    return TextButton(
+      style: ButtonStyle(
+        overlayColor: WidgetStateProperty.all(
+          Colors.transparent,
+        ),
+        padding: WidgetStateProperty.all(
+          EdgeInsets.zero,
+        ),
+      ),
+      onPressed: () => {
+        context.go(
+          Uri(
+            path: '${AppRoutes.shoppingLists}/${list.id}',
+          ).toString(),
+        ),
+      },
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: AppColors.accent,
             ),
-            child: _ShoppingListCardContent(list: list),
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 24.0,
+                horizontal: 16.0,
+              ),
+              child: _ShoppingListCardContent(list: list),
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-      ],
+          const SizedBox(
+            height: 12,
+          ),
+        ],
+      ),
     );
   }
 }

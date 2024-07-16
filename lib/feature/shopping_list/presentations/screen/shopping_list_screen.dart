@@ -1,37 +1,19 @@
-import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
-import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_catalog.dart';
-import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ShoppingListScreen extends HookWidget {
-  const ShoppingListScreen({super.key});
+class ShoppingListScreen extends StatelessWidget {
+  const ShoppingListScreen({
+    super.key,
+    required this.id,
+  });
 
-  void _onSubmitted(BuildContext context) {
-    ShoppingListHelper.of(context).showCreateShoppingListModal();
-  }
+  final String id;
 
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      title: 'Shopping List',
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const SizedBox(height: 16),
-            const Expanded(
-              child: ShoppingListCatalog(),
-            ),
-            PrimaryButton(
-              label: 'Create List',
-              onPress: () => _onSubmitted(context),
-            ),
-          ],
-        ),
+      body: Text(
+        'Shopping List${id}',
       ),
     );
   }

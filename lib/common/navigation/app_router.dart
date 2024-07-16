@@ -2,6 +2,7 @@ import 'package:cooki/common/component/authenticated_blocs.dart';
 import 'package:cooki/common/map/presentation/screen/map_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_screen.dart';
+import 'package:cooki/feature/shopping_list/presentations/screen/shopping_lists_screen.dart';
 import 'package:cooki/feature/preferences/presentation/screen/preferences_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,9 +55,22 @@ final appRouter = GoRouter(
           child: const PreferencesScreen(),
         ),
         _goRoute(
-          path: AppRoutes.shoppingList,
-          child: const ShoppingListScreen(),
-        )
+          path: AppRoutes.shoppingLists,
+          child: const ShoppingListsScreen(),
+        ),
+        // TODO: Consolidate w/ _goRoute
+        GoRoute(
+          path: '${AppRoutes.shoppingLists}/:id',
+          pageBuilder: (_, state) {
+            final String shoppingListId = state.pathParameters["id"] as String;
+            return _pageWithDefaultTransition(
+              state,
+              child: ShoppingListScreen(
+                id: shoppingListId,
+              ),
+            );
+          },
+        ),
       ],
     ),
   ],

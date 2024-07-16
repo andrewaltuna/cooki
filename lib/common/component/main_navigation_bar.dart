@@ -45,7 +45,7 @@ class MainNavigationBar extends StatelessWidget {
             icon: Ionicons.cart_outline,
             selectedIcon: Ionicons.cart,
             isSelected: context.isShoppingListRoute,
-            onPressed: () => context.go(AppRoutes.shoppingList),
+            onPressed: () => context.go(AppRoutes.shoppingLists),
           ),
           _MainNavBarItem(
             label: 'Settings',
