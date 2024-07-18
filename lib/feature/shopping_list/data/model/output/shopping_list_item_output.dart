@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:cooki/feature/shopping_list/data/model/output/product_output.dart';
 import 'package:equatable/equatable.dart';
 
 class ShoppingListItemOutput extends Equatable {
   const ShoppingListItemOutput({
+    required this.id,
     required this.label,
     required this.product,
     required this.quantity,
@@ -10,6 +13,7 @@ class ShoppingListItemOutput extends Equatable {
   });
 
   static const ShoppingListItemOutput empty = ShoppingListItemOutput(
+    id: '',
     label: '',
     product: ProductOutput.empty,
     quantity: 0,
@@ -18,6 +22,7 @@ class ShoppingListItemOutput extends Equatable {
 
   factory ShoppingListItemOutput.fromJson(Map<String, dynamic> json) {
     return empty.copyWith(
+      id: json['id'],
       label: json['label'],
       product: ProductOutput.fromJson(json['product']),
       quantity: json['quantity'],
@@ -25,18 +30,21 @@ class ShoppingListItemOutput extends Equatable {
     );
   }
 
+  final String id;
   final String label;
   final ProductOutput product;
   final int quantity;
   final bool isChecked;
 
   ShoppingListItemOutput copyWith({
+    String? id,
     String? label,
     ProductOutput? product,
     int? quantity,
     bool? isChecked,
   }) {
     return ShoppingListItemOutput(
+      id: id ?? this.id,
       label: label ?? this.label,
       product: product ?? this.product,
       quantity: quantity ?? this.quantity,
@@ -49,6 +57,7 @@ class ShoppingListItemOutput extends Equatable {
     List<ShoppingListItemOutput> dummyItems = [];
     for (var i = 0; i < 10; i++) {
       dummyItems.add(ShoppingListItemOutput(
+        id: 'dummy-${i}',
         label: 'dummy item $i',
         product: ProductOutput.getDummyProducts()[i],
         quantity: 1,
@@ -60,5 +69,11 @@ class ShoppingListItemOutput extends Equatable {
   }
 
   @override
-  List<Object?> get props => [label, product, quantity, isChecked];
+  List<Object?> get props => [
+        id,
+        label,
+        product,
+        quantity,
+        isChecked,
+      ];
 }

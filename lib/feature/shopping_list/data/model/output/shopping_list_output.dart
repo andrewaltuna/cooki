@@ -29,11 +29,12 @@ class ShoppingListOutput extends Equatable {
   final double budget;
   final List<ShoppingListItemOutput> items;
 
-  ShoppingListOutput copyWith(
-      {String? id,
-      String? name,
-      double? budget,
-      List<ShoppingListItemOutput>? items}) {
+  ShoppingListOutput copyWith({
+    String? id,
+    String? name,
+    double? budget,
+    List<ShoppingListItemOutput>? items,
+  }) {
     return ShoppingListOutput(
       id: id ?? this.id,
       name: name ?? this.name,

@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cooki/common/extension/enum_extension.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:equatable/equatable.dart';
 
@@ -25,16 +28,37 @@ class ProductOutput extends Equatable {
   );
 
   factory ProductOutput.fromJson(Map<String, dynamic> json) {
+    final productCategory = json['category'] as dynamic;
+    final keyIngredients = json['keyIngredients'] as List;
+
     return empty.copyWith(
       id: json['id'] as String,
-      category: json['category'] as ProductCategory,
+      category: ProductCategory.values.firstWhere(
+        (element) => element.apiValue == productCategory,
+        orElse: () => ProductCategory.values.first,
+      ),
       section: json['section'] as String,
       brand: json['brand'] as String,
-      keyIngredients: json['keyIngredients'] as List<String>,
+      keyIngredients:
+          keyIngredients.map((ingredient) => ingredient as String).toList(),
       description: json['description'] as String,
       price: json['price'] as double,
       unitSize: json['unitSize'] as String,
     );
+  }
+
+  // TODO: Decide where to put this (might be in an input file since it's to JSON)
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category': category.apiValue,
+      'section': section,
+      'brand': brand,
+      'keyIngredients': keyIngredients,
+      'description': description,
+      'price': price,
+      'unitSize': unitSize,
+    };
   }
 
   final String id;
@@ -71,11 +95,13 @@ class ProductOutput extends Equatable {
   // TODO: Remove once query is placed
   static List<ProductOutput> getDummyProducts() {
     List<ProductOutput> dummyProducts = [];
+    final _random = new Random();
 
     for (var i = 0; i < 10; i++) {
       dummyProducts.add(ProductOutput(
         id: 'dummy$i',
-        category: ProductCategory.bakery,
+        category: ProductCategory
+            .values[_random.nextInt(ProductCategory.values.length)],
         section: 'dummy_section$i',
         brand: 'dummy_brand$i',
         keyIngredients: ['dummy_ingredient$i', 'dummy_ingredient$i'],
