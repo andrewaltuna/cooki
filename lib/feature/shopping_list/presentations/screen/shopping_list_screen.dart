@@ -1,14 +1,16 @@
 import 'package:collection/collection.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/extension/enum_extension.dart';
+import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ShoppingListScreen extends StatelessWidget {
+class ShoppingListScreen extends HookWidget {
   const ShoppingListScreen({
     super.key,
     required this.id,
@@ -18,11 +20,31 @@ class ShoppingListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    useOnWidgetLoad(() {
+      context.read<ShoppingListViewModel>().add(
+            ShoppingListRequested(id),
+          );
+    });
+
+    final isFetching = context
+        .select((ShoppingListViewModel viewModel) => viewModel.state.status);
     final shoppingList = context.select(
-      (ShoppingListViewModel viewModel) =>
-          viewModel.state.shoppingLists.firstWhere((list) => list.id == id),
+      (ShoppingListViewModel viewModel) => viewModel.state.selectedShoppingList,
     );
-    final itemsByCategory = groupBy(shoppingList.items,
+
+    print('Fetching: ${isFetching}');
+
+    if (isFetching.isLoading && shoppingList == null) {
+      return const Center(
+        child: Text("Fetching..."),
+      );
+    } else if (shoppingList == null) {
+      return const Center(
+        child: Text("Not found"),
+      );
+    }
+
+    final itemsByCategory = groupBy(shoppingList!.items,
         (ShoppingListItemOutput obj) => obj.product.category);
 
     return MainScaffold(
@@ -31,14 +53,10 @@ class ShoppingListScreen extends StatelessWidget {
           children: [
             for (var category in itemsByCategory.keys)
               _ShoppingListCategory(
-                  id: shoppingList.id,
-                  category: category,
-                  items: itemsByCategory[category] ?? [])
-            // for (var item in itemsByCategory[category])
-            // _ShoppingListItem(
-            //   shoppingListId: id,
-            //   item: item,
-            // )
+                id: shoppingList.id,
+                category: category,
+                items: itemsByCategory[category] ?? [],
+              ),
           ],
         ),
       ),
@@ -91,8 +109,8 @@ class _ShoppingListItem extends StatelessWidget {
           onChanged: (res) {
             context.read<ShoppingListViewModel>().add(
                   ShoppingListItemUpdated(
-                    shoppingListId: shoppingListId,
                     input: UpdateShoppingListItemInput(
+                      shoppingListId: shoppingListId,
                       id: item.id,
                       label: item.label,
                       product: item.product,

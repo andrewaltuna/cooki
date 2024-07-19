@@ -4,26 +4,25 @@ class ShoppingListState extends Equatable {
   const ShoppingListState({
     this.status = ViewModelStatus.initial,
     this.shoppingLists = const [],
-    this.selectedShoppingListId,
+    this.selectedShoppingList,
     this.error,
   });
 
   final ViewModelStatus status;
   final List<ShoppingListOutput> shoppingLists;
-  final String? selectedShoppingListId;
+  final ShoppingListOutput? selectedShoppingList;
   final Exception? error;
 
   ShoppingListState copyWith({
     ViewModelStatus? status,
     List<ShoppingListOutput>? shoppingLists,
-    String? selectedShoppingListId,
+    ShoppingListOutput? selectedShoppingList,
     Exception? error,
   }) {
     return ShoppingListState(
       status: status ?? this.status,
       shoppingLists: shoppingLists ?? this.shoppingLists,
-      selectedShoppingListId:
-          selectedShoppingListId ?? this.selectedShoppingListId,
+      selectedShoppingList: selectedShoppingList ?? this.selectedShoppingList,
       error: error ?? this.error,
     );
   }
@@ -36,7 +35,7 @@ class ShoppingListState extends Equatable {
   List<Object?> get props => [
         status,
         shoppingLists,
-        selectedShoppingListId,
+        selectedShoppingList,
         error,
       ];
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cooki/feature/shopping_list/data/model/output/product_output.dart';
+import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:equatable/equatable.dart';
 
 class ShoppingListItemOutput extends Equatable {

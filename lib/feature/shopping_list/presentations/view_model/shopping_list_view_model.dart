@@ -1,5 +1,7 @@
 import 'package:cooki/common/enum/view_model_status.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
+import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +17,8 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ShoppingListRequested>(_onSelected);
     on<ShoppingListCreated>(_onCreated);
     on<ShoppingListDeleted>(_onDeleted);
+    // Item events
+    on<ShoppingListItemCreated>(_onItemCreated);
     on<ShoppingListItemUpdated>(_onItemUpdated);
   }
 
@@ -56,15 +60,16 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      // TODO: Figure out what to do with this (gets selected shopping list but we're not using it?)
+      print('Fetching results...');
       final result = await _repository.getShoppingList(event.id);
 
       emit(
         state.copyWith(
           status: ViewModelStatus.success,
-          selectedShoppingListId: event.id,
+          selectedShoppingList: result,
         ),
       );
+      print('Results fetched!');
     } on Exception catch (error) {
       emit(
         state.copyWith(
@@ -82,10 +87,13 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         state.copyWith(status: ViewModelStatus.loading),
       );
 
-      // TODO: Pass in data
+      final input = CreateShoppingListInput(
+        name: event.name,
+        budget: double.parse(event.budget),
+      );
+
       final result = await _repository.createShoppingList(
-        event.name,
-        double.parse(event.budget),
+        input,
       );
 
       emit(
@@ -114,11 +122,12 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       );
 
       final result = await _repository.deleteShoppingList(event.id);
+
       emit(
         state.copyWith(
           status: ViewModelStatus.success,
           shoppingLists: state.shoppingLists
-              .where((element) => element.id != result)
+              .where((list) => list.id != result.id)
               .toList(),
         ),
       );
@@ -133,6 +142,22 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
   }
 
   // Shopping list item events
+  Future<void> _onItemCreated(
+      ShoppingListItemCreated event, Emitter<ShoppingListState> emit) async {
+    try {
+      emit(
+        state.copyWith(status: ViewModelStatus.loading),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
   Future<void> _onItemUpdated(
     ShoppingListItemUpdated event,
     Emitter<ShoppingListState> emit,
@@ -143,29 +168,50 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
           status: ViewModelStatus.loading,
         ),
       );
-      final result = await _repository.updateShoppingListItem(event.input);
 
-      print("Updating list with id ${event.shoppingListId}");
-      print(state.shoppingLists);
-      final listToUpdate = state.shoppingLists.firstWhere(
-          (shoppingList) => shoppingList.id == event.shoppingListId);
-      print("Found list to update");
-      final updatedShoppingList = listToUpdate.copyWith(
-        items: listToUpdate.items
-            .map((item) => item.id == result.id ? result : item)
-            .toList(),
-      );
+      final result = await _repository.updateShoppingListItem(event.input);
 
       emit(
         state.copyWith(
           status: ViewModelStatus.success,
-          shoppingLists: state.shoppingLists
-              .map(
-                (shoppingList) => shoppingList.id == event.shoppingListId
-                    ? updatedShoppingList
-                    : shoppingList,
-              )
-              .toList(),
+          // TODO: Deal with possible undefined selectedShoppingList
+          selectedShoppingList: state.selectedShoppingList?.copyWith(
+            items: state.selectedShoppingList?.items
+                .map((item) => item.id == result.id ? result : item)
+                .toList(),
+          ),
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onItemDeleted(
+    ShoppingListItemDeleted event,
+    Emitter<ShoppingListState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(status: ViewModelStatus.loading),
+      );
+
+      final result = await _repository.deleteShoppingList(event.id);
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          // TODO: Deal with possible undefined selectedShoppingList
+          selectedShoppingList: state.selectedShoppingList?.copyWith(
+            items: state.selectedShoppingList?.items
+                .where((item) => item.id != result.id)
+                .toList(),
+          ),
         ),
       );
     } on Exception catch (error) {

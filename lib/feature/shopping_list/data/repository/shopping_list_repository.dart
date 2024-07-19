@@ -1,3 +1,5 @@
+import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_output.dart';
@@ -21,19 +23,30 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
 
   @override
   Future<ShoppingListOutput> createShoppingList(
-      String name, double budget) async {
-    return _remoteSource.createShoppingList(name, budget);
+      CreateShoppingListInput input) async {
+    return _remoteSource.createShoppingList(input);
   }
 
   @override
-  Future<String> deleteShoppingList(String id) async {
+  Future<ShoppingListOutput> deleteShoppingList(String id) async {
     return _remoteSource.deleteShoppingList(id);
   }
 
   // Item Methods
   @override
+  Future<ShoppingListItemOutput> createShoppingListItem(
+      CreateShoppingListItemInput input) async {
+    return _remoteSource.createShoppingListItem(input);
+  }
+
+  @override
   Future<ShoppingListItemOutput> updateShoppingListItem(
       UpdateShoppingListItemInput input) {
     return _remoteSource.updateShoppingListItem(input);
+  }
+
+  @override
+  Future<ShoppingListItemOutput> deleteShoppingListItem(String id) async {
+    return _remoteSource.deleteShoppingListItem(id);
   }
 }
