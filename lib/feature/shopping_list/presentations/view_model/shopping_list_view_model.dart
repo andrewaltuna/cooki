@@ -60,7 +60,6 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      print('Fetching results...');
       final result = await _repository.getShoppingList(event.id);
 
       emit(
@@ -69,7 +68,6 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
           selectedShoppingList: result,
         ),
       );
-      print('Results fetched!');
     } on Exception catch (error) {
       emit(
         state.copyWith(

@@ -32,8 +32,6 @@ class ShoppingListScreen extends HookWidget {
       (ShoppingListViewModel viewModel) => viewModel.state.selectedShoppingList,
     );
 
-    print('Fetching: ${isFetching}');
-
     if (isFetching.isLoading && shoppingList == null) {
       return const Center(
         child: Text("Fetching..."),
@@ -44,7 +42,7 @@ class ShoppingListScreen extends HookWidget {
       );
     }
 
-    final itemsByCategory = groupBy(shoppingList!.items,
+    final itemsByCategory = groupBy(shoppingList.items,
         (ShoppingListItemOutput obj) => obj.product.category);
 
     return MainScaffold(
