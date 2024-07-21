@@ -11,11 +11,11 @@ abstract interface class ShoppingListRepositoryInterface {
   Future<ShoppingListOutput> deleteShoppingList(String id);
 
   // Shopping list item events
-  Future<ShoppingListItemOutput> createShoppingListItem(
+  Future<ShoppingListItem> createShoppingListItem(
     CreateShoppingListItemInput input,
   );
-  Future<ShoppingListItemOutput> updateShoppingListItem(
+  Future<ShoppingListItem> updateShoppingListItem(
     UpdateShoppingListItemInput input,
   );
-  Future<ShoppingListItemOutput> deleteShoppingListItem(String id);
+  Future<ShoppingListItem> deleteShoppingListItem(String id);
 }

@@ -26,11 +26,10 @@ class ShoppingListRemoteSource {
     );
   }
 
-  ShoppingListItemOutput _transformShoppingListItemData(
-      RawShoppingListItem item) {
+  ShoppingListItem _transformShoppingListItemData(RawShoppingListItem item) {
     final rawProduct = dummyData.products
         .firstWhere((product) => item.productId == product.id);
-    return ShoppingListItemOutput(
+    return ShoppingListItem(
       id: item.id,
       isChecked: item.isChecked,
       label: item.label,
@@ -98,7 +97,7 @@ class ShoppingListRemoteSource {
   }
 
   // Item queries
-  Future<ShoppingListItemOutput> updateShoppingListItem(
+  Future<ShoppingListItem> updateShoppingListItem(
       UpdateShoppingListItemInput input) async {
     final updatedItem = RawShoppingListItem(
       id: input.id,
@@ -115,7 +114,7 @@ class ShoppingListRemoteSource {
     final productData = dummyData.products
         .firstWhere((product) => product.id == updatedItem.productId);
 
-    return ShoppingListItemOutput(
+    return ShoppingListItem(
       id: updatedItem.id,
       label: updatedItem.label,
       quantity: updatedItem.quantity,
@@ -124,7 +123,7 @@ class ShoppingListRemoteSource {
     );
   }
 
-  Future<ShoppingListItemOutput> createShoppingListItem(
+  Future<ShoppingListItem> createShoppingListItem(
       CreateShoppingListItemInput input) async {
     final newShoppingListItem = RawShoppingListItem(
       id: (dummyData.shoppingListItems.length + 1).toString(),
@@ -139,7 +138,7 @@ class ShoppingListRemoteSource {
     return _transformShoppingListItemData(newShoppingListItem);
   }
 
-  Future<ShoppingListItemOutput> deleteShoppingListItem(String id) async {
+  Future<ShoppingListItem> deleteShoppingListItem(String id) async {
     final deletedShoppingListItem = dummyData.shoppingListItems.firstWhere(
       (item) => item.id == id,
     );

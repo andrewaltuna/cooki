@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 
 class UpdateShoppingListItemInput extends Equatable {
   const UpdateShoppingListItemInput({
-    required this.shoppingListId,
     required this.id,
     required this.label,
     required this.product,
@@ -11,7 +10,6 @@ class UpdateShoppingListItemInput extends Equatable {
     required this.isChecked,
   });
 
-  final String shoppingListId;
   final String id;
   final String label;
   final ProductOutput product;

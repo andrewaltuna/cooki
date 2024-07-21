@@ -26,10 +26,14 @@ class ShoppingListScreen extends HookWidget {
           );
     });
 
-    final isFetching = context
-        .select((ShoppingListViewModel viewModel) => viewModel.state.status);
-    final shoppingList = context.select(
-      (ShoppingListViewModel viewModel) => viewModel.state.selectedShoppingList,
+    final (
+      isFetching,
+      shoppingList,
+    ) = context.select(
+      (ShoppingListViewModel viewModel) => (
+        viewModel.state.status,
+        viewModel.state.selectedShoppingList,
+      ),
     );
 
     if (isFetching.isLoading && shoppingList == null) {
@@ -42,8 +46,8 @@ class ShoppingListScreen extends HookWidget {
       );
     }
 
-    final itemsByCategory = groupBy(shoppingList.items,
-        (ShoppingListItemOutput obj) => obj.product.category);
+    final itemsByCategory = groupBy(
+        shoppingList.items, (ShoppingListItem obj) => obj.product.category);
 
     return MainScaffold(
       body: SingleChildScrollView(
@@ -72,7 +76,7 @@ class _ShoppingListCategory extends StatelessWidget {
 
   final String id;
   final ProductCategory category;
-  final List<ShoppingListItemOutput> items;
+  final List<ShoppingListItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +101,7 @@ class _ShoppingListItem extends StatelessWidget {
       {super.key, required this.shoppingListId, required this.item});
 
   final String shoppingListId;
-  final ShoppingListItemOutput item;
+  final ShoppingListItem item;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -108,7 +112,6 @@ class _ShoppingListItem extends StatelessWidget {
             context.read<ShoppingListViewModel>().add(
                   ShoppingListItemUpdated(
                     input: UpdateShoppingListItemInput(
-                      shoppingListId: shoppingListId,
                       id: item.id,
                       label: item.label,
                       product: item.product,
