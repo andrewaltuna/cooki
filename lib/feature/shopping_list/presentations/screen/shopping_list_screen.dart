@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/extension/enum_extension.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
+import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
@@ -9,6 +10,7 @@ import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_li
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 
 class ShoppingListScreen extends HookWidget {
   const ShoppingListScreen({
@@ -53,12 +55,26 @@ class ShoppingListScreen extends HookWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            for (var category in itemsByCategory.keys)
-              _ShoppingListCategory(
-                id: shoppingList.id,
-                category: category,
-                items: itemsByCategory[category] ?? [],
+            Column(
+              children: [
+                for (var category in itemsByCategory.keys)
+                  _ShoppingListCategory(
+                    id: shoppingList.id,
+                    category: category,
+                    items: itemsByCategory[category] ?? [],
+                  ),
+              ],
+            ),
+            TextButton(
+              onPressed: () => context.go(
+                Uri(
+                  path: '${AppRoutes.shoppingLists}/$id/create-item',
+                ).toString(),
               ),
+              child: Text(
+                'Create Item',
+              ),
+            ),
           ],
         ),
       ),

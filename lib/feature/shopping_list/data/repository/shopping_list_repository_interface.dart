@@ -17,5 +17,6 @@ abstract interface class ShoppingListRepositoryInterface {
   Future<ShoppingListItem> updateShoppingListItem(
     UpdateShoppingListItemInput input,
   );
-  Future<ShoppingListItem> deleteShoppingListItem(String id);
+  Future<ShoppingListItem> deleteShoppingListItem(
+      String shoppingListId, String id);
 }

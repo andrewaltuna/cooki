@@ -46,7 +46,8 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   }
 
   @override
-  Future<ShoppingListItem> deleteShoppingListItem(String id) async {
-    return _remoteSource.deleteShoppingListItem(id);
+  Future<ShoppingListItem> deleteShoppingListItem(
+      String shoppingListId, String id) async {
+    return _remoteSource.deleteShoppingListItem(shoppingListId, id);
   }
 }

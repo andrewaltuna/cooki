@@ -1,5 +1,6 @@
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
@@ -145,6 +146,18 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     try {
       emit(
         state.copyWith(status: ViewModelStatus.loading),
+      );
+
+      final result = await _repository.createShoppingListItem(event.input);
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          // TODO: Deal with possible undefined selectedShoppingList
+          selectedShoppingList: state.selectedShoppingList?.copyWith(
+            items: [...state.selectedShoppingList!.items, result],
+          ),
+        ),
       );
     } on Exception catch (error) {
       emit(

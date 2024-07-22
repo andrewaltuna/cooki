@@ -57,14 +57,16 @@ class ShoppingListDeleted extends ShoppingListEvent {
 // Shopping List Item Events
 class ShoppingListItemCreated extends ShoppingListEvent {
   const ShoppingListItemCreated({
-    required this.shoppingListId,
-    required this.product,
-    required this.quantity,
+    required this.input,
   });
 
-  final String shoppingListId;
-  final ProductOutput product;
-  final int quantity;
+  final CreateShoppingListItemInput input;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        input,
+      ];
 }
 
 class ShoppingListItemUpdated extends ShoppingListEvent {

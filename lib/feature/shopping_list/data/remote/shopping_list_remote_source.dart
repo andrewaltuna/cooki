@@ -134,11 +134,23 @@ class ShoppingListRemoteSource {
     );
 
     dummyData.shoppingListItems.add(newShoppingListItem);
+    dummyData.shoppingLists = dummyData.shoppingLists.map((list) {
+      if (list.id == input.shoppingListId) {
+        return RawShoppingList(
+            id: list.id,
+            name: list.name,
+            budget: list.budget,
+            itemIds: list.itemIds + [newShoppingListItem.id]);
+      } else {
+        return list;
+      }
+    }).toList();
 
     return _transformShoppingListItemData(newShoppingListItem);
   }
 
-  Future<ShoppingListItem> deleteShoppingListItem(String id) async {
+  Future<ShoppingListItem> deleteShoppingListItem(
+      String shoppingListId, String id) async {
     final deletedShoppingListItem = dummyData.shoppingListItems.firstWhere(
       (item) => item.id == id,
     );
@@ -147,6 +159,22 @@ class ShoppingListRemoteSource {
           (item) => item.id != id,
         )
         .toList();
+
+    dummyData.shoppingLists = dummyData.shoppingLists.map((list) {
+      if (list.id == shoppingListId) {
+        return RawShoppingList(
+          id: list.id,
+          name: list.name,
+          budget: list.budget,
+          itemIds: list.itemIds
+              .where((itemId) => itemId != deletedShoppingListItem.id)
+              .toList(),
+        );
+      } else {
+        return list;
+      }
+    }).toList();
+
     return _transformShoppingListItemData(deletedShoppingListItem);
   }
 }
