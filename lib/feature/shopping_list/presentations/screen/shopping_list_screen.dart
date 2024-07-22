@@ -57,6 +57,22 @@ class ShoppingListScreen extends HookWidget {
           children: [
             Column(
               children: [
+                TextButton(
+                  child: Text(
+                    'Go Back',
+                  ),
+                  onPressed: () {
+                    context
+                        .read<ShoppingListViewModel>()
+                        .add(const ShoppingListsRequested());
+
+                    context.go(
+                      Uri(
+                        path: AppRoutes.shoppingLists,
+                      ).toString(),
+                    );
+                  },
+                ),
                 for (var category in itemsByCategory.keys)
                   _ShoppingListCategory(
                     id: shoppingList.id,

@@ -1,4 +1,3 @@
-import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
