@@ -1,7 +1,7 @@
 import 'package:cooki/common/component/authenticated_blocs.dart';
 import 'package:cooki/common/map/presentation/screen/map_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
-import 'package:cooki/feature/shopping_list/presentations/screen/create_shopping_list_item_screen.dart';
+import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_create_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_lists_screen.dart';
 import 'package:cooki/feature/preferences/presentation/screen/preferences_screen.dart';
@@ -78,7 +78,7 @@ final appRouter = GoRouter(
             final String shoppingListId = state.pathParameters["id"] as String;
             return _pageWithDefaultTransition(
               state,
-              child: CreateShoppingListItemScreen(
+              child: ShoppingListItemCreateScreen(
                 shoppingListId: shoppingListId,
               ),
             );

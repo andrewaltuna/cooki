@@ -5,19 +5,16 @@ import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
-class CreateShoppingListItemScreen extends HookWidget {
-  const CreateShoppingListItemScreen({
+class ShoppingListItemCreateScreen extends HookWidget {
+  const ShoppingListItemCreateScreen({
     super.key,
     required this.shoppingListId,
   });
@@ -38,7 +35,6 @@ class CreateShoppingListItemScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedProduct = useState<ProductOutput?>(null);
     final formInput = useState<CreateShoppingListItemInput>(
       CreateShoppingListItemInput(
         shoppingListId: shoppingListId,
@@ -49,9 +45,6 @@ class CreateShoppingListItemScreen extends HookWidget {
     );
     final products = context
         .select((ProductViewModel viewModel) => viewModel.state.products);
-    final labelInputController = useTextEditingController();
-    final quantityInputController = useTextEditingController();
-    final selectedProductController = useTextEditingController();
 
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
       listener: (context, state) {
@@ -132,7 +125,6 @@ class CreateShoppingListItemScreen extends HookWidget {
                       child: Column(
                         children: [
                           CustomFormField(
-                            controller: labelInputController,
                             hintText: "Item Name",
                             icon: Icons.list,
                             textInputAction: TextInputAction.next,
@@ -145,7 +137,6 @@ class CreateShoppingListItemScreen extends HookWidget {
                             height: 12.0,
                           ),
                           CustomFormField(
-                            controller: quantityInputController,
                             hintText: "Quantity",
                             icon: Icons.list,
                             onChanged: (value) =>
@@ -158,7 +149,6 @@ class CreateShoppingListItemScreen extends HookWidget {
                           ),
                           // TODO: Use these info to create new item for shopping list
                           DropdownMenu<ProductOutput>(
-                            controller: selectedProductController,
                             enableFilter: true,
                             requestFocusOnTap: true,
                             hintText: "Product",
