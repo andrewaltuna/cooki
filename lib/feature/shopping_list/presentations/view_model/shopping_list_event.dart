@@ -68,6 +68,10 @@ class ShoppingListItemRequested extends ShoppingListEvent {
       ];
 }
 
+class ShoppingListItemDeselected extends ShoppingListEvent {
+  const ShoppingListItemDeselected();
+}
+
 class ShoppingListItemCreated extends ShoppingListEvent {
   const ShoppingListItemCreated({
     required this.input,

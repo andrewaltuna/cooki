@@ -65,6 +65,10 @@ class ShoppingListItemUpdateScreen extends HookWidget {
       );
     }
 
+    // TODO: Have to revisit this page twice for updated info to load in
+    // TODO: Take note of data to display per page so I'll know what Lex needs to return from the API
+    print('ITEM ${shoppingListItem}');
+
     return MainScaffold(
       body: Column(
         children: [
@@ -145,11 +149,13 @@ class ShoppingListItemUpdateForm extends HookWidget {
   void _onSubmit(BuildContext context,
       ValueNotifier<UpdateShoppingListItemInput> formInput) {
     if (_formKey.currentState!.validate()) {
-      context.read<ShoppingListViewModel>().add(
-            ShoppingListItemUpdated(
-              input: formInput.value,
-            ),
-          );
+      context.read<ShoppingListViewModel>()
+        ..add(
+          ShoppingListItemUpdated(
+            input: formInput.value,
+          ),
+        )
+        ..add(const ShoppingListItemDeselected());
 
       context.go(
         Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId').toString(),

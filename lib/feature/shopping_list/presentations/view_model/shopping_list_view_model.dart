@@ -18,9 +18,9 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ShoppingListCreated>(_onCreated);
     on<ShoppingListDeleted>(_onDeleted);
 
-    // TODO: Place selected item in the current state
     // Item events
     on<ShoppingListItemRequested>(_onItemRequested);
+    on<ShoppingListItemDeselected>(_onItemDeselect);
     on<ShoppingListItemCreated>(_onItemCreated);
     on<ShoppingListItemUpdated>(_onItemUpdated);
     on<ShoppingListItemDeleted>(_onItemDeleted);
@@ -168,6 +168,11 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
     }
+  }
+
+  void _onItemDeselect(
+      ShoppingListItemDeselected event, Emitter<ShoppingListState> emit) {
+    emit(state.copyWith(selectedShoppingListItem: null));
   }
 
   Future<void> _onItemCreated(
