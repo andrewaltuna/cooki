@@ -9,6 +9,7 @@ import 'package:cooki/feature/product/presentation/view_model/product_view_model
 import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
+import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_item_helper.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,21 @@ class ShoppingListItemUpdateScreen extends HookWidget {
 
   final String shoppingListId;
   final String shoppingListItemId;
+
+  // TODO: Fix (on delete, it still shows the deleted item upon selecting a new item)
+  void _onSubmitted(
+      BuildContext context, String shoppingListId, String itemId) {
+    {
+      context.read<ShoppingListItemViewModel>()
+        ..add(
+          ShoppingListItemDeleted(
+            shoppingListId: shoppingListId,
+            id: itemId,
+          ),
+        )
+        ..add(const ShoppingListItemDeselected());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,71 +89,85 @@ class ShoppingListItemUpdateScreen extends HookWidget {
     }
 
     return MainScaffold(
-      body: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12.0,
-                vertical: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          context
-                              .read<ShoppingListItemViewModel>()
-                              .add(const ShoppingListItemDeselected());
-                          context.go(
-                            Uri(
-                              path:
-                                  '${AppRoutes.shoppingLists}/$shoppingListId',
-                            ).toString(),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_sharp,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 12.0,
-                      ),
-                      Text(
-                        "Item Details",
-                        style: AppTextStyles.titleLarge,
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.menu,
-                    ),
+      body: BlocListener<ShoppingListItemViewModel, ShoppingListItemState>(
+        listener: (context, state) {
+          if (state.submissionStatus.isSuccess) {
+            context.go(
+              Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId')
+                  .toString(),
+            );
+          }
+        },
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 16.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            context
+                                .read<ShoppingListItemViewModel>()
+                                .add(const ShoppingListItemDeselected());
+                            context.go(
+                              Uri(
+                                path:
+                                    '${AppRoutes.shoppingLists}/$shoppingListId',
+                              ).toString(),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_sharp,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 12.0,
+                        ),
+                        Text(
+                          "Item Details",
+                          style: AppTextStyles.titleLarge,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () => _onSubmitted(
+                        context,
+                        shoppingListId,
+                        item.id,
+                      ),
+                      icon: Icon(
+                        Icons.menu,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          ShoppingListItemUpdateForm(
-            productList: products,
-            selectedShoppingListItem: item,
-            shoppingListId: shoppingListId,
-          ),
-        ],
+            ShoppingListItemUpdateForm(
+              productList: products,
+              selectedShoppingListItem: item,
+              shoppingListId: shoppingListId,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -181,87 +211,78 @@ class ShoppingListItemUpdateForm extends HookWidget {
       ),
     );
 
-    return BlocListener<ShoppingListItemViewModel, ShoppingListItemState>(
-      listener: (context, state) {
-        if (state.submissionStatus.isSuccess) {
-          context.go(
-            Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId').toString(),
-          );
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 12.0,
-        ),
-        // height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CustomFormField(
-                    initialText: formInput.value.label,
-                    hintText: "Item Name",
-                    icon: Icons.list,
-                    textInputAction: TextInputAction.next,
-                    onChanged: (value) =>
-                        formInput.value = formInput.value.copyWith(
-                      label: value,
-                    ),
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12.0,
+      ),
+      // height: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                CustomFormField(
+                  initialText: formInput.value.label,
+                  hintText: "Item Name",
+                  icon: Icons.list,
+                  textInputAction: TextInputAction.next,
+                  onChanged: (value) =>
+                      formInput.value = formInput.value.copyWith(
+                    label: value,
                   ),
-                  const SizedBox(
-                    height: 12.0,
+                ),
+                const SizedBox(
+                  height: 12.0,
+                ),
+                CustomFormField(
+                  initialText: formInput.value.quantity.toString(),
+                  hintText: "Quantity",
+                  icon: Icons.list,
+                  onChanged: (value) =>
+                      formInput.value = formInput.value.copyWith(
+                    quantity: int.parse(value),
                   ),
-                  CustomFormField(
-                    initialText: formInput.value.quantity.toString(),
-                    hintText: "Quantity",
-                    icon: Icons.list,
-                    onChanged: (value) =>
-                        formInput.value = formInput.value.copyWith(
-                      quantity: int.parse(value),
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                DropdownMenu<ProductOutput>(
+                  initialSelection: productList.firstWhere(
+                      (product) => product.id == formInput.value.productId),
+                  enableFilter: true,
+                  requestFocusOnTap: true,
+                  hintText: "Product",
+                  onSelected: (value) =>
+                      formInput.value = formInput.value.copyWith(
+                    productId: value?.id ?? formInput.value.productId,
                   ),
-                  DropdownMenu<ProductOutput>(
-                    initialSelection: productList.firstWhere(
-                        (product) => product.id == formInput.value.productId),
-                    enableFilter: true,
-                    requestFocusOnTap: true,
-                    hintText: "Product",
-                    onSelected: (value) =>
-                        formInput.value = formInput.value.copyWith(
-                      productId: value?.id ?? formInput.value.productId,
-                    ),
-                    dropdownMenuEntries: productList
-                        .map(
-                          (product) => DropdownMenuEntry(
-                            value: product,
-                            label: product.brand,
-                            style: MenuItemButton.styleFrom(
-                              textStyle: AppTextStyles.bodyMedium,
-                            ),
+                  dropdownMenuEntries: productList
+                      .map(
+                        (product) => DropdownMenuEntry(
+                          value: product,
+                          label: product.brand,
+                          style: MenuItemButton.styleFrom(
+                            textStyle: AppTextStyles.bodyMedium,
                           ),
-                        )
-                        .toList(),
-                  ),
-                ],
-              ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () => _onSubmit(
-                context,
-                formInput,
-              ),
-              child: Text(
-                "Save",
-              ),
+          ),
+          TextButton(
+            onPressed: () => _onSubmit(
+              context,
+              formInput,
             ),
-          ],
-        ),
+            child: Text(
+              "Save",
+            ),
+          ),
+        ],
       ),
     );
   }

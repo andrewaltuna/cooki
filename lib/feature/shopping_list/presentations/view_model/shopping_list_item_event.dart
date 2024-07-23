@@ -52,13 +52,16 @@ class ShoppingListItemUpdated extends ShoppingListItemEvent {
 
 class ShoppingListItemDeleted extends ShoppingListItemEvent {
   const ShoppingListItemDeleted({
+    required this.shoppingListId,
     required this.id,
   });
 
+  final String shoppingListId;
   final String id;
 
   @override
   List<Object?> get props => [
+        shoppingListId,
         id,
       ];
 }

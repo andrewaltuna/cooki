@@ -36,6 +36,7 @@ class ShoppingListItemViewModel
       emit(
         state.copyWith(
           status: ViewModelStatus.success,
+          submissionStatus: ViewModelStatus.initial,
           item: result,
         ),
       );
@@ -124,10 +125,14 @@ class ShoppingListItemViewModel
         state.copyWith(status: ViewModelStatus.loading),
       );
 
-      await _repository.deleteShoppingList(event.id);
+      final result = await _repository.deleteShoppingListItem(
+        event.shoppingListId,
+        event.id,
+      );
 
       emit(
         state.copyWith(
+          submissionStatus: ViewModelStatus.success,
           status: ViewModelStatus.success,
           item: null,
         ),
