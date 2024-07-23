@@ -6,13 +6,11 @@ class ProductState extends Equatable {
   const ProductState({
     this.status = ViewModelStatus.initial,
     this.products = const [],
-    this.selectedProduct = null,
     this.error,
   });
 
   final ViewModelStatus status;
   final List<ProductOutput> products;
-  final ProductOutput? selectedProduct;
   final Exception? error;
 
   ProductState copyWith({
@@ -24,7 +22,6 @@ class ProductState extends Equatable {
     return ProductState(
       status: status ?? this.status,
       products: products ?? this.products,
-      selectedProduct: selectedProduct ?? this.selectedProduct,
       error: error ?? this.error,
     );
   }

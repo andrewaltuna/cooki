@@ -110,7 +110,7 @@ class ShoppingListRemoteSource {
       label: input.label,
       quantity: input.quantity,
       isChecked: input.isChecked,
-      productId: input.product.id,
+      productId: input.productId,
     );
 
     dummyData.shoppingListItems = dummyData.shoppingListItems

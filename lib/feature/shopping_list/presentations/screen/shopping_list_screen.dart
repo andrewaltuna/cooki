@@ -6,6 +6,7 @@ import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -142,12 +143,12 @@ class _ShoppingListItem extends StatelessWidget {
         Checkbox(
           value: item.isChecked,
           onChanged: (res) {
-            context.read<ShoppingListViewModel>().add(
+            context.read<ShoppingListItemViewModel>().add(
                   ShoppingListItemUpdated(
                     input: UpdateShoppingListItemInput(
                       id: item.id,
                       label: item.label,
-                      product: item.product,
+                      productId: item.product.id,
                       quantity: item.quantity,
                       isChecked: !item.isChecked,
                     ),
@@ -179,10 +180,13 @@ class _ShoppingListItem extends StatelessWidget {
           icon: Icon(
             Icons.edit,
           ),
-          onPressed: () => context.go(
-            Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId/edit-item/${item.id}')
-                .toString(),
-          ),
+          onPressed: () {
+            final String path =
+                '${AppRoutes.shoppingLists}/$shoppingListId/edit-item/${item.id}';
+            context.go(
+              Uri(path: path).toString(),
+            );
+          },
         )
       ],
     );

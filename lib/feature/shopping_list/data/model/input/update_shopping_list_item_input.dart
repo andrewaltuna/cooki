@@ -1,18 +1,17 @@
-import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:equatable/equatable.dart';
 
 class UpdateShoppingListItemInput extends Equatable {
   const UpdateShoppingListItemInput({
     required this.id,
     required this.label,
-    required this.product,
+    required this.productId,
     required this.quantity,
     required this.isChecked,
   });
 
   final String id;
   final String label;
-  final ProductOutput product;
+  final String productId;
   final int quantity;
   final bool isChecked;
 
@@ -20,7 +19,7 @@ class UpdateShoppingListItemInput extends Equatable {
     return {
       'id': id,
       'label': label,
-      'product': product.toJson(),
+      'product': productId,
       'quantity': quantity,
       'isChecked': isChecked,
     };
@@ -29,14 +28,14 @@ class UpdateShoppingListItemInput extends Equatable {
   UpdateShoppingListItemInput copyWith({
     String? id,
     String? label,
-    ProductOutput? product,
+    String? productId,
     int? quantity,
     bool? isChecked,
   }) {
     return UpdateShoppingListItemInput(
       id: id ?? this.id,
       label: label ?? this.label,
-      product: product ?? this.product,
+      productId: productId ?? this.productId,
       quantity: quantity ?? this.quantity,
       isChecked: isChecked ?? this.isChecked,
     );
@@ -46,7 +45,7 @@ class UpdateShoppingListItemInput extends Equatable {
   List<Object?> get props => [
         id,
         label,
-        product,
+        productId,
         quantity,
         isChecked,
       ];

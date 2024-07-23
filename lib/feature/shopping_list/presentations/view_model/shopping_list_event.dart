@@ -55,59 +55,59 @@ class ShoppingListDeleted extends ShoppingListEvent {
 }
 
 // Shopping List Item Events
-class ShoppingListItemRequested extends ShoppingListEvent {
-  const ShoppingListItemRequested({
-    required this.shoppingListItemId,
-  });
+// class ShoppingListItemRequested extends ShoppingListEvent {
+//   const ShoppingListItemRequested({
+//     required this.shoppingListItemId,
+//   });
 
-  final String shoppingListItemId;
+//   final String shoppingListItemId;
 
-  @override
-  List<Object?> get props => [
-        shoppingListItemId,
-      ];
-}
+//   @override
+//   List<Object?> get props => [
+//         shoppingListItemId,
+//       ];
+// }
 
-class ShoppingListItemDeselected extends ShoppingListEvent {
-  const ShoppingListItemDeselected();
-}
+// class ShoppingListItemDeselected extends ShoppingListEvent {
+//   const ShoppingListItemDeselected();
+// }
 
-class ShoppingListItemCreated extends ShoppingListEvent {
-  const ShoppingListItemCreated({
-    required this.input,
-  });
+// class ShoppingListItemCreated extends ShoppingListEvent {
+//   const ShoppingListItemCreated({
+//     required this.input,
+//   });
 
-  final CreateShoppingListItemInput input;
+//   final CreateShoppingListItemInput input;
 
-  @override
-  // TODO: implement props
-  List<Object?> get props => [
-        input,
-      ];
-}
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => [
+//         input,
+//       ];
+// }
 
-class ShoppingListItemUpdated extends ShoppingListEvent {
-  const ShoppingListItemUpdated({
-    required this.input,
-  });
+// class ShoppingListItemUpdated extends ShoppingListEvent {
+//   const ShoppingListItemUpdated({
+//     required this.input,
+//   });
 
-  final UpdateShoppingListItemInput input;
+//   final UpdateShoppingListItemInput input;
 
-  @override
-  List<Object?> get props => [
-        input,
-      ];
-}
+//   @override
+//   List<Object?> get props => [
+//         input,
+//       ];
+// }
 
-class ShoppingListItemDeleted extends ShoppingListEvent {
-  const ShoppingListItemDeleted({
-    required this.id,
-  });
+// class ShoppingListItemDeleted extends ShoppingListEvent {
+//   const ShoppingListItemDeleted({
+//     required this.id,
+//   });
 
-  final String id;
+//   final String id;
 
-  @override
-  List<Object?> get props => [
-        id,
-      ];
-}
+//   @override
+//   List<Object?> get props => [
+//         id,
+//       ];
+// }

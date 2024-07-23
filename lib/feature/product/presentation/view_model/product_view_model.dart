@@ -17,7 +17,9 @@ class ProductViewModel extends Bloc<ProductEvent, ProductState> {
     Emitter<ProductState> emit,
   ) async {
     try {
-      emit(state.copyWith(status: ViewModelStatus.loading));
+      emit(state.copyWith(
+        status: ViewModelStatus.loading,
+      ));
 
       final result = await _repository.getProducts();
 

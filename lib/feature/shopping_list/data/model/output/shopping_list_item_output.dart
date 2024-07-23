@@ -34,6 +34,7 @@ class ShoppingListItem extends Equatable {
   final int quantity;
   final bool isChecked;
 
+  // TODO: Remove (only in shopping list item state)
   ShoppingListItem copyWith({
     String? id,
     String? label,
@@ -48,22 +49,6 @@ class ShoppingListItem extends Equatable {
       quantity: quantity ?? this.quantity,
       isChecked: isChecked ?? this.isChecked,
     );
-  }
-
-  // TODO: Remove once query is placed
-  static List<ShoppingListItem> getDummyItems() {
-    List<ShoppingListItem> dummyItems = [];
-    for (var i = 0; i < 10; i++) {
-      dummyItems.add(ShoppingListItem(
-        id: 'dummy-${i}',
-        label: 'dummy item $i',
-        product: ProductOutput.getDummyProducts()[i],
-        quantity: 1,
-        isChecked: false,
-      ));
-    }
-
-    return dummyItems;
   }
 
   @override

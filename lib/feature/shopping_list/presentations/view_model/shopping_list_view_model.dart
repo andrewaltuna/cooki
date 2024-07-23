@@ -19,11 +19,11 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ShoppingListDeleted>(_onDeleted);
 
     // Item events
-    on<ShoppingListItemRequested>(_onItemRequested);
-    on<ShoppingListItemDeselected>(_onItemDeselect);
-    on<ShoppingListItemCreated>(_onItemCreated);
-    on<ShoppingListItemUpdated>(_onItemUpdated);
-    on<ShoppingListItemDeleted>(_onItemDeleted);
+    // on<ShoppingListItemRequested>(_onItemRequested);
+    // on<ShoppingListItemDeselected>(_onItemDeselect);
+    // on<ShoppingListItemCreated>(_onItemCreated);
+    // on<ShoppingListItemUpdated>(_onItemUpdated);
+    // on<ShoppingListItemDeleted>(_onItemDeleted);
   }
 
   final ShoppingListRepositoryInterface _repository;
@@ -144,128 +144,128 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
   }
 
   // Shopping list item events
-  Future<void> _onItemRequested(
-      ShoppingListItemRequested event, Emitter<ShoppingListState> emit) async {
-    try {
-      emit(
-        state.copyWith(status: ViewModelStatus.loading),
-      );
+  // Future<void> _onItemRequested(
+  //     ShoppingListItemRequested event, Emitter<ShoppingListState> emit) async {
+  //   try {
+  //     emit(
+  //       state.copyWith(status: ViewModelStatus.loading),
+  //     );
 
-      final result =
-          await _repository.getShoppingListItem(event.shoppingListItemId);
+  //     final result =
+  //         await _repository.getShoppingListItem(event.shoppingListItemId);
 
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          selectedShoppingListItem: result,
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.success,
+  //         selectedShoppingListItem: result,
+  //       ),
+  //     );
+  //   } on Exception catch (error) {
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.error,
+  //         error: error,
+  //       ),
+  //     );
+  //   }
+  // }
 
-  void _onItemDeselect(
-      ShoppingListItemDeselected event, Emitter<ShoppingListState> emit) {
-    emit(state.copyWith(selectedShoppingListItem: null));
-  }
+  // void _onItemDeselect(
+  //     ShoppingListItemDeselected event, Emitter<ShoppingListState> emit) {
+  //   emit(state.copyWith(selectedShoppingListItem: null));
+  // }
 
-  Future<void> _onItemCreated(
-      ShoppingListItemCreated event, Emitter<ShoppingListState> emit) async {
-    try {
-      emit(
-        state.copyWith(status: ViewModelStatus.loading),
-      );
+  // Future<void> _onItemCreated(
+  //     ShoppingListItemCreated event, Emitter<ShoppingListState> emit) async {
+  //   try {
+  //     emit(
+  //       state.copyWith(status: ViewModelStatus.loading),
+  //     );
 
-      final result = await _repository.createShoppingListItem(event.input);
+  //     final result = await _repository.createShoppingListItem(event.input);
 
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          // TODO: Deal with possible undefined selectedShoppingList
-          selectedShoppingList: state.selectedShoppingList?.copyWith(
-            items: [...state.selectedShoppingList!.items, result],
-          ),
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.success,
+  //         // TODO: Deal with possible undefined selectedShoppingList
+  //         selectedShoppingList: state.selectedShoppingList?.copyWith(
+  //           items: [...state.selectedShoppingList!.items, result],
+  //         ),
+  //       ),
+  //     );
+  //   } on Exception catch (error) {
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.error,
+  //         error: error,
+  //       ),
+  //     );
+  //   }
+  // }
 
-  Future<void> _onItemUpdated(
-    ShoppingListItemUpdated event,
-    Emitter<ShoppingListState> emit,
-  ) async {
-    try {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.loading,
-        ),
-      );
+  // Future<void> _onItemUpdated(
+  //   ShoppingListItemUpdated event,
+  //   Emitter<ShoppingListState> emit,
+  // ) async {
+  //   try {
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.loading,
+  //       ),
+  //     );
 
-      final result = await _repository.updateShoppingListItem(event.input);
+  //     final result = await _repository.updateShoppingListItem(event.input);
 
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          // TODO: Deal with possible undefined selectedShoppingList
-          selectedShoppingList: state.selectedShoppingList?.copyWith(
-            items: state.selectedShoppingList?.items
-                .map((item) => item.id == result.id ? result : item)
-                .toList(),
-          ),
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.success,
+  //         // TODO: Deal with possible undefined selectedShoppingList
+  //         selectedShoppingList: state.selectedShoppingList?.copyWith(
+  //           items: state.selectedShoppingList?.items
+  //               .map((item) => item.id == result.id ? result : item)
+  //               .toList(),
+  //         ),
+  //       ),
+  //     );
+  //   } on Exception catch (error) {
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.error,
+  //         error: error,
+  //       ),
+  //     );
+  //   }
+  // }
 
-  Future<void> _onItemDeleted(
-    ShoppingListItemDeleted event,
-    Emitter<ShoppingListState> emit,
-  ) async {
-    try {
-      emit(
-        state.copyWith(status: ViewModelStatus.loading),
-      );
+  // Future<void> _onItemDeleted(
+  //   ShoppingListItemDeleted event,
+  //   Emitter<ShoppingListState> emit,
+  // ) async {
+  //   try {
+  //     emit(
+  //       state.copyWith(status: ViewModelStatus.loading),
+  //     );
 
-      final result = await _repository.deleteShoppingList(event.id);
+  //     final result = await _repository.deleteShoppingList(event.id);
 
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          // TODO: Deal with possible undefined selectedShoppingList
-          selectedShoppingList: state.selectedShoppingList?.copyWith(
-            items: state.selectedShoppingList?.items
-                .where((item) => item.id != result.id)
-                .toList(),
-          ),
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.success,
+  //         // TODO: Deal with possible undefined selectedShoppingList
+  //         selectedShoppingList: state.selectedShoppingList?.copyWith(
+  //           items: state.selectedShoppingList?.items
+  //               .where((item) => item.id != result.id)
+  //               .toList(),
+  //         ),
+  //       ),
+  //     );
+  //   } on Exception catch (error) {
+  //     emit(
+  //       state.copyWith(
+  //         status: ViewModelStatus.error,
+  //         error: error,
+  //       ),
+  //     );
+  //   }
+  // }
 }

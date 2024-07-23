@@ -47,20 +47,6 @@ class ProductOutput extends Equatable {
     );
   }
 
-  // TODO: Decide where to put this (might be in an input file since it's to JSON)
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'category': category.apiValue,
-      'section': section,
-      'brand': brand,
-      'keyIngredients': keyIngredients,
-      'description': description,
-      'price': price,
-      'unitSize': unitSize,
-    };
-  }
-
   final String id;
   final ProductCategory category;
   final String section;
@@ -90,28 +76,6 @@ class ProductOutput extends Equatable {
       price: price ?? this.price,
       unitSize: unitSize ?? this.unitSize,
     );
-  }
-
-  // TODO: Remove once query is placed
-  static List<ProductOutput> getDummyProducts() {
-    List<ProductOutput> dummyProducts = [];
-    final _random = new Random();
-
-    for (var i = 0; i < 10; i++) {
-      dummyProducts.add(ProductOutput(
-        id: 'dummy$i',
-        category: ProductCategory
-            .values[_random.nextInt(ProductCategory.values.length)],
-        section: 'dummy_section$i',
-        brand: 'dummy_brand$i',
-        keyIngredients: ['dummy_ingredient$i', 'dummy_ingredient$i'],
-        description: 'dummy description',
-        price: 10.99,
-        unitSize: 'dummy unit size',
-      ));
-    }
-
-    return dummyProducts;
   }
 
   @override

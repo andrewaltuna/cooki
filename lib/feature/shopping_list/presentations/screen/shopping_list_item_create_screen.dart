@@ -5,6 +5,7 @@ import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,11 +112,15 @@ class ShoppingListItemCreateForm extends HookWidget {
   void _onCreate(BuildContext context,
       ValueNotifier<CreateShoppingListItemInput> formInput) {
     if (_formKey.currentState!.validate()) {
-      context.read<ShoppingListViewModel>().add(
+      context.read<ShoppingListItemViewModel>().add(
             ShoppingListItemCreated(
               input: formInput.value,
             ),
           );
+
+      context.go(
+        Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId').toString(),
+      );
     }
   }
 
@@ -167,7 +172,6 @@ class ShoppingListItemCreateForm extends HookWidget {
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                 ),
-                // TODO: Use these info to create new item for shopping list
                 DropdownMenu<ProductOutput>(
                   enableFilter: true,
                   requestFocusOnTap: true,
@@ -187,7 +191,6 @@ class ShoppingListItemCreateForm extends HookWidget {
                         ),
                       )
                       .toList(),
-                  // onSelected: (value) => _onSelected(context, value),
                 ),
               ],
             ),
