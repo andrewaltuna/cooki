@@ -26,7 +26,6 @@ class ShoppingListItemUpdateScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Logic is similar to that of shopping_list_screen, but shoppingListItem doesn't change (always stays null)
     useOnWidgetLoad(() {
       context.read<ShoppingListViewModel>().add(
             ShoppingListItemRequested(
@@ -46,7 +45,9 @@ class ShoppingListItemUpdateScreen extends HookWidget {
       return const Center(
         child: CircularProgressIndicator(),
       );
-    } else if (shoppingListItem == null) {
+      // TODO: Refactor state so that no need to check for matching ID's (make null on back nav)
+    } else if (shoppingListItem == null ||
+        shoppingListItem.id != shoppingListItemId) {
       return Center(
         child: Column(
           children: [
@@ -63,7 +64,6 @@ class ShoppingListItemUpdateScreen extends HookWidget {
         ),
       );
     }
-    print('Shopping list item ${shoppingListItem}');
 
     return MainScaffold(
       body: Column(
@@ -128,114 +128,6 @@ class ShoppingListItemUpdateScreen extends HookWidget {
         ],
       ),
     );
-    // return BlocListener<ShoppingListViewModel, ShoppingListState>(
-    //   listener: (context, state) {
-    //     // TODO: implement listener
-    //     print('Listening...');
-    //     print(state.selectedShoppingListItem);
-    //   },
-    //   child: BlocBuilder<ShoppingListViewModel, ShoppingListState>(
-    //     builder: (context, state) {
-    //       if (state.isFetchingShoppingListItem) {
-    //         return const Center(
-    //           child: CircularProgressIndicator(),
-    //         );
-    //       } else if (state.selectedShoppingListItem == null) {
-    //         return Center(
-    //           child: Column(
-    //             children: [
-    //               Text('Not Found'),
-    //               TextButton(
-    //                 onPressed: () => context.go(
-    //                   Uri(
-    //                     path: '${AppRoutes.shoppingLists}/$shoppingListId',
-    //                   ).toString(),
-    //                 ),
-    //                 child: Text('Go Back'),
-    //               ),
-    //             ],
-    //           ),
-    //         );
-    //       }
-
-    //       return BlocListener<ShoppingListViewModel, ShoppingListState>(
-    //         listener: (context, state) {
-    //           if (state.status.isSuccess) {
-    //             context.go(
-    //               Uri(
-    //                 path: '${AppRoutes.shoppingLists}/$shoppingListId',
-    //               ).toString(),
-    //             );
-    //           }
-    //         },
-    //         child: MainScaffold(
-    //           body: Column(
-    //             children: [
-    //               Container(
-    //                 decoration: BoxDecoration(
-    //                   color: Colors.white,
-    //                   boxShadow: [
-    //                     BoxShadow(
-    //                       color: Colors.grey.withOpacity(0.5),
-    //                       spreadRadius: 2,
-    //                       blurRadius: 7,
-    //                       offset: const Offset(0, 3),
-    //                     ),
-    //                   ],
-    //                 ),
-    //                 child: Padding(
-    //                   padding: const EdgeInsets.symmetric(
-    //                     horizontal: 12.0,
-    //                     vertical: 16.0,
-    //                   ),
-    //                   child: Row(
-    //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           IconButton(
-    //                             onPressed: () => context.go(
-    //                               Uri(
-    //                                 path:
-    //                                     '${AppRoutes.shoppingLists}/$shoppingListId',
-    //                               ).toString(),
-    //                             ),
-    //                             icon: Icon(
-    //                               Icons.arrow_back_sharp,
-    //                             ),
-    //                           ),
-    //                           const SizedBox(
-    //                             width: 12.0,
-    //                           ),
-    //                           Text(
-    //                             "Item Details",
-    //                             style: AppTextStyles.titleLarge,
-    //                           ),
-    //                         ],
-    //                       ),
-    //                       IconButton(
-    //                         onPressed: () {},
-    //                         icon: Icon(
-    //                           Icons.menu,
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ),
-    //               Expanded(
-    //                 child: ShoppingListItemUpdateForm(
-    //                   shoppingListId: shoppingListId,
-    //                   selectedShoppingListItem: state.selectedShoppingListItem!,
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //   ),
-    // );
   }
 }
 
@@ -258,6 +150,10 @@ class ShoppingListItemUpdateForm extends HookWidget {
               input: formInput.value,
             ),
           );
+
+      context.go(
+        Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId').toString(),
+      );
     }
   }
 
@@ -288,6 +184,7 @@ class ShoppingListItemUpdateForm extends HookWidget {
             child: Column(
               children: [
                 CustomFormField(
+                  initialText: formInput.value.label,
                   hintText: "Item Name",
                   icon: Icons.list,
                   textInputAction: TextInputAction.next,
@@ -300,6 +197,7 @@ class ShoppingListItemUpdateForm extends HookWidget {
                   height: 12.0,
                 ),
                 CustomFormField(
+                  initialText: formInput.value.quantity.toString(),
                   hintText: "Quantity",
                   icon: Icons.list,
                   onChanged: (value) =>
@@ -311,6 +209,7 @@ class ShoppingListItemUpdateForm extends HookWidget {
                   ],
                 ),
                 DropdownMenu<ProductOutput>(
+                  initialSelection: formInput.value.product,
                   enableFilter: true,
                   requestFocusOnTap: true,
                   hintText: "Product",

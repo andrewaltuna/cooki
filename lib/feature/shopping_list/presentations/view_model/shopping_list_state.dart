@@ -26,6 +26,8 @@ class ShoppingListState extends Equatable {
       status: status ?? this.status,
       shoppingLists: shoppingLists ?? this.shoppingLists,
       selectedShoppingList: selectedShoppingList ?? this.selectedShoppingList,
+      selectedShoppingListItem:
+          selectedShoppingListItem ?? this.selectedShoppingListItem,
       error: error ?? this.error,
     );
   }

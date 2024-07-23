@@ -38,8 +38,6 @@ class ShoppingListScreen extends HookWidget {
       ),
     );
 
-    print('Shopping list ${shoppingList}');
-
     // TODO: Use isInitialLoading (already takes this into account)
     if (isFetching.isLoading && shoppingList == null) {
       return const Center(

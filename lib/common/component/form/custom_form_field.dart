@@ -8,6 +8,7 @@ class CustomFormField extends StatelessWidget {
     this.controller,
     this.label,
     this.hintText,
+    this.initialText,
     this.errorText,
     this.icon,
     this.obscureText = false,
@@ -25,6 +26,7 @@ class CustomFormField extends StatelessWidget {
   final TextEditingController? controller;
   final String? label;
   final String? hintText;
+  final String? initialText;
   final String? errorText;
   final IconData? icon;
   final bool obscureText;
@@ -50,6 +52,7 @@ class CustomFormField extends StatelessWidget {
           const SizedBox(height: 3),
         ],
         TextFormField(
+          initialValue: initialText,
           autovalidateMode: autovalidateMode,
           controller: controller,
           onChanged: onChanged,
