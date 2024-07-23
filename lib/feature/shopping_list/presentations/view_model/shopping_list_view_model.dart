@@ -2,7 +2,7 @@ import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
-import 'package:cooki/feature/product/data/model/output/product_output.dart';
+import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -17,7 +17,10 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ShoppingListRequested>(_onSelected);
     on<ShoppingListCreated>(_onCreated);
     on<ShoppingListDeleted>(_onDeleted);
+
+    // TODO: Place selected item in the current state
     // Item events
+    on<ShoppingListItemRequested>(_onItemRequested);
     on<ShoppingListItemCreated>(_onItemCreated);
     on<ShoppingListItemUpdated>(_onItemUpdated);
     on<ShoppingListItemDeleted>(_onItemDeleted);
@@ -141,6 +144,32 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
   }
 
   // Shopping list item events
+  Future<void> _onItemRequested(
+      ShoppingListItemRequested event, Emitter<ShoppingListState> emit) async {
+    try {
+      emit(
+        state.copyWith(status: ViewModelStatus.loading),
+      );
+
+      final result =
+          await _repository.getShoppingListItem(event.shoppingListItemId);
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          selectedShoppingListItem: result,
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
   Future<void> _onItemCreated(
       ShoppingListItemCreated event, Emitter<ShoppingListState> emit) async {
     try {

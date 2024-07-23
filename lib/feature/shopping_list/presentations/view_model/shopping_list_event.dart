@@ -55,6 +55,19 @@ class ShoppingListDeleted extends ShoppingListEvent {
 }
 
 // Shopping List Item Events
+class ShoppingListItemRequested extends ShoppingListEvent {
+  const ShoppingListItemRequested({
+    required this.shoppingListItemId,
+  });
+
+  final String shoppingListItemId;
+
+  @override
+  List<Object?> get props => [
+        shoppingListItemId,
+      ];
+}
+
 class ShoppingListItemCreated extends ShoppingListEvent {
   const ShoppingListItemCreated({
     required this.input,

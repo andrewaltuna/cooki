@@ -1,6 +1,5 @@
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
-import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
@@ -13,39 +12,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
-class ShoppingListItemCreateScreen extends HookWidget {
+class ShoppingListItemCreateScreen extends StatelessWidget {
   const ShoppingListItemCreateScreen({
     super.key,
     required this.shoppingListId,
   });
 
   final String shoppingListId;
-  static final _formKey = GlobalKey<FormState>();
-
-  void _onCreate(BuildContext context,
-      ValueNotifier<CreateShoppingListItemInput> formInput) {
-    if (_formKey.currentState!.validate()) {
-      context.read<ShoppingListViewModel>().add(
-            ShoppingListItemCreated(
-              input: formInput.value,
-            ),
-          );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    final formInput = useState<CreateShoppingListItemInput>(
-      CreateShoppingListItemInput(
-        shoppingListId: shoppingListId,
-        label: '',
-        productId: '',
-        quantity: 0,
-      ),
-    );
-    final products = context
-        .select((ProductViewModel viewModel) => viewModel.state.products);
-
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
       listener: (context, state) {
         if (state.status.isSuccess) {
@@ -112,81 +88,120 @@ class ShoppingListItemCreateScreen extends HookWidget {
               ),
             ),
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12.0,
-                ),
-                // height: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          CustomFormField(
-                            hintText: "Item Name",
-                            icon: Icons.list,
-                            textInputAction: TextInputAction.next,
-                            onChanged: (value) =>
-                                formInput.value = formInput.value.copyWith(
-                              label: value,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 12.0,
-                          ),
-                          CustomFormField(
-                            hintText: "Quantity",
-                            icon: Icons.list,
-                            onChanged: (value) =>
-                                formInput.value = formInput.value.copyWith(
-                              quantity: int.parse(value),
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                          ),
-                          // TODO: Use these info to create new item for shopping list
-                          DropdownMenu<ProductOutput>(
-                            enableFilter: true,
-                            requestFocusOnTap: true,
-                            hintText: "Product",
-                            onSelected: (value) =>
-                                formInput.value = formInput.value.copyWith(
-                              productId: value?.id,
-                            ),
-                            dropdownMenuEntries: products
-                                .map(
-                                  (product) => DropdownMenuEntry(
-                                    value: product,
-                                    label: product.brand,
-                                    style: MenuItemButton.styleFrom(
-                                      textStyle: AppTextStyles.bodyMedium,
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                            // onSelected: (value) => _onSelected(context, value),
-                          ),
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => _onCreate(
-                        context,
-                        formInput,
-                      ),
-                      child: Text(
-                        "Save",
-                      ),
-                    ),
-                  ],
-                ),
+              child: ShoppingListItemCreateForm(
+                shoppingListId: shoppingListId,
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ShoppingListItemCreateForm extends HookWidget {
+  const ShoppingListItemCreateForm({
+    super.key,
+    required this.shoppingListId,
+  });
+
+  final String shoppingListId;
+  static final _formKey = GlobalKey<FormState>();
+
+  void _onCreate(BuildContext context,
+      ValueNotifier<CreateShoppingListItemInput> formInput) {
+    if (_formKey.currentState!.validate()) {
+      context.read<ShoppingListViewModel>().add(
+            ShoppingListItemCreated(
+              input: formInput.value,
+            ),
+          );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final formInput = useState<CreateShoppingListItemInput>(
+      CreateShoppingListItemInput(
+        shoppingListId: shoppingListId,
+        label: '',
+        productId: '',
+        quantity: 0,
+      ),
+    );
+    final products = context
+        .select((ProductViewModel viewModel) => viewModel.state.products);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12.0,
+      ),
+      // height: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                CustomFormField(
+                  hintText: "Item Name",
+                  icon: Icons.list,
+                  textInputAction: TextInputAction.next,
+                  onChanged: (value) =>
+                      formInput.value = formInput.value.copyWith(
+                    label: value,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12.0,
+                ),
+                CustomFormField(
+                  hintText: "Quantity",
+                  icon: Icons.list,
+                  onChanged: (value) =>
+                      formInput.value = formInput.value.copyWith(
+                    quantity: int.parse(value),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                // TODO: Use these info to create new item for shopping list
+                DropdownMenu<ProductOutput>(
+                  enableFilter: true,
+                  requestFocusOnTap: true,
+                  hintText: "Product",
+                  onSelected: (value) =>
+                      formInput.value = formInput.value.copyWith(
+                    productId: value?.id,
+                  ),
+                  dropdownMenuEntries: products
+                      .map(
+                        (product) => DropdownMenuEntry(
+                          value: product,
+                          label: product.brand,
+                          style: MenuItemButton.styleFrom(
+                            textStyle: AppTextStyles.bodyMedium,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  // onSelected: (value) => _onSelected(context, value),
+                ),
+              ],
+            ),
+          ),
+          TextButton(
+            onPressed: () => _onCreate(
+              context,
+              formInput,
+            ),
+            child: Text(
+              "Save",
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -97,6 +97,12 @@ class ShoppingListRemoteSource {
   }
 
   // Item queries
+  Future<ShoppingListItem> getShoppingListItem(String id) async {
+    final item =
+        dummyData.shoppingListItems.firstWhere((item) => item.id == id);
+    return _transformShoppingListItemData(item);
+  }
+
   Future<ShoppingListItem> updateShoppingListItem(
       UpdateShoppingListItemInput input) async {
     final updatedItem = RawShoppingListItem(

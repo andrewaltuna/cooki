@@ -38,6 +38,9 @@ class ShoppingListScreen extends HookWidget {
       ),
     );
 
+    print('Shopping list ${shoppingList}');
+
+    // TODO: Use isInitialLoading (already takes this into account)
     if (isFetching.isLoading && shoppingList == null) {
       return const Center(
         child: Text("Fetching..."),
@@ -172,6 +175,16 @@ class _ShoppingListItem extends StatelessWidget {
               'Php ${item.product.price.toString()}',
             ),
           ],
+        ),
+        const Spacer(),
+        IconButton(
+          icon: Icon(
+            Icons.edit,
+          ),
+          onPressed: () => context.go(
+            Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId/edit-item/${item.id}')
+                .toString(),
+          ),
         )
       ],
     );

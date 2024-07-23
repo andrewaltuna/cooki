@@ -34,6 +34,11 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
 
   // Item Methods
   @override
+  Future<ShoppingListItem> getShoppingListItem(String id) {
+    return _remoteSource.getShoppingListItem(id);
+  }
+
+  @override
   Future<ShoppingListItem> createShoppingListItem(
       CreateShoppingListItemInput input) async {
     return _remoteSource.createShoppingListItem(input);

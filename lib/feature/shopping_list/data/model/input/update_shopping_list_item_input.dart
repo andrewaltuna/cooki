@@ -26,6 +26,22 @@ class UpdateShoppingListItemInput extends Equatable {
     };
   }
 
+  UpdateShoppingListItemInput copyWith({
+    String? id,
+    String? label,
+    ProductOutput? product,
+    int? quantity,
+    bool? isChecked,
+  }) {
+    return UpdateShoppingListItemInput(
+      id: id ?? this.id,
+      label: label ?? this.label,
+      product: product ?? this.product,
+      quantity: quantity ?? this.quantity,
+      isChecked: isChecked ?? this.isChecked,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,
