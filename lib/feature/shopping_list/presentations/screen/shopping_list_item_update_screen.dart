@@ -26,6 +26,7 @@ class ShoppingListItemUpdateScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Logic is similar to that of shopping_list_screen, but shoppingListItem doesn't change (always stays null)
     useOnWidgetLoad(() {
       context.read<ShoppingListViewModel>().add(
             ShoppingListItemRequested(
