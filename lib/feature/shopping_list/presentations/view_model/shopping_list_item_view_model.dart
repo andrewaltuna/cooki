@@ -58,7 +58,6 @@ class ShoppingListItemViewModel
         submissionStatus: ViewModelStatus.initial,
       ),
     );
-    print('Deselected');
   }
 
   Future<void> _onItemCreated(ShoppingListItemCreated event,
@@ -120,7 +119,6 @@ class ShoppingListItemViewModel
     ShoppingListItemDeleted event,
     Emitter<ShoppingListItemState> emit,
   ) async {
-    print('Deleting...');
     try {
       emit(
         state.copyWith(status: ViewModelStatus.loading),
@@ -138,7 +136,6 @@ class ShoppingListItemViewModel
           item: null,
         ),
       );
-      print('Deleted');
     } on Exception catch (error) {
       emit(
         state.copyWith(

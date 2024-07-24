@@ -30,62 +30,6 @@ class ShoppingListItemUpdateScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // useOnWidgetLoad(() {
-    //   context.read<ShoppingListItemViewModel>().add(
-    //         ShoppingListItemRequested(
-    //           shoppingListItemId: shoppingListItemId,
-    //         ),
-    //       );
-    // });
-
-    // final (isFetchingItems, item, submissionStatus) = context.select(
-    //   (ShoppingListItemViewModel viewModel) => (
-    //     viewModel.state.isInitialLoading,
-    //     viewModel.state.item,
-    //     viewModel.state.submissionStatus,
-    //   ),
-    // );
-
-    // // useEffect(() {
-    // //   return () {
-    // //     context.read<ShoppingListItemViewModel>().add(
-    // //           const ShoppingListItemDeselected(),
-    // //         );
-    // //   };
-    // // }, [submissionStatus]);
-
-    // if (isFetchingItems || isFetchingProducts) {
-    //   return const Center(
-    //     child: Column(
-    //       children: [
-    //         Text("Fetching Item..."),
-    //         CircularProgressIndicator(),
-    //       ],
-    //     ),
-    //   );
-    // } else if (item == null) {
-    //   return Center(
-    //     child: Column(
-    //       children: [
-    //         Text('Not Found'),
-    //         TextButton(
-    //           onPressed: () => context.go(
-    //             Uri(
-    //               path: '${AppRoutes.shoppingLists}/$shoppingListId',
-    //             ).toString(),
-    //           ),
-    //           child: Text('Go Back'),
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // }
-
-    // print('Submission status $submissionStatus');
-
-    // 1st Widget = scaffold
-    // 2nd Widget = provider
-    // 3rd Widget = remaining content
     return MainScaffold(
       body: BlocProvider(
         create: (_) => ShoppingListItemViewModel(shoppingListRepository)
