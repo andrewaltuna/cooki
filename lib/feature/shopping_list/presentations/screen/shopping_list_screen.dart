@@ -54,6 +54,27 @@ class ShoppingListScreen extends HookWidget {
         shoppingList.items, (ShoppingListItem obj) => obj.product.category);
 
     return MainScaffold(
+      title: shoppingList.name,
+      leading: IconButton(
+        onPressed: () {
+          context.go(
+            Uri(
+              path: AppRoutes.shoppingLists,
+            ).toString(),
+          );
+        },
+        icon: const Icon(Icons.arrow_back),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            // TODO: Redirect to lists page after deletion
+            context.read<ShoppingListViewModel>().add(ShoppingListDeleted(id));
+          },
+          icon: const Icon(Icons.delete),
+        ),
+      ],
+      contentPadding: EdgeInsets.zero,
       body: SingleChildScrollView(
         child: Column(
           children: [
