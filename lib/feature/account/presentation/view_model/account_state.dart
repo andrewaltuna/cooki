@@ -23,6 +23,9 @@ class AccountState extends Equatable {
     );
   }
 
+  bool get isInitialLoading =>
+      (status.isInitial || status.isLoading) && user.isEmpty;
+
   bool get shouldShowInitialPrefsModal =>
       user.isNotEmpty && !user.hasSetInitialPreferences;
 

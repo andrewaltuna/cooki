@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:cooki/common/component/button/ink_well_button.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/preferences/data/enum/medication.dart';
@@ -148,30 +149,24 @@ class _MedicationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.backgroundSecondary,
-      borderRadius: BorderRadius.circular(8),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                medication.displayLabel,
-                style: AppTextStyles.bodySmall,
-              ),
-              const SizedBox(width: 4),
-              const Icon(
-                Icons.close,
-                size: 16,
-                color: AppColors.fontPrimary,
-              ),
-            ],
+    return InkWellButton(
+      onPressed: onPressed,
+      circularBorderRadius: 8,
+      circularPadding: 8,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            medication.displayLabel,
+            style: AppTextStyles.bodySmall,
           ),
-        ),
+          const SizedBox(width: 4),
+          const Icon(
+            Icons.close,
+            size: 16,
+            color: AppColors.fontPrimary,
+          ),
+        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cooki/common/extension/context_route.dart';
@@ -13,46 +14,45 @@ class MainNavigationBar extends StatelessWidget {
     return Container(
       height: 60,
       decoration: const BoxDecoration(
-        color: AppColors.accent,
+        color: AppColors.backgroundPrimary,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 2), // changes position of shadow
+            blurRadius: 7,
+            offset: Offset(0, 2),
           ),
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _MainNavBarItem(
             label: 'Home',
+            location: AppRoutes.home,
             icon: Ionicons.home_outline,
             selectedIcon: Ionicons.home,
             isSelected: context.isHomeRoute,
-            onPressed: () => context.go(AppRoutes.home),
           ),
           _MainNavBarItem(
-            label: 'Map',
-            icon: Ionicons.compass_outline,
-            selectedIcon: Ionicons.compass,
-            isSelected: context.isMapRoute,
-            onPressed: () => context.go(AppRoutes.map),
-          ),
-          _MainNavBarItem(
-            label: 'Shopping List',
+            label: 'List',
+            location: AppRoutes.shoppingLists,
             icon: Ionicons.cart_outline,
             selectedIcon: Ionicons.cart,
             isSelected: context.isShoppingListRoute,
-            onPressed: () => context.go(AppRoutes.shoppingLists),
           ),
           _MainNavBarItem(
-            label: 'Settings',
-            icon: Ionicons.settings_outline,
-            selectedIcon: Ionicons.settings,
+            label: 'Explore',
+            location: AppRoutes.map,
+            icon: Ionicons.compass_outline,
+            selectedIcon: Ionicons.compass,
+            isSelected: context.isMapRoute,
+          ),
+          _MainNavBarItem(
+            label: 'Account',
+            location: AppRoutes.settings,
+            icon: Ionicons.person_circle_outline,
+            selectedIcon: Ionicons.person_circle,
             isSelected: context.isSettingsRoute,
-            onPressed: () => context.go(AppRoutes.settings),
           ),
         ],
       ),
@@ -63,29 +63,43 @@ class MainNavigationBar extends StatelessWidget {
 class _MainNavBarItem extends StatelessWidget {
   const _MainNavBarItem({
     required this.label,
+    required this.location,
     required this.icon,
     required this.selectedIcon,
     required this.isSelected,
-    required this.onPressed,
   });
 
   final String label;
+  final String location;
   final IconData icon;
   final IconData selectedIcon;
   final bool isSelected;
-  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: isSelected ? null : onPressed,
-      child: IconButton(
-        color: AppColors.primary,
-        disabledColor: AppColors.primary,
-        onPressed: isSelected ? null : onPressed,
-        icon: Icon(
-          isSelected ? selectedIcon : icon,
-          size: 32,
+    final color = isSelected ? AppColors.accent : AppColors.primary;
+    final fontWeight = isSelected ? FontWeight.bold : FontWeight.normal;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => isSelected ? null : context.go(location),
+        behavior: HitTestBehavior.translucent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isSelected ? selectedIcon : icon,
+              size: 20,
+              color: color,
+            ),
+            Text(
+              label,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: color,
+                fontWeight: fontWeight,
+              ),
+            )
+          ],
         ),
       ),
     );

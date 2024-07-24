@@ -1,7 +1,3 @@
-import 'package:cooki/common/component/indicator/loading_indicator.dart';
-import 'package:cooki/feature/account/data/di/account_service_locator.dart';
-import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
-import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
 import 'package:cooki/feature/beacon/data/di/beacon_service_locator.dart';
 import 'package:cooki/feature/beacon/presentation/view_model/beacon_view_model.dart';
 import 'package:cooki/feature/chat/data/di/chat_service_locator.dart';
@@ -31,15 +27,6 @@ class AuthenticatedBlocs extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          lazy: false,
-          create: (_) {
-            final initialUser = context.read<AuthViewModel>().state.user;
-
-            return AccountViewModel(accountRepository)
-              ..add(AccountInitialized(initialUser));
-          },
-        ),
-        BlocProvider(
           create: (_) => BeaconViewModel(beaconRepository)
             ..add(const BeaconSubscriptionInitialized())
             ..add(const BeaconPermissionsValidated()),
@@ -58,21 +45,7 @@ class AuthenticatedBlocs extends StatelessWidget {
             create: (_) => ProductViewModel(productRepository)
               ..add(const ProductsRequested())),
       ],
-      child: BlocBuilder<AccountViewModel, AccountState>(
-        buildWhen: (previous, current) =>
-            previous.user.isEmpty || current.user.isEmpty,
-        builder: (context, state) {
-          if (state.user.isEmpty) {
-            return const Scaffold(
-              body: Center(
-                child: LoadingIndicator(),
-              ),
-            );
-          }
-
-          return child;
-        },
-      ),
+      child: child,
     );
   }
 }

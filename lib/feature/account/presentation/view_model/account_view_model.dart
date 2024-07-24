@@ -10,23 +10,64 @@ part 'account_state.dart';
 
 class AccountViewModel extends Bloc<AccountEvent, AccountState> {
   AccountViewModel(this._accountRepository) : super(const AccountState()) {
-    on<AccountInitialized>(_onAccountInitialized);
+    on<AccountRequested>(_onRequested);
+    on<AccountRegistered>(_onRegistered);
     on<AccountInitialPrefsSet>(_onInitialPrefsSet);
+    on<AccountCleared>(_onCleared);
   }
 
   final AccountRepositoryInterface _accountRepository;
 
-  void _onAccountInitialized(
-    AccountInitialized event,
+  Future<void> _onRequested(
+    AccountRequested event,
     Emitter<AccountState> emit,
-  ) {
-    print('ACCOUNT INITIALIZED');
-    emit(
-      state.copyWith(
-        status: ViewModelStatus.success,
-        user: event.user,
-      ),
-    );
+  ) async {
+    try {
+      emit(state.copyWith(status: ViewModelStatus.loading));
+
+      final user = await _accountRepository.getUserProfile();
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          user: user,
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onRegistered(
+    AccountRegistered event,
+    Emitter<AccountState> emit,
+  ) async {
+    try {
+      if (state.status.isLoading) return;
+
+      emit(state.copyWith(status: ViewModelStatus.loading));
+
+      final user = await _accountRepository.createUserProfile(event.name);
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          user: user,
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
   }
 
   void _onInitialPrefsSet(
@@ -56,5 +97,12 @@ class AccountViewModel extends Bloc<AccountEvent, AccountState> {
         ),
       );
     }
+  }
+
+  void _onCleared(
+    AccountCleared _,
+    Emitter<AccountState> emit,
+  ) async {
+    emit(const AccountState());
   }
 }

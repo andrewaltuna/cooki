@@ -3,39 +3,43 @@ part of 'auth_view_model.dart';
 class AuthState extends Equatable {
   const AuthState({
     this.status = ViewModelStatus.initial,
-    this.user = UserOutput.empty,
-    this.isFireAuth = false,
+    this.isAuthenticated = false,
+    this.isRegistered = false,
     this.error,
   });
 
   final ViewModelStatus status;
-  final UserOutput user;
 
   /// To check if the user is authenticated with Firebase
-  final bool isFireAuth;
+  final bool isAuthenticated;
+
+  /// To check if the user has a registered user profile
+  final bool isRegistered;
   final Exception? error;
 
   AuthState copyWith({
     ViewModelStatus? status,
-    UserOutput? user,
-    bool? isFireAuth,
+    bool? isAuthenticated,
+    bool? isRegistered,
     Exception? error,
   }) {
     return AuthState(
       status: status ?? this.status,
-      user: user ?? this.user,
-      isFireAuth: isFireAuth ?? this.isFireAuth,
+      isRegistered: isRegistered ?? this.isRegistered,
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
       error: error,
     );
   }
 
-  bool get isRegistered => user.isNotEmpty;
+  bool get isFetchingAuthStatus => status.isInitial || status.isLoading;
+
+  bool get isAuthorized => isAuthenticated && isRegistered;
 
   @override
   List<Object?> get props => [
         status,
-        user,
-        isFireAuth,
+        isAuthenticated,
+        isRegistered,
         error,
       ];
 }

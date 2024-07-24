@@ -1,10 +1,12 @@
 import 'package:cooki/common/component/authenticated_blocs.dart';
 import 'package:cooki/common/map/presentation/screen/map_screen.dart';
+import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_create_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_update_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_lists_screen.dart';
+import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
 import 'package:cooki/feature/preferences/presentation/screen/preferences_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,106 +20,117 @@ import 'package:cooki/feature/chat/presentation/screen/chat_screen.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _authShellNavigatorKey = GlobalKey<NavigatorState>();
 
+final _routes = [
+  // Default route
+  _goRoute(
+    path: AppRoutes.loading,
+    child: const LoadingScreen(),
+  ),
+
+  // Unauthenticated routes
+  _goRoute(
+    path: AppRoutes.login,
+    child: const LoginScreen(),
+  ),
+  _goRoute(
+    path: AppRoutes.registration,
+    child: const RegistrationScreen(),
+  ),
+  _goRoute(
+    path: AppRoutes.completeRegistration,
+    child: const CompleteRegistrationScreen(),
+  ),
+
+  // Authenticated routes
+  ShellRoute(
+    navigatorKey: _authShellNavigatorKey,
+    builder: (_, __, child) {
+      return AuthenticatedBlocs(
+        child: child,
+      );
+    },
+    routes: [
+      _goRoute(
+        path: AppRoutes.home,
+        child: const ChatScreen(),
+      ),
+      _goRoute(
+        path: AppRoutes.map,
+        child: const MapScreen(),
+      ),
+      _goRoute(
+        path: AppRoutes.settings,
+        child: const PreferencesScreen(),
+      ),
+      _goRoute(
+        path: AppRoutes.shoppingLists,
+        child: const ShoppingListsScreen(),
+      ),
+      // TODO: Consolidate w/ _goRoute
+      GoRoute(
+        path: '${AppRoutes.shoppingLists}/:id',
+        pageBuilder: (_, state) {
+          final String shoppingListId = state.pathParameters["id"] as String;
+          return _pageWithDefaultTransition(
+            state,
+            child: ShoppingListScreen(
+              id: shoppingListId,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '${AppRoutes.shoppingLists}/:id/create-item',
+        pageBuilder: (_, state) {
+          final String shoppingListId = state.pathParameters["id"] as String;
+          return _pageWithDefaultTransition(
+            state,
+            child: ShoppingListItemCreateScreen(
+              shoppingListId: shoppingListId,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '${AppRoutes.shoppingLists}/:id/edit-item/:itemId',
+        pageBuilder: (_, state) {
+          final String shoppingListId = state.pathParameters["id"] as String;
+          final String shoppingListItemId =
+              state.pathParameters["itemId"] as String;
+          return _pageWithDefaultTransition(
+            state,
+            child: ShoppingListItemUpdateScreen(
+              shoppingListId: shoppingListId,
+              shoppingListItemId: shoppingListItemId,
+            ),
+          );
+        },
+      ),
+    ],
+  ),
+];
+
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  routes: [
-    // Unauthenticated routes
-    _goRoute(
-      path: AppRoutes.login,
-      child: const LoginScreen(),
-    ),
-    _goRoute(
-      path: AppRoutes.registration,
-      child: const RegistrationScreen(),
-    ),
-    _goRoute(
-      path: AppRoutes.completeRegistration,
-      child: const CompleteRegistrationScreen(),
-    ),
-
-    // Authenticated routes
-    ShellRoute(
-      navigatorKey: _authShellNavigatorKey,
-      builder: (_, __, child) {
-        return AuthenticatedBlocs(
-          child: child,
-        );
-      },
-      routes: [
-        _goRoute(
-          path: AppRoutes.home,
-          child: const ChatScreen(),
-        ),
-        _goRoute(
-          path: AppRoutes.map,
-          child: const MapScreen(),
-        ),
-        _goRoute(
-          path: AppRoutes.settings,
-          child: const PreferencesScreen(),
-        ),
-        _goRoute(
-          path: AppRoutes.shoppingLists,
-          child: const ShoppingListsScreen(),
-        ),
-        // TODO: Consolidate w/ _goRoute
-        GoRoute(
-          path: '${AppRoutes.shoppingLists}/:id',
-          pageBuilder: (_, state) {
-            final String shoppingListId = state.pathParameters["id"] as String;
-            return _pageWithDefaultTransition(
-              state,
-              child: ShoppingListScreen(
-                id: shoppingListId,
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          path: '${AppRoutes.shoppingLists}/:id/create-item',
-          pageBuilder: (_, state) {
-            final String shoppingListId = state.pathParameters["id"] as String;
-            return _pageWithDefaultTransition(
-              state,
-              child: ShoppingListItemCreateScreen(
-                shoppingListId: shoppingListId,
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          path: '${AppRoutes.shoppingLists}/:id/edit-item/:itemId',
-          pageBuilder: (_, state) {
-            final String shoppingListId = state.pathParameters["id"] as String;
-            final String shoppingListItemId =
-                state.pathParameters["itemId"] as String;
-            return _pageWithDefaultTransition(
-              state,
-              child: ShoppingListItemUpdateScreen(
-                shoppingListId: shoppingListId,
-                shoppingListItemId: shoppingListItemId,
-              ),
-            );
-          },
-        ),
-      ],
-    ),
-  ],
+  routes: _routes,
   redirect: (context, state) {
     final authState = context.read<AuthViewModel>().state;
+    final accountState = context.read<AccountViewModel>().state;
 
-    final isAuthenticated = authState.isFireAuth;
-    final isRegistered = authState.isRegistered;
+    final isLoadingScreen = state.fullPath == AppRoutes.loading;
+    final isAuthPath = AppRoutes.authPaths.contains(state.fullPath);
 
-    final isAuthScreen = state.fullPath == AppRoutes.login ||
-        state.fullPath == AppRoutes.registration ||
-        state.fullPath == AppRoutes.completeRegistration;
+    final isAuthLoading = authState.isFetchingAuthStatus ||
+        (authState.isAuthorized && accountState.isInitialLoading);
 
-    if (isAuthenticated) {
-      if (!isRegistered) return AppRoutes.completeRegistration;
-      if (isAuthScreen) return AppRoutes.home;
+    if (isAuthLoading) return AppRoutes.loading;
+
+    if (authState.isAuthenticated) {
+      if (!authState.isRegistered) return AppRoutes.completeRegistration;
+      if (accountState.user.isEmpty) return null;
+      if (isAuthPath || isLoadingScreen) return AppRoutes.home;
     } else {
-      if (!isAuthScreen) return AppRoutes.login;
+      if (!isAuthPath || isLoadingScreen) return AppRoutes.login;
     }
 
     return null;
