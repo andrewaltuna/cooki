@@ -126,7 +126,6 @@ class _ShoppingListItemUpdateHeader extends StatelessWidget {
 
   final String shoppingListId;
   final String shoppingListItemId;
-// TODO: Ask why when chaining delete and deselect, deselect finishes before delete
   void _onSubmitted(
       BuildContext context, String shoppingListId, String itemId) {
     {
