@@ -69,7 +69,6 @@ class ShoppingListRemoteSource {
       final result = new List<Map<String, dynamic>>.from(data['shoppingLists']);
 
       final shoppingListData = result.map(ShoppingList.fromJson).toList();
-      print('SHOPPING LIST DATA: $shoppingListData');
     });
     final shoppingListData = dummyData.shoppingLists;
 

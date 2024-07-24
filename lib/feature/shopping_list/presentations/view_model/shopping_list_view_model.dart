@@ -1,5 +1,6 @@
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ShoppingListRequested>(_onSelected);
     on<ShoppingListCreated>(_onCreated);
     on<ShoppingListDeleted>(_onDeleted);
+    on<ShoppingListItemToggled>(_onItemToggle);
   }
 
   final ShoppingListRepositoryInterface _repository;
@@ -122,6 +124,46 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
           shoppingLists: state.shoppingLists
               .where((list) => list.id != result.id)
               .toList(),
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onItemToggle(
+    ShoppingListItemToggled event,
+    Emitter<ShoppingListState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(status: ViewModelStatus.loading),
+      );
+
+      final input = UpdateShoppingListItemInput(
+        id: event.item.id,
+        label: event.item.label,
+        productId: event.item.product.id,
+        quantity: event.item.quantity,
+        isChecked: !event.item.isChecked,
+      );
+
+      final result = await _repository.updateShoppingListItem(input);
+
+      final shoppingList = state.selectedShoppingList!;
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          selectedShoppingList: shoppingList.copyWith(
+            items: shoppingList.items
+                .map((list) => list.id == result.id ? result : list)
+                .toList(),
+          ),
         ),
       );
     } on Exception catch (error) {

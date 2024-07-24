@@ -4,6 +4,7 @@ import 'package:cooki/common/extension/enum_extension.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
+import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
@@ -164,15 +165,9 @@ class _ShoppingListItem extends StatelessWidget {
         Checkbox(
           value: item.isChecked,
           onChanged: (res) {
-            context.read<ShoppingListItemViewModel>().add(
-                  ShoppingListItemUpdated(
-                    input: UpdateShoppingListItemInput(
-                      id: item.id,
-                      label: item.label,
-                      productId: item.product.id,
-                      quantity: item.quantity,
-                      isChecked: !item.isChecked,
-                    ),
+            context.read<ShoppingListViewModel>().add(
+                  ShoppingListItemToggled(
+                    item,
                   ),
                 );
           },

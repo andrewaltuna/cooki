@@ -53,3 +53,13 @@ class ShoppingListDeleted extends ShoppingListEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class ShoppingListItemToggled extends ShoppingListEvent {
+  const ShoppingListItemToggled(this.item);
+  final ShoppingListItem item;
+
+  @override
+  List<Object?> get props => [
+        item,
+      ];
+}
