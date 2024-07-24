@@ -1,7 +1,5 @@
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

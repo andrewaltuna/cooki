@@ -130,14 +130,12 @@ class _ShoppingListItemUpdateHeader extends StatelessWidget {
   void _onSubmitted(
       BuildContext context, String shoppingListId, String itemId) {
     {
-      context.read<ShoppingListItemViewModel>()
-        ..add(
-          ShoppingListItemDeleted(
-            shoppingListId: shoppingListId,
-            id: itemId,
-          ),
-        )
-        ..add(const ShoppingListItemDeselected());
+      context.read<ShoppingListItemViewModel>().add(
+            ShoppingListItemDeleted(
+              shoppingListId: shoppingListId,
+              id: itemId,
+            ),
+          );
     }
   }
 
@@ -219,13 +217,11 @@ class ShoppingListItemUpdateForm extends HookWidget {
   void _onSubmit(BuildContext context,
       ValueNotifier<UpdateShoppingListItemInput> formInput) {
     if (_formKey.currentState!.validate()) {
-      context.read<ShoppingListItemViewModel>()
-        ..add(
-          ShoppingListItemUpdated(
-            input: formInput.value,
-          ),
-        );
-      // ..add(const ShoppingListItemDeselected());
+      context.read<ShoppingListItemViewModel>().add(
+            ShoppingListItemUpdated(
+              input: formInput.value,
+            ),
+          );
     }
   }
 

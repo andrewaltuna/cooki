@@ -14,7 +14,6 @@ class ShoppingListItemViewModel
   ShoppingListItemViewModel(this._repository)
       : super(const ShoppingListItemState()) {
     on<ShoppingListItemRequested>(_onItemRequested);
-    on<ShoppingListItemDeselected>(_onItemDeselect);
     on<ShoppingListItemCreated>(_onItemCreated);
     on<ShoppingListItemUpdated>(_onItemUpdated);
     on<ShoppingListItemDeleted>(_onItemDeleted);
@@ -49,36 +48,25 @@ class ShoppingListItemViewModel
     }
   }
 
-  void _onItemDeselect(
-      ShoppingListItemDeselected event, Emitter<ShoppingListItemState> emit) {
-    emit(
-      state.copyWith(
-        item: null,
-        status: ViewModelStatus.initial,
-        submissionStatus: ViewModelStatus.initial,
-      ),
-    );
-  }
-
   Future<void> _onItemCreated(ShoppingListItemCreated event,
       Emitter<ShoppingListItemState> emit) async {
     try {
       emit(
-        state.copyWith(status: ViewModelStatus.loading),
+        state.copyWith(submissionStatus: ViewModelStatus.loading),
       );
 
       await _repository.createShoppingListItem(event.input);
 
       emit(
         state.copyWith(
-          status: ViewModelStatus.success,
+          submissionStatus: ViewModelStatus.success,
           item: null,
         ),
       );
     } on Exception catch (error) {
       emit(
         state.copyWith(
-          status: ViewModelStatus.error,
+          submissionStatus: ViewModelStatus.error,
           error: error,
         ),
       );
@@ -92,7 +80,7 @@ class ShoppingListItemViewModel
     try {
       emit(
         state.copyWith(
-          status: ViewModelStatus.loading,
+          submissionStatus: ViewModelStatus.loading,
         ),
       );
 
@@ -101,14 +89,12 @@ class ShoppingListItemViewModel
       emit(
         state.copyWith(
           submissionStatus: ViewModelStatus.success,
-          item: null,
-          status: ViewModelStatus.initial,
         ),
       );
     } on Exception catch (error) {
       emit(
         state.copyWith(
-          status: ViewModelStatus.error,
+          submissionStatus: ViewModelStatus.error,
           error: error,
         ),
       );
@@ -124,7 +110,7 @@ class ShoppingListItemViewModel
         state.copyWith(status: ViewModelStatus.loading),
       );
 
-      final result = await _repository.deleteShoppingListItem(
+      await _repository.deleteShoppingListItem(
         event.shoppingListId,
         event.id,
       );
@@ -132,14 +118,12 @@ class ShoppingListItemViewModel
       emit(
         state.copyWith(
           submissionStatus: ViewModelStatus.success,
-          status: ViewModelStatus.success,
-          item: null,
         ),
       );
     } on Exception catch (error) {
       emit(
         state.copyWith(
-          status: ViewModelStatus.error,
+          submissionStatus: ViewModelStatus.error,
           error: error,
         ),
       );
