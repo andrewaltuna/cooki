@@ -22,7 +22,7 @@ class ShoppingList extends Equatable {
     final listItems = json['items'] as List;
 
     return empty.copyWith(
-      id: json['id'],
+      id: json['_id'],
       name: json['name'],
       budget: json['budget'],
       items: listItems.map((item) => ShoppingListItem.fromJson(item)).toList(),

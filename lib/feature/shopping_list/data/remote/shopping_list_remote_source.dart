@@ -1,3 +1,4 @@
+import 'package:cooki/common/extension/graphql_extensions.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
@@ -59,6 +60,12 @@ class ShoppingListRemoteSource {
   }
 
   Future<List<ShoppingListOutput>> getShoppingLists() async {
+    final response = await _graphQLClient
+        .query(QueryOptions(document: gql(_getShoppingListsQuery)));
+
+    response.result(onSuccess: (data) {
+      // TODO: Return this
+    });
     final shoppingListData = dummyData.shoppingLists;
 
     return shoppingListData
@@ -184,3 +191,127 @@ class ShoppingListRemoteSource {
     return _transformShoppingListItemData(deletedShoppingListItem);
   }
 }
+
+const _getShoppingListsQuery = r'''
+query GetShoppingLists {
+  shoppingLists {
+    _id
+    name
+    userId
+    description
+    items {
+      _id
+    }
+  }
+}
+''';
+
+const _getShoppingListQuery = r'''
+  query GetShoppingList($id: String!) {
+    shoppingList(id: $id) {
+      _id
+      name
+      description
+      items {
+        _id
+        label
+        quantity
+        isChecked
+        product {
+          _id
+          brand
+          category
+          price
+          section
+          unitSize
+        }
+      }
+    }
+  }
+''';
+
+const _createShoppingListMutation = r'''
+  mutation CreateShoppingList($input: CreateShoppingListInput!) {
+    createShoppingList(createShoppingListInput: $input) {
+      _id
+      name
+      description
+      items {
+        _id
+      } 
+    }
+  }
+''';
+
+const _deleteShoppingListMutation = r'''
+  mutation DeleteShoppingList($id: String!) {
+    deleteShoppingList(id: $id) {
+      _id
+    }
+  }
+''';
+
+const _getShoppingListItemQuery = r'''
+  query GetShoppingListItem($id: String!) {
+    shoppingListItem(id: $id) {
+      _id
+      label
+      quantity
+      isChecked
+      product {
+        _id
+        brand
+        category
+        price
+        section
+        unitSize
+      }
+    }
+  }
+''';
+
+const _updateShoppingListItemMutation = r'''
+  mutation UpdateShoppingListItem($input: UpdateShoppingListItemInput!) {
+    updateShoppingListItem(updateShoppingListItemInput: $input) {
+      _id
+      label
+      quantity
+      isChecked
+      product {
+        _id
+        brand
+        category
+        price
+        section
+        unitSize
+      }
+    }
+  }
+''';
+
+const _createShoppingListItemMutation = r'''
+  mutation CreateShoppingListItem($input: CreateShoppingListItemInput!) {
+    createShoppingListItem(createShoppingListItemInput: $input) {
+      _id
+      label
+      quantity
+      isChecked
+      product {
+        _id
+        brand
+        category
+        price
+        section
+        unitSize
+      }
+    }
+  }
+''';
+
+const _deleteShoppingListItemMutation = r'''
+  mutation DeleteShoppingListItem($shoppingListId: String!, $id: String!) {
+    deleteShoppingListItem(shoppingListId: $shoppingListId, id: $id) {
+      _id
+    }
+  }
+''';

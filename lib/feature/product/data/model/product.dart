@@ -34,7 +34,7 @@ class Product extends Equatable {
     final keyIngredients = json['key_ingredients'] as List;
 
     return empty.copyWith(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       category: ProductCategory.values.firstWhere(
         (element) => element.apiValue == productCategory,
         orElse: () => ProductCategory.values.first,

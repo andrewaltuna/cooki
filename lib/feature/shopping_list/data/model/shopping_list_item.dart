@@ -1,4 +1,3 @@
-import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:equatable/equatable.dart';
 
@@ -21,7 +20,7 @@ class ShoppingListItem extends Equatable {
 
   factory ShoppingListItem.fromJson(Map<String, dynamic> json) {
     return empty.copyWith(
-      id: json['id'],
+      id: json['_id'],
       label: json['label'],
       product: Product.fromJson(json['product']),
       quantity: json['quantity'],
