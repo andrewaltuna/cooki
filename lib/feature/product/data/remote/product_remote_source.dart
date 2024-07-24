@@ -1,5 +1,6 @@
 import 'package:cooki/common/extension/graphql_extensions.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
+import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/shopping_list/data/remote/shopping_list_dummy_data.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -15,7 +16,10 @@ class ProductRemoteSource {
     );
 
     response.result(onSuccess: (data) {
-      // TODO: Parse and return data
+      // TODO: Return data
+      final result = new List<Map<String, dynamic>>.from(data['products']);
+
+      final productData = result.map(Product.fromJson).toList();
     });
 
     final data = dummyData.products;

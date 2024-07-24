@@ -1,4 +1,4 @@
-import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:equatable/equatable.dart';
 
 class ShoppingList extends Equatable {

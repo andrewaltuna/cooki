@@ -5,6 +5,7 @@ import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_lis
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_output.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/data/remote/shopping_list_dummy_data.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -65,6 +66,10 @@ class ShoppingListRemoteSource {
 
     response.result(onSuccess: (data) {
       // TODO: Return this
+      final result = new List<Map<String, dynamic>>.from(data['shoppingLists']);
+
+      final shoppingListData = result.map(ShoppingList.fromJson).toList();
+      print('SHOPPING LIST DATA: $shoppingListData');
     });
     final shoppingListData = dummyData.shoppingLists;
 
