@@ -4,6 +4,7 @@ import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
+import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
@@ -23,77 +24,74 @@ class ShoppingListItemCreateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ShoppingListViewModel, ShoppingListState>(
-      listener: (context, state) {
-        if (state.status.isSuccess) {
-          context.go(
-            Uri(
-              path: '${AppRoutes.shoppingLists}/$shoppingListId',
-            ).toString(),
-          );
-        }
-      },
-      child: MainScaffold(
-        body: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => context.go(
-                            Uri(
-                              path:
-                                  '${AppRoutes.shoppingLists}/$shoppingListId',
-                            ).toString(),
-                          ),
-                          icon: Icon(
-                            Icons.arrow_back_sharp,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12.0,
-                        ),
-                        Text(
-                          "Item Details",
-                          style: AppTextStyles.titleLarge,
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.menu,
-                      ),
+    return BlocProvider(
+      create: (_) => ShoppingListItemViewModel(shoppingListRepository),
+      child: BlocListener<ShoppingListViewModel, ShoppingListState>(
+        listener: (context, state) {
+          if (state.status.isSuccess) {
+            context.go(
+              Uri(
+                path: '${AppRoutes.shoppingLists}/$shoppingListId',
+              ).toString(),
+            );
+          }
+        },
+        child: MainScaffold(
+          body: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                    vertical: 16.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => context.go(
+                              Uri(
+                                path:
+                                    '${AppRoutes.shoppingLists}/$shoppingListId',
+                              ).toString(),
+                            ),
+                            icon: Icon(
+                              Icons.arrow_back_sharp,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12.0,
+                          ),
+                          Text(
+                            "Item Details",
+                            style: AppTextStyles.titleLarge,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: ShoppingListItemCreateForm(
-                shoppingListId: shoppingListId,
+              Expanded(
+                child: ShoppingListItemCreateForm(
+                  shoppingListId: shoppingListId,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

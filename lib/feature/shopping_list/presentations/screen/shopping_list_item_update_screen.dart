@@ -28,37 +28,90 @@ class ShoppingListItemUpdateScreen extends HookWidget {
   final String shoppingListId;
   final String shoppingListItemId;
 
-  // TODO: Fix (on delete, it still shows the deleted item upon selecting a new item)
-  void _onSubmitted(
-      BuildContext context, String shoppingListId, String itemId) {
-    {
-      context.read<ShoppingListItemViewModel>()
-        ..add(
-          ShoppingListItemDeleted(
-            shoppingListId: shoppingListId,
-            id: itemId,
-          ),
-        )
-        ..add(const ShoppingListItemDeselected());
-    }
+  @override
+  Widget build(BuildContext context) {
+    // useOnWidgetLoad(() {
+    //   context.read<ShoppingListItemViewModel>().add(
+    //         ShoppingListItemRequested(
+    //           shoppingListItemId: shoppingListItemId,
+    //         ),
+    //       );
+    // });
+
+    // final (isFetchingItems, item, submissionStatus) = context.select(
+    //   (ShoppingListItemViewModel viewModel) => (
+    //     viewModel.state.isInitialLoading,
+    //     viewModel.state.item,
+    //     viewModel.state.submissionStatus,
+    //   ),
+    // );
+
+    // // useEffect(() {
+    // //   return () {
+    // //     context.read<ShoppingListItemViewModel>().add(
+    // //           const ShoppingListItemDeselected(),
+    // //         );
+    // //   };
+    // // }, [submissionStatus]);
+
+    // if (isFetchingItems || isFetchingProducts) {
+    //   return const Center(
+    //     child: Column(
+    //       children: [
+    //         Text("Fetching Item..."),
+    //         CircularProgressIndicator(),
+    //       ],
+    //     ),
+    //   );
+    // } else if (item == null) {
+    //   return Center(
+    //     child: Column(
+    //       children: [
+    //         Text('Not Found'),
+    //         TextButton(
+    //           onPressed: () => context.go(
+    //             Uri(
+    //               path: '${AppRoutes.shoppingLists}/$shoppingListId',
+    //             ).toString(),
+    //           ),
+    //           child: Text('Go Back'),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
+
+    // print('Submission status $submissionStatus');
+
+    // 1st Widget = scaffold
+    // 2nd Widget = provider
+    // 3rd Widget = remaining content
+    return MainScaffold(
+      body: BlocProvider(
+        create: (_) => ShoppingListItemViewModel(shoppingListRepository)
+          ..add(ShoppingListItemRequested(
+              shoppingListItemId: shoppingListItemId)),
+        child: _ShoppingListItemUpdateScreenContent(
+          shoppingListId: shoppingListId,
+          shoppingListItemId: shoppingListItemId,
+        ),
+      ),
+    );
   }
+}
+
+class _ShoppingListItemUpdateScreenContent extends StatelessWidget {
+  const _ShoppingListItemUpdateScreenContent({
+    super.key,
+    required this.shoppingListId,
+    required this.shoppingListItemId,
+  });
+
+  final String shoppingListId;
+  final String shoppingListItemId;
 
   @override
   Widget build(BuildContext context) {
-    useOnWidgetLoad(() {
-      context.read<ShoppingListItemViewModel>().add(
-            ShoppingListItemRequested(
-              shoppingListItemId: shoppingListItemId,
-            ),
-          );
-    });
-
-    final (isFetchingItems, item) = context.select(
-      (ShoppingListItemViewModel viewModel) => (
-        viewModel.state.isInitialLoading,
-        viewModel.state.item,
-      ),
-    );
     final (products, isFetchingProducts) = context.select(
       (ProductViewModel viewModel) => (
         viewModel.state.products,
@@ -66,9 +119,21 @@ class ShoppingListItemUpdateScreen extends HookWidget {
       ),
     );
 
-    if (isFetchingItems || isFetchingProducts) {
+    final (item, isFetchingItem) = context.select(
+      (ShoppingListItemViewModel viewModel) => (
+        viewModel.state.item,
+        viewModel.state.isInitialLoading,
+      ),
+    );
+
+    if (isFetchingItem || isFetchingProducts) {
       return const Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          children: [
+            Text('Fetching item...'),
+            CircularProgressIndicator(),
+          ],
+        ),
       );
     } else if (item == null) {
       return Center(
@@ -88,83 +153,111 @@ class ShoppingListItemUpdateScreen extends HookWidget {
       );
     }
 
-    return MainScaffold(
-      body: BlocListener<ShoppingListItemViewModel, ShoppingListItemState>(
-        listener: (context, state) {
-          if (state.submissionStatus.isSuccess) {
-            context.go(
-              Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId')
-                  .toString(),
-            );
-          }
-        },
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            context
-                                .read<ShoppingListItemViewModel>()
-                                .add(const ShoppingListItemDeselected());
-                            context.go(
-                              Uri(
-                                path:
-                                    '${AppRoutes.shoppingLists}/$shoppingListId',
-                              ).toString(),
-                            );
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_sharp,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12.0,
-                        ),
-                        Text(
-                          "Item Details",
-                          style: AppTextStyles.titleLarge,
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () => _onSubmitted(
-                        context,
-                        shoppingListId,
-                        item.id,
-                      ),
-                      icon: Icon(
-                        Icons.menu,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            ShoppingListItemUpdateForm(
-              productList: products,
-              selectedShoppingListItem: item,
+    return BlocListener<ShoppingListItemViewModel, ShoppingListItemState>(
+      listener: (context, state) {
+        if (state.submissionStatus.isSuccess) {
+          context.go(
+            Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId').toString(),
+          );
+        }
+      },
+      child: Column(
+        children: [
+          _ShoppingListItemUpdateHeader(
               shoppingListId: shoppingListId,
+              shoppingListItemId: shoppingListItemId),
+          ShoppingListItemUpdateForm(
+            productList: products,
+            selectedShoppingListItem: item,
+            shoppingListId: shoppingListId,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ShoppingListItemUpdateHeader extends StatelessWidget {
+  const _ShoppingListItemUpdateHeader({
+    super.key,
+    required this.shoppingListId,
+    required this.shoppingListItemId,
+  });
+
+  final String shoppingListId;
+  final String shoppingListItemId;
+// TODO: Ask why when chaining delete and deselect, deselect finishes before delete
+  void _onSubmitted(
+      BuildContext context, String shoppingListId, String itemId) {
+    {
+      context.read<ShoppingListItemViewModel>()
+        ..add(
+          ShoppingListItemDeleted(
+            shoppingListId: shoppingListId,
+            id: itemId,
+          ),
+        )
+        ..add(const ShoppingListItemDeselected());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 16.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context
+                        .read<ShoppingListItemViewModel>()
+                        .add(const ShoppingListItemDeselected());
+                    context.go(
+                      Uri(
+                        path: '${AppRoutes.shoppingLists}/$shoppingListId',
+                      ).toString(),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_sharp,
+                  ),
+                ),
+                const SizedBox(
+                  width: 12.0,
+                ),
+                Text(
+                  "Item Details",
+                  style: AppTextStyles.titleLarge,
+                ),
+              ],
+            ),
+            IconButton(
+              onPressed: () => _onSubmitted(
+                context,
+                shoppingListId,
+                shoppingListItemId,
+              ),
+              icon: Icon(
+                Icons.delete,
+              ),
             ),
           ],
         ),
@@ -194,8 +287,8 @@ class ShoppingListItemUpdateForm extends HookWidget {
           ShoppingListItemUpdated(
             input: formInput.value,
           ),
-        )
-        ..add(const ShoppingListItemDeselected());
+        );
+      // ..add(const ShoppingListItemDeselected());
     }
   }
 
