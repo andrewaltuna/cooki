@@ -3,6 +3,8 @@ import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/extension/enum_extension.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
+import 'package:cooki/common/screen/error_screen.dart';
+import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/common/theme/app_theme_data.dart';
@@ -45,12 +47,13 @@ class ShoppingListScreen extends HookWidget {
 
     // TODO: Use isInitialLoading (already takes this into account)
     if (isFetching.isLoading && shoppingList == null) {
-      return const Center(
-        child: Text("Fetching..."),
-      );
+      return LoadingScreen();
     } else if (shoppingList == null) {
-      return const Center(
-        child: Text("Not found"),
+      return ErrorScreen(
+        errorMessage: 'Not found',
+        path: Uri(
+          path: AppRoutes.shoppingLists,
+        ).toString(),
       );
     }
 
