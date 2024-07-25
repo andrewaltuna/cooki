@@ -1,5 +1,5 @@
 import 'package:cooki/common/enum/view_model_status.dart';
-import 'package:cooki/feature/product/data/model/output/product_output.dart';
+import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:equatable/equatable.dart';
 
 class ProductState extends Equatable {
@@ -10,13 +10,13 @@ class ProductState extends Equatable {
   });
 
   final ViewModelStatus status;
-  final List<ProductOutput> products;
+  final List<Product> products;
   final Exception? error;
 
   ProductState copyWith({
     ViewModelStatus? status,
-    List<ProductOutput>? products,
-    ProductOutput? selectedProduct,
+    List<Product>? products,
+    Product? selectedProduct,
     Exception? error,
   }) {
     return ProductState(

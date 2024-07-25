@@ -8,48 +8,54 @@ class ProductRemoteSource {
   const ProductRemoteSource(this._graphQLClient);
 
   final GraphQLClient _graphQLClient;
-  Future<List<ProductOutput>> getProducts() async {
+  Future<List<Product>> getProducts() async {
     final response = await _graphQLClient.query(
       QueryOptions(
         document: gql(_getProductsQuery),
       ),
     );
 
-    response.result(onSuccess: (data) {
-      // TODO: Return data
+    return response.result(onSuccess: (data) {
       final result = new List<Map<String, dynamic>>.from(data['products']);
 
       final productData = result.map(Product.fromJson).toList();
+      return productData;
     });
 
-    final data = dummyData.products;
+    // final data = dummyData.products;
 
-    return data
-        .map((d) => ProductOutput(
-              id: d.id,
-              category: d.category,
-              section: d.section,
-              brand: d.brand,
-              keyIngredients: d.keyIngredients,
-              description: d.description,
-              price: d.price,
-              unitSize: d.unitSize,
-            ))
-        .toList();
+    // return data
+    //     .map((d) => ProductOutput(
+    //           id: d.id,
+    //           category: d.category,
+    //           section: d.section,
+    //           brand: d.brand,
+    //           keyIngredients: d.keyIngredients,
+    //           description: d.description,
+    //           price: d.price,
+    //           unitSize: d.unitSize,
+    //         ))
+    //     .toList();
   }
 
-  Future<ProductOutput> getProduct(String id) async {
-    final data = dummyData.products.firstWhere((element) => element.id == id);
-    return ProductOutput(
-      id: data.id,
-      category: data.category,
-      section: data.section,
-      brand: data.brand,
-      keyIngredients: data.keyIngredients,
-      description: data.description,
-      price: data.price,
-      unitSize: data.unitSize,
+  Future<Product> getProduct(String id) async {
+    final response = await _graphQLClient.query(
+      QueryOptions(
+        document: gql(_getProductQuery),
+        variables: {
+          'id': id,
+        },
+      ),
     );
+
+    return response.result(onSuccess: (data) {
+      // TODO: Return data
+      final result = new Map<String, dynamic>.from(data['product']);
+      final productData = Product.fromJson(result);
+      return productData;
+    });
+
+    //
   }
 }
 

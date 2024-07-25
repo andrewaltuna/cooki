@@ -16,7 +16,7 @@ class UpdateShoppingListInput extends Equatable {
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> data = {
-      'id': id,
+      '_id': id,
     };
 
     if (name != null) data['name'] = name;

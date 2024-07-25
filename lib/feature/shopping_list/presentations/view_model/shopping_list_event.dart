@@ -17,7 +17,9 @@ class ShoppingListRequested extends ShoppingListEvent {
   final String id;
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [
+        id,
+      ];
 }
 
 class ShoppingListCreated extends ShoppingListEvent {
@@ -37,12 +39,16 @@ class ShoppingListCreated extends ShoppingListEvent {
 }
 
 class ShoppingListUpdated extends ShoppingListEvent {
-  const ShoppingListUpdated(
-      {required this.id, required this.name, required this.budget});
+  const ShoppingListUpdated({
+    required this.input,
+  });
 
-  final String id;
-  final String name;
-  final String budget;
+  final UpdateShoppingListInput input;
+
+  @override
+  List<Object?> get props => [
+        input,
+      ];
 }
 
 class ShoppingListDeleted extends ShoppingListEvent {
@@ -55,11 +61,12 @@ class ShoppingListDeleted extends ShoppingListEvent {
 }
 
 class ShoppingListItemToggled extends ShoppingListEvent {
-  const ShoppingListItemToggled(this.item);
-  final ShoppingListItem item;
+  const ShoppingListItemToggled({required this.input});
+
+  final UpdateShoppingListInput input;
 
   @override
   List<Object?> get props => [
-        item,
+        input,
       ];
 }

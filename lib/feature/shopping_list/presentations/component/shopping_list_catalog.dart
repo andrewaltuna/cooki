@@ -1,7 +1,7 @@
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
-import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_output.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_helper.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ShoppingListCatalog extends StatelessWidget {
-  const ShoppingListCatalog({super.key});
+  const ShoppingListCatalog({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class _ShoppingListCard extends StatelessWidget {
     required this.list,
   });
 
-  final ShoppingListOutput list;
+  final ShoppingList list;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class _ShoppingListCardContent extends StatelessWidget {
     required this.list,
   });
 
-  final ShoppingListOutput list;
+  final ShoppingList list;
 
   void _onClick(BuildContext context, String shoppingListId) {
     ShoppingListHelper.of(context).showDeleteShoppingListModal(shoppingListId);

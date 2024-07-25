@@ -9,14 +9,14 @@ class ShoppingListState extends Equatable {
   });
 
   final ViewModelStatus status;
-  final List<ShoppingListOutput> shoppingLists;
-  final ShoppingListOutput? selectedShoppingList;
+  final List<ShoppingList> shoppingLists;
+  final ShoppingList? selectedShoppingList;
   final Exception? error;
 
   ShoppingListState copyWith({
     ViewModelStatus? status,
-    List<ShoppingListOutput>? shoppingLists,
-    ShoppingListOutput? selectedShoppingList,
+    List<ShoppingList>? shoppingLists,
+    ShoppingList? selectedShoppingList,
     ShoppingListItem? selectedShoppingListItem,
     Exception? error,
   }) {

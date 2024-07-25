@@ -3,9 +3,13 @@ import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
+import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
 import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +28,9 @@ class ShoppingListItemCreateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final (shoppingList) = context.select((ShoppingListViewModel viewModel) =>
+        (viewModel.state.selectedShoppingList!));
+
     return BlocProvider(
       create: (_) => ShoppingListItemViewModel(shoppingListRepository),
       child: BlocListener<ShoppingListViewModel, ShoppingListState>(
@@ -87,7 +94,7 @@ class ShoppingListItemCreateScreen extends StatelessWidget {
               ),
               Expanded(
                 child: ShoppingListItemCreateForm(
-                  shoppingListId: shoppingListId,
+                  shoppingList: shoppingList,
                 ),
               ),
             ],
@@ -101,32 +108,30 @@ class ShoppingListItemCreateScreen extends StatelessWidget {
 class ShoppingListItemCreateForm extends HookWidget {
   const ShoppingListItemCreateForm({
     super.key,
-    required this.shoppingListId,
+    required this.shoppingList,
   });
 
-  final String shoppingListId;
+  final ShoppingList shoppingList;
   static final _formKey = GlobalKey<FormState>();
 
-  void _onCreate(BuildContext context,
-      ValueNotifier<CreateShoppingListItemInput> formInput) {
+  void _onCreate(BuildContext context, UpdateShoppingListInput formInput) {
     if (_formKey.currentState!.validate()) {
       context.read<ShoppingListItemViewModel>().add(
             ShoppingListItemCreated(
-              input: formInput.value,
+              input: formInput,
             ),
           );
 
       context.go(
-        Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId').toString(),
+        Uri(path: '${AppRoutes.shoppingLists}/${shoppingList.id}').toString(),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final formInput = useState<CreateShoppingListItemInput>(
-      CreateShoppingListItemInput(
-        shoppingListId: shoppingListId,
+    final formInput = useState<ShoppingListItemInput>(
+      const ShoppingListItemInput(
         label: '',
         productId: '',
         quantity: 0,
@@ -170,7 +175,7 @@ class ShoppingListItemCreateForm extends HookWidget {
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                 ),
-                DropdownMenu<ProductOutput>(
+                DropdownMenu<Product>(
                   enableFilter: true,
                   requestFocusOnTap: true,
                   hintText: "Product",
@@ -196,7 +201,10 @@ class ShoppingListItemCreateForm extends HookWidget {
           TextButton(
             onPressed: () => _onCreate(
               context,
-              formInput,
+              UpdateShoppingListInput(id: shoppingList.id, items: [
+                ...shoppingList.items.map((item) => item.toInput()),
+                formInput.value
+              ]),
             ),
             child: Text(
               "Save",

@@ -1,13 +1,20 @@
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
+import 'package:cooki/common/screen/error_screen.dart';
+import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/output/product_output.dart';
+import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
 import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,13 +33,19 @@ class ShoppingListItemUpdateScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final shoppingList = context.select((ShoppingListViewModel viewModel) =>
+        (viewModel.state.selectedShoppingList!));
+
     return MainScaffold(
       body: BlocProvider(
         create: (_) => ShoppingListItemViewModel(shoppingListRepository)
-          ..add(ShoppingListItemRequested(
-              shoppingListItemId: shoppingListItemId)),
+          ..add(
+            ShoppingListItemRequested(
+              shoppingListItemId: shoppingListItemId,
+            ),
+          ),
         child: _ShoppingListItemUpdateScreenContent(
-          shoppingListId: shoppingListId,
+          shoppingList: shoppingList,
           shoppingListItemId: shoppingListItemId,
         ),
       ),
@@ -43,11 +56,11 @@ class ShoppingListItemUpdateScreen extends HookWidget {
 class _ShoppingListItemUpdateScreenContent extends StatelessWidget {
   const _ShoppingListItemUpdateScreenContent({
     super.key,
-    required this.shoppingListId,
+    required this.shoppingList,
     required this.shoppingListItemId,
   });
 
-  final String shoppingListId;
+  final ShoppingList shoppingList;
   final String shoppingListItemId;
 
   @override
@@ -67,29 +80,12 @@ class _ShoppingListItemUpdateScreenContent extends StatelessWidget {
     );
 
     if (isFetchingItem || isFetchingProducts) {
-      return const Center(
-        child: Column(
-          children: [
-            Text('Fetching item...'),
-            CircularProgressIndicator(),
-          ],
-        ),
-      );
+      return LoadingScreen();
     } else if (item == null) {
-      return Center(
-        child: Column(
-          children: [
-            Text('Not Found'),
-            TextButton(
-              onPressed: () => context.go(
-                Uri(
-                  path: '${AppRoutes.shoppingLists}/$shoppingListId',
-                ).toString(),
-              ),
-              child: Text('Go Back'),
-            ),
-          ],
-        ),
+      return ErrorScreen(
+        errorMessage: 'Not found',
+        path: Uri(path: '${AppRoutes.shoppingLists}/${shoppingList.id}')
+            .toString(),
       );
     }
 
@@ -97,19 +93,20 @@ class _ShoppingListItemUpdateScreenContent extends StatelessWidget {
       listener: (context, state) {
         if (state.submissionStatus.isSuccess) {
           context.go(
-            Uri(path: '${AppRoutes.shoppingLists}/$shoppingListId').toString(),
+            Uri(path: '${AppRoutes.shoppingLists}/${shoppingList.id}')
+                .toString(),
           );
         }
       },
       child: Column(
         children: [
           _ShoppingListItemUpdateHeader(
-              shoppingListId: shoppingListId,
+              shoppingList: shoppingList,
               shoppingListItemId: shoppingListItemId),
           ShoppingListItemUpdateForm(
             productList: products,
             selectedShoppingListItem: item,
-            shoppingListId: shoppingListId,
+            shoppingList: shoppingList,
           ),
         ],
       ),
@@ -120,19 +117,27 @@ class _ShoppingListItemUpdateScreenContent extends StatelessWidget {
 class _ShoppingListItemUpdateHeader extends StatelessWidget {
   const _ShoppingListItemUpdateHeader({
     super.key,
-    required this.shoppingListId,
+    required this.shoppingList,
     required this.shoppingListItemId,
   });
 
-  final String shoppingListId;
+  final ShoppingList shoppingList;
   final String shoppingListItemId;
   void _onSubmitted(
-      BuildContext context, String shoppingListId, String itemId) {
+    BuildContext context,
+    String shoppingListId,
+    String itemId,
+  ) {
     {
       context.read<ShoppingListItemViewModel>().add(
             ShoppingListItemDeleted(
-              shoppingListId: shoppingListId,
-              id: itemId,
+              input: UpdateShoppingListInput(
+                id: shoppingListId,
+                items: shoppingList.items
+                    .where((item) => item.id != shoppingListItemId)
+                    .map((item) => item.toInput())
+                    .toList(),
+              ),
             ),
           );
     }
@@ -166,7 +171,7 @@ class _ShoppingListItemUpdateHeader extends StatelessWidget {
                   onPressed: () {
                     context.go(
                       Uri(
-                        path: '${AppRoutes.shoppingLists}/$shoppingListId',
+                        path: '${AppRoutes.shoppingLists}/${shoppingList.id}',
                       ).toString(),
                     );
                   },
@@ -186,7 +191,7 @@ class _ShoppingListItemUpdateHeader extends StatelessWidget {
             IconButton(
               onPressed: () => _onSubmitted(
                 context,
-                shoppingListId,
+                shoppingList.id,
                 shoppingListItemId,
               ),
               icon: Icon(
@@ -203,22 +208,33 @@ class _ShoppingListItemUpdateHeader extends StatelessWidget {
 class ShoppingListItemUpdateForm extends HookWidget {
   const ShoppingListItemUpdateForm({
     super.key,
-    required this.shoppingListId,
+    required this.shoppingList,
     required this.productList,
     required this.selectedShoppingListItem,
   });
 
-  final String shoppingListId;
+  final ShoppingList shoppingList;
   final ShoppingListItem selectedShoppingListItem;
-  final List<ProductOutput> productList;
+  final List<Product> productList;
   static final _formKey = GlobalKey<FormState>();
 
-  void _onSubmit(BuildContext context,
-      ValueNotifier<UpdateShoppingListItemInput> formInput) {
+  void _onSubmit(
+    BuildContext context,
+    ShoppingListItemInput formInput,
+    ShoppingList shoppingList,
+    String itemId,
+  ) {
     if (_formKey.currentState!.validate()) {
+      final items = shoppingList.items
+          .where((item) => item.id != itemId)
+          .map((item) => item.toInput())
+          .toList();
       context.read<ShoppingListItemViewModel>().add(
             ShoppingListItemUpdated(
-              input: formInput.value,
+              input: UpdateShoppingListInput(
+                id: shoppingList.id,
+                items: [...items, formInput],
+              ),
             ),
           );
     }
@@ -226,13 +242,11 @@ class ShoppingListItemUpdateForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formInput = useState<UpdateShoppingListItemInput>(
-      UpdateShoppingListItemInput(
-        id: selectedShoppingListItem.id,
+    final formInput = useState<ShoppingListItemInput>(
+      ShoppingListItemInput(
         label: selectedShoppingListItem.label,
         productId: selectedShoppingListItem.product.id,
         quantity: selectedShoppingListItem.quantity,
-        isChecked: selectedShoppingListItem.isChecked,
       ),
     );
 
@@ -273,7 +287,7 @@ class ShoppingListItemUpdateForm extends HookWidget {
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                 ),
-                DropdownMenu<ProductOutput>(
+                DropdownMenu<Product>(
                   initialSelection: productList.firstWhere(
                       (product) => product.id == formInput.value.productId),
                   enableFilter: true,
@@ -301,7 +315,9 @@ class ShoppingListItemUpdateForm extends HookWidget {
           TextButton(
             onPressed: () => _onSubmit(
               context,
-              formInput,
+              formInput.value,
+              shoppingList,
+              selectedShoppingListItem.id,
             ),
             child: Text(
               "Save",

@@ -7,12 +7,10 @@ import 'package:cooki/common/screen/error_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
-import 'package:cooki/common/theme/app_theme_data.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
-import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_item_output.dart';
-import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,7 +93,7 @@ class ShoppingListScreen extends HookWidget {
                 children: [
                   for (var category in itemsByCategory.keys)
                     _ShoppingListCategory(
-                      id: shoppingList.id,
+                      shoppingList: shoppingList,
                       category: category,
                       items: itemsByCategory[category] ?? [],
                     ),
@@ -153,12 +151,12 @@ class ShoppingListScreen extends HookWidget {
 class _ShoppingListCategory extends StatelessWidget {
   const _ShoppingListCategory({
     super.key,
-    required this.id,
+    required this.shoppingList,
     required this.category,
     required this.items,
   });
 
-  final String id;
+  final ShoppingList shoppingList;
   final ProductCategory category;
   final List<ShoppingListItem> items;
 
@@ -195,7 +193,7 @@ class _ShoppingListCategory extends StatelessWidget {
         ),
         for (var item in items)
           _ShoppingListItem(
-            shoppingListId: id,
+            shoppingList: shoppingList,
             item: item,
           ),
       ],
@@ -204,10 +202,13 @@ class _ShoppingListCategory extends StatelessWidget {
 }
 
 class _ShoppingListItem extends StatelessWidget {
-  const _ShoppingListItem(
-      {super.key, required this.shoppingListId, required this.item});
+  const _ShoppingListItem({
+    super.key,
+    required this.shoppingList,
+    required this.item,
+  });
 
-  final String shoppingListId;
+  final ShoppingList shoppingList;
   final ShoppingListItem item;
   @override
   Widget build(BuildContext context) {
@@ -225,8 +226,18 @@ class _ShoppingListItem extends StatelessWidget {
                 onChanged: (res) {
                   context.read<ShoppingListViewModel>().add(
                         ShoppingListItemToggled(
-                          item,
-                        ),
+                            input: UpdateShoppingListInput(
+                                id: shoppingList.id,
+                                items: [
+                              ...shoppingList.items
+                                  .where((element) => element.id != item.id)
+                                  .map(
+                                    (e) => e.toInput(),
+                                  ),
+                              item
+                                  .copyWith(isChecked: !item.isChecked)
+                                  .toInput(),
+                            ])),
                       );
                 },
               ),
@@ -260,7 +271,7 @@ class _ShoppingListItem extends StatelessWidget {
           ),
           onPressed: () {
             final String path =
-                '${AppRoutes.shoppingLists}/$shoppingListId/edit-item/${item.id}';
+                '${AppRoutes.shoppingLists}/${shoppingList.id}/edit-item/${item.id}';
             context.go(
               Uri(path: path).toString(),
             );

@@ -28,8 +28,9 @@ class ShoppingListItemInput extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'label': label,
-      'product': productId,
+      'productId': productId,
       'quantity': quantity,
+      'price': 0.0,
     };
   }
 
