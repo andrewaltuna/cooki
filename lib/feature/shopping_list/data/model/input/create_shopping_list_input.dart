@@ -5,6 +5,7 @@ class CreateShoppingListInput extends Equatable {
     required this.name,
     required this.budget,
   });
+
   final String name;
   final double budget;
 

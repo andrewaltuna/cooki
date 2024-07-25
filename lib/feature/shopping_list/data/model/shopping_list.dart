@@ -30,7 +30,6 @@ class ShoppingList extends Equatable {
     );
   }
 
-  // TODO: Place shopping list items here
   final String id;
   final String userId;
   final String name;

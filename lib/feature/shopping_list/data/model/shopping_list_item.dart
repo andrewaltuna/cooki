@@ -24,7 +24,7 @@ class ShoppingListItem extends Equatable {
       label: json['label'],
       product: Product.fromJson(json['product']),
       quantity: json['quantity'],
-      isChecked: json['isChecked'],
+      isChecked: json['isInCart'],
     );
   }
 
