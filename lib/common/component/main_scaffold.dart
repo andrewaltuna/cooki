@@ -39,7 +39,7 @@ class MainScaffold extends StatelessWidget {
                   style: AppTextStyles.titleMedium,
                 ),
                 centerTitle: true,
-                elevation: 10,
+                elevation: 5,
                 backgroundColor: AppColors.backgroundPrimary,
                 surfaceTintColor: Colors.transparent,
                 shadowColor: AppColors.shadow,

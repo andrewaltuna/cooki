@@ -30,6 +30,13 @@ class BeaconDetails extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'beaconId': identifier,
+      'distance': distanceInMeter,
+    };
+  }
+
   double get distanceInMeter {
     final rssiDifference = BeaconConstants.rssiAtOneMeter - rssi;
     const denominator = 10 * BeaconConstants.pathLossExponent;

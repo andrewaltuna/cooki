@@ -111,7 +111,7 @@ class _ChatPresetItem extends StatelessWidget {
             preset.displayLabel,
             style: AppTextStyles.subtitle,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           Text(
             preset.description,
             style: AppTextStyles.bodySmall,

@@ -26,6 +26,13 @@ class BeaconState extends Equatable {
     );
   }
 
+  /// Get closest beacons if there are at least [minumum] beacons.
+  List<BeaconDetails>? closestBeaconsOrNull(int minumum) {
+    if (beacons.length < minumum) return null;
+
+    return beacons;
+  }
+
   @override
   List<Object> get props => [
         beacons,

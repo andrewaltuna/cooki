@@ -38,7 +38,7 @@ class MapUserIndicator extends HookWidget {
               height: pulseSize,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.red,
+                color: AppColors.accent,
               ),
             ),
           ),
