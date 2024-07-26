@@ -27,24 +27,27 @@ class Product extends Equatable {
     manufacturer: '',
   );
 
-  factory Product.fromJson(Map<String, dynamic> json) {
+  factory Product.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return empty;
+    }
     final productCategory = json['productCategory'] as dynamic;
-    final keyIngredients = json['key_ingredients'] as List;
+    final keyIngredients = json['key_ingredients'] as List?;
 
     return empty.copyWith(
-      id: json['_id'] as String,
+      id: json['_id'],
       category: ProductCategory.values.firstWhere(
         (element) => element.apiValue == productCategory,
         orElse: () => ProductCategory.values.first,
       ),
-      section: json['section'] as String,
-      brand: json['brand'] as String,
+      section: json['section'],
+      brand: json['brand'],
       keyIngredients:
-          keyIngredients.map((ingredient) => ingredient as String).toList(),
-      description: json['description'] as String,
-      price: json['price'] as double,
-      unitSize: json['unitSize'] as String,
-      manufacturer: json['manufacturer'] as String,
+          keyIngredients?.map((ingredient) => ingredient as String).toList(),
+      description: json['description'],
+      price: json['price'],
+      unitSize: json['unitSize'],
+      manufacturer: json['manufacturer'],
     );
   }
 
@@ -54,7 +57,7 @@ class Product extends Equatable {
   final String brand;
   final List<String> keyIngredients;
   final String description;
-  final double price;
+  final num price;
   final String unitSize;
   final String manufacturer;
 
@@ -65,7 +68,7 @@ class Product extends Equatable {
     String? brand,
     List<String>? keyIngredients,
     String? description,
-    double? price,
+    num? price,
     String? unitSize,
     String? manufacturer,
   }) {

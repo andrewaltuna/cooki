@@ -19,13 +19,12 @@ class ShoppingList extends Equatable {
   );
 
   factory ShoppingList.fromJson(Map<String, dynamic> json) {
-    final listItems = json['items'] as List;
-
+    final listItems = json['items'] as List?;
     return empty.copyWith(
       id: json['_id'],
       name: json['name'],
       budget: json['budget'],
-      items: listItems.map((item) => ShoppingListItem.fromJson(item)).toList(),
+      items: listItems?.map((item) => ShoppingListItem.fromJson(item)).toList(),
       userId: json['userId'],
     );
   }
@@ -33,13 +32,13 @@ class ShoppingList extends Equatable {
   final String id;
   final String userId;
   final String name;
-  final double budget;
+  final num budget;
   final List<ShoppingListItem> items;
 
   ShoppingList copyWith({
     String? id,
     String? name,
-    double? budget,
+    num? budget,
     List<ShoppingListItem>? items,
     String? userId,
   }) {

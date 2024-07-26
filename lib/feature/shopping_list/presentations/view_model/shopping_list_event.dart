@@ -61,9 +61,11 @@ class ShoppingListDeleted extends ShoppingListEvent {
 }
 
 class ShoppingListItemToggled extends ShoppingListEvent {
-  const ShoppingListItemToggled({required this.input});
+  const ShoppingListItemToggled({
+    required this.input,
+  });
 
-  final UpdateShoppingListInput input;
+  final UpdateShoppingListItemInput input;
 
   @override
   List<Object?> get props => [

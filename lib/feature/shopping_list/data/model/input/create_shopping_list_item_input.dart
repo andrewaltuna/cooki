@@ -28,6 +28,15 @@ class CreateShoppingListItemInput extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'shoppingListId': shoppingListId,
+      'label': label,
+      'productId': productId,
+      'quantity': quantity,
+    };
+  }
+
   @override
   List<Object?> get props => [
         shoppingListId,

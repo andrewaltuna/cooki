@@ -2,26 +2,26 @@ import 'package:equatable/equatable.dart';
 
 class UpdateShoppingListItemInput extends Equatable {
   const UpdateShoppingListItemInput({
-    required this.id,
-    required this.label,
-    required this.productId,
-    required this.quantity,
-    required this.isChecked,
+    this.id,
+    this.label,
+    this.productId,
+    this.quantity,
+    this.isChecked,
   });
 
-  final String id;
-  final String label;
-  final String productId;
-  final int quantity;
-  final bool isChecked;
+  final String? id;
+  final String? label;
+  final String? productId;
+  final int? quantity;
+  final bool? isChecked;
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'label': label,
-      'product': productId,
-      'quantity': quantity,
-      'isChecked': isChecked,
+      '_id': id,
+      if (label != null) 'label': label,
+      if (productId != null) 'productId': productId,
+      if (quantity != null) 'quantity': quantity,
+      if (isChecked != null) 'isInCart': isChecked,
     };
   }
 

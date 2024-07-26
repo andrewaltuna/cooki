@@ -70,7 +70,7 @@ class ShoppingListCreateModalContent extends HookWidget {
                     textInputAction: TextInputAction.next,
                     hintText: "Budget (in PHP)",
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                     ],
                   )
                 ],

@@ -1,6 +1,5 @@
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
@@ -39,23 +38,23 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   }
 
   @override
-  Future<void> createShoppingListItem(
-    UpdateShoppingListInput input,
+  Future<ShoppingListItem> createShoppingListItem(
+    CreateShoppingListItemInput input,
   ) async {
     return _remoteSource.createShoppingListItem(input);
   }
 
   @override
   Future<ShoppingListItem> updateShoppingListItem(
-    UpdateShoppingListInput input,
+    UpdateShoppingListItemInput input,
   ) {
     return _remoteSource.updateShoppingListItem(input);
   }
 
   @override
   Future<ShoppingListItem> deleteShoppingListItem(
-    UpdateShoppingListInput input,
+    String id,
   ) async {
-    return _remoteSource.deleteShoppingListItem(input);
+    return _remoteSource.deleteShoppingListItem(id);
   }
 }

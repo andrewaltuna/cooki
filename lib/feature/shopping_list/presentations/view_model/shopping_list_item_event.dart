@@ -25,7 +25,7 @@ class ShoppingListItemCreated extends ShoppingListItemEvent {
     required this.input,
   });
 
-  final UpdateShoppingListInput input;
+  final CreateShoppingListItemInput input;
 
   @override
   List<Object?> get props => [
@@ -38,7 +38,7 @@ class ShoppingListItemUpdated extends ShoppingListItemEvent {
     required this.input,
   });
 
-  final UpdateShoppingListInput input;
+  final UpdateShoppingListItemInput input;
 
   @override
   List<Object?> get props => [
@@ -48,13 +48,13 @@ class ShoppingListItemUpdated extends ShoppingListItemEvent {
 
 class ShoppingListItemDeleted extends ShoppingListItemEvent {
   const ShoppingListItemDeleted({
-    required this.input,
+    required this.id,
   });
 
-  final UpdateShoppingListInput input;
+  final String id;
 
   @override
   List<Object?> get props => [
-        input,
+        id,
       ];
 }

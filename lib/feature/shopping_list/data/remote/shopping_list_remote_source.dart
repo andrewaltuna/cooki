@@ -1,64 +1,15 @@
 import 'package:cooki/common/extension/graphql_extensions.dart';
-import 'package:cooki/feature/product/data/model/output/product_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
-import 'package:cooki/feature/shopping_list/data/model/output/shopping_list_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
-import 'package:cooki/feature/shopping_list/data/remote/shopping_list_dummy_data.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ShoppingListRemoteSource {
   const ShoppingListRemoteSource(this._graphQLClient);
 
   final GraphQLClient _graphQLClient;
-
-  // ProductOutput _transformProductData(RawProduct product) {
-  //   return ProductOutput(
-  //     id: product.id,
-  //     brand: product.brand,
-  //     category: product.category,
-  //     description: product.description,
-  //     keyIngredients: product.keyIngredients,
-  //     price: product.price,
-  //     section: product.section,
-  //     unitSize: product.unitSize,
-  //   );
-  // }
-
-  // ShoppingListItem _transformShoppingListItemData(RawShoppingListItem item) {
-  //   final rawProduct = dummyData.products
-  //       .firstWhere((product) => item.productId == product.id);
-  //   return ShoppingListItem(
-  //     id: item.id,
-  //     isChecked: item.isChecked,
-  //     label: item.label,
-  //     quantity: item.quantity,
-  //     product: _transformProductData(rawProduct),
-  //   );
-  // }
-
-  // ShoppingListOutput _transformShoppingListData(RawShoppingList shoppingList) {
-  //   return ShoppingListOutput(
-  //     id: shoppingList.id,
-  //     budget: shoppingList.budget,
-  //     name: shoppingList.name,
-  //     items: shoppingList.itemIds
-  //         .map(
-  //           (id) => dummyData.shoppingListItems.firstWhere(
-  //             (item) => item.id == id,
-  //           ),
-  //         )
-  //         .map(
-  //           (item) => _transformShoppingListItemData(
-  //             item,
-  //           ),
-  //         )
-  //         .toList(),
-  //   );
-  // }
 
   Future<List<ShoppingList>> getShoppingLists() async {
     final response = await _graphQLClient.query(
@@ -75,13 +26,6 @@ class ShoppingListRemoteSource {
       final shoppingListData = result.map(ShoppingList.fromJson).toList();
       return shoppingListData;
     });
-    // final shoppingListData = dummyData.shoppingLists;
-
-    // return shoppingListData
-    //     .map(
-    //       (list) => _transformShoppingListData(list),
-    //     )
-    //     .toList();
   }
 
   Future<ShoppingList> getShoppingList(String id) async {
@@ -100,10 +44,6 @@ class ShoppingListRemoteSource {
         return shoppingListData;
       },
     );
-
-    // final shoppingListData =
-    //     dummyData.shoppingLists.firstWhere((list) => list.id == id);
-    // return _transformShoppingListData(shoppingListData);
   }
 
   Future<ShoppingList> createShoppingList(
@@ -125,17 +65,6 @@ class ShoppingListRemoteSource {
         return shoppingListData;
       },
     );
-
-    // final newShoppingList = RawShoppingList(
-    //   id: (dummyData.shoppingLists.length + 1).toString(),
-    //   name: input.name,
-    //   budget: input.budget,
-    //   itemIds: [],
-    // );
-
-    // dummyData.shoppingLists.add(newShoppingList);
-
-    // return _transformShoppingListData(newShoppingList);
   }
 
   Future<ShoppingList> deleteShoppingList(String id) async {
@@ -150,16 +79,12 @@ class ShoppingListRemoteSource {
 
     return response.result(
       onSuccess: (data) {
-        final result = data['deleteShoppingList'];
+        final result =
+            new Map<String, dynamic>.from(data['removeShoppingList']);
         final shoppingListData = ShoppingList.fromJson(result);
         return shoppingListData;
       },
     );
-    // final deletedShoppingList =
-    //     dummyData.shoppingLists.firstWhere((list) => list.id == id);
-    // dummyData.shoppingLists =
-    //     dummyData.shoppingLists.where((list) => list.id != id).toList();
-    // return _transformShoppingListData(deletedShoppingList);
   }
 
   // Item queries
@@ -174,18 +99,16 @@ class ShoppingListRemoteSource {
     );
     return response.result(
       onSuccess: (data) {
-        final result = new Map<String, dynamic>.from(data['shoppingListItem']);
+        final result =
+            new Map<String, dynamic>.from(data['getShoppingListItem']);
         final shoppingListItemData = ShoppingListItem.fromJson(result);
         return shoppingListItemData;
       },
     );
-    // final item =
-    //     dummyData.shoppingListItems.firstWhere((item) => item.id == id);
-    // return _transformShoppingListItemData(item);
   }
 
   Future<ShoppingListItem> updateShoppingListItem(
-      UpdateShoppingListInput input) async {
+      UpdateShoppingListItemInput input) async {
     final response = await _graphQLClient.mutate(
       MutationOptions(
         document: gql(_updateShoppingListItemMutation),
@@ -197,39 +120,16 @@ class ShoppingListRemoteSource {
 
     return response.result(
       onSuccess: (data) {
-        final result = data['updateShoppingList'];
+        final result = data['updateShoppingListItem'];
         final shoppingListItemData = ShoppingListItem.fromJson(result);
         return shoppingListItemData;
       },
     );
-    // final updatedItem = RawShoppingListItem(
-    //   id: input.id,
-    //   label: input.label,
-    //   quantity: input.quantity,
-    //   isChecked: input.isChecked,
-    //   productId: input.productId,
-    // );
-
-    // dummyData.shoppingListItems = dummyData.shoppingListItems
-    //     .map((item) => item.id == input.id ? updatedItem : item)
-    //     .toList();
-
-    // final productData = dummyData.products
-    //     .firstWhere((product) => product.id == updatedItem.productId);
-
-    // return ShoppingListItem(
-    //   id: updatedItem.id,
-    //   label: updatedItem.label,
-    //   quantity: updatedItem.quantity,
-    //   isChecked: updatedItem.isChecked,
-    //   product: _transformProductData(productData),
-    // );
   }
 
-  Future<void> createShoppingListItem(
-    UpdateShoppingListInput input,
+  Future<ShoppingListItem> createShoppingListItem(
+    CreateShoppingListItemInput input,
   ) async {
-    print('INPUT ${input.toJson()}');
     final response = await _graphQLClient.mutate(
       MutationOptions(
         document: gql(_createShoppingListItemMutation),
@@ -239,77 +139,31 @@ class ShoppingListRemoteSource {
       ),
     );
 
-    // return response.result(onSuccess: (data) {
-    //   final result = data['createShoppingList'];
-    //   final shoppingListItemData = ShoppingListItem.fromJson(result);
-    //   return shoppingListItemData;
-    // });
-
-    // final newShoppingListItem = RawShoppingListItem(
-    //   id: (dummyData.shoppingListItems.length + 1).toString(),
-    //   label: input.label,
-    //   quantity: input.quantity,
-    //   isChecked: false,
-    //   productId: input.productId,
-    // );
-
-    // dummyData.shoppingListItems.add(newShoppingListItem);
-    // dummyData.shoppingLists = dummyData.shoppingLists.map((list) {
-    //   if (list.id == input.shoppingListId) {
-    //     return RawShoppingList(
-    //         id: list.id,
-    //         name: list.name,
-    //         budget: list.budget,
-    //         itemIds: list.itemIds + [newShoppingListItem.id]);
-    //   } else {
-    //     return list;
-    //   }
-    // }).toList();
-
-    // return _transformShoppingListItemData(newShoppingListItem);
+    return response.result(
+      onSuccess: (data) {
+        final result =
+            new Map<String, dynamic>.from(data['createShoppingListItem']);
+        final shoppingListItemData = ShoppingListItem.fromJson(result);
+        return shoppingListItemData;
+      },
+    );
   }
 
-  Future<ShoppingListItem> deleteShoppingListItem(
-      UpdateShoppingListInput input) async {
+  Future<ShoppingListItem> deleteShoppingListItem(String id) async {
     final response = await _graphQLClient.mutate(
       MutationOptions(
         document: gql(_deleteShoppingListItemMutation),
         variables: {
-          'input': input.toJson(),
+          "id": id,
         },
       ),
     );
 
     return response.result(onSuccess: (data) {
-      final result = data['deleteShoppingList'];
+      final result = data['removeShoppingListItem'];
       final shoppingListItemData = ShoppingListItem.fromJson(result);
       return shoppingListItemData;
     });
-    // final deletedShoppingListItem = dummyData.shoppingListItems.firstWhere(
-    //   (item) => item.id == id,
-    // );
-    // dummyData.shoppingListItems = dummyData.shoppingListItems
-    //     .where(
-    //       (item) => item.id != id,
-    //     )
-    //     .toList();
-
-    // dummyData.shoppingLists = dummyData.shoppingLists.map((list) {
-    //   if (list.id == shoppingListId) {
-    //     return RawShoppingList(
-    //       id: list.id,
-    //       name: list.name,
-    //       budget: list.budget,
-    //       itemIds: list.itemIds
-    //           .where((itemId) => itemId != deletedShoppingListItem.id)
-    //           .toList(),
-    //     );
-    //   } else {
-    //     return list;
-    //   }
-    // }).toList();
-
-    // return _transformShoppingListItemData(deletedShoppingListItem);
   }
 }
 
@@ -319,9 +173,8 @@ query GetShoppingLists {
     _id
     name
     userId
-    description
     items {
-      label
+      _id
     }
   }
 }
@@ -332,7 +185,7 @@ const _getShoppingListQuery = r'''
     shoppingList(_id: $id) {
       _id
       name
-      description
+      budget
       items {
         _id
         label
@@ -356,7 +209,7 @@ const _createShoppingListMutation = r'''
     createShoppingList(createShoppingListInput: $input) {
       _id
       name
-      description
+      budget
       items {
         _id
       } 
@@ -374,7 +227,7 @@ const _deleteShoppingListMutation = r'''
 
 const _getShoppingListItemQuery = r'''
   query GetShoppingListItem($id: String!) {
-    shoppingListItem(id: $id) {
+    getShoppingListItem(_id: $id) {
       _id
       label
       quantity
@@ -382,7 +235,7 @@ const _getShoppingListItemQuery = r'''
       product {
         _id
         brand
-        category
+        productCategory
         price
         section
         unitSize
@@ -391,26 +244,25 @@ const _getShoppingListItemQuery = r'''
   }
 ''';
 
-// TODO: Update to match BE (just use updateShoppingList)
 const _updateShoppingListItemMutation = r'''
-  mutation UpdateShoppingListItem($input: UpdateShoppingListInput!) {
-    updateShoppingList(updateShoppingListInput: $input) {
+  mutation UpdateShoppingListItem($input: UpdateShoppingListItemInput!) {
+    updateShoppingListItem(updateShoppingListItemInput: $input) {
       _id
     }
   }
 ''';
 
 const _createShoppingListItemMutation = r'''
-  mutation CreateShoppingListItem($input: UpdateShoppingListInput!) {
-    updateShoppingList(updateShoppingListInput: $input) {
+  mutation CreateShoppingListItem($input: CreateShoppingListItemInput!) {
+    createShoppingListItem(createShoppingListItemInput: $input) {
       _id
     }
   }
 ''';
 
 const _deleteShoppingListItemMutation = r'''
-  mutation DeleteShoppingListItem($input: UpdateShoppingListInput!) {
-    updateShoppingListInput(updateShoppingListInput: $input) {
+  mutation DeleteShoppingListItem($id: String!) {
+    removeShoppingListItem(_id: $id) {
       _id
     }
   }

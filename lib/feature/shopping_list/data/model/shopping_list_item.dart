@@ -35,8 +35,6 @@ class ShoppingListItem extends Equatable {
   final int quantity;
   final bool isChecked;
 
-  // TODO: Might just have dedicated operations for shopping list item
-  // bc this destroys all items in a shopping list and recreates them
   ShoppingListItemInput toInput() {
     return ShoppingListItemInput(
       label: label,
