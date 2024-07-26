@@ -37,7 +37,8 @@ class ChatFormView extends StatelessWidget {
                 focusNode: chatFocusNode,
                 controller: chatController,
                 hintText: 'Message',
-                maxLines: null,
+                minLines: 1,
+                maxLines: 5,
                 inputBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(25)),
                   borderSide: BorderSide(

@@ -7,6 +7,10 @@ sealed class MapEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class MapInitialized extends MapEvent {
+  const MapInitialized();
+}
+
 class MapScaleUpdated extends MapEvent {
   const MapScaleUpdated(this.scale);
 
@@ -17,7 +21,16 @@ class MapScaleUpdated extends MapEvent {
 }
 
 class MapUserCoordinatesRequested extends MapEvent {
-  const MapUserCoordinatesRequested();
+  const MapUserCoordinatesRequested(this.beacons);
+
+  final List<BeaconDetails> beacons;
+
+  @override
+  List<Object> get props => [beacons];
+}
+
+class MapUserCoordinatesRequestFlagged extends MapEvent {
+  const MapUserCoordinatesRequestFlagged();
 }
 
 class MapRequestCoordsFlagUpdated extends MapEvent {

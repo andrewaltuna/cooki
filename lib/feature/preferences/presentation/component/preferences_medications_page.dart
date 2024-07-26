@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:cooki/common/component/button/ink_well_button.dart';
+import 'package:cooki/common/component/custom_dropdown_menu.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/preferences/data/enum/medication.dart';
@@ -80,29 +81,19 @@ class _MedicationDropdown extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: SizedBox(
+          child: CustomDropdownMenu(
+            controller: controller,
             height: 50,
-            child: DropdownMenu<Medication>(
-              controller: controller,
-              enableFilter: true,
-              requestFocusOnTap: true,
-              menuHeight: 200,
-              expandedInsets: EdgeInsets.zero,
-              textStyle: AppTextStyles.bodyMedium,
-              hintText: 'Generic name',
-              onSelected: (value) => _onSelected(context, value),
-              dropdownMenuEntries: values
-                  .map(
-                    (medication) => DropdownMenuEntry(
-                      value: medication,
-                      label: medication.displayLabel,
-                      style: MenuItemButton.styleFrom(
-                        textStyle: AppTextStyles.bodyMedium,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
+            hintText: 'Generic name',
+            onSelected: (value) => _onSelected(context, value),
+            entries: values
+                .map(
+                  (medication) => CustomDropdownMenuEntry(
+                    value: medication,
+                    label: medication.displayLabel,
+                  ),
+                )
+                .toList(),
           ),
         ),
       ],

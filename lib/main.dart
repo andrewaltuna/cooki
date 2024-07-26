@@ -26,7 +26,9 @@ void main() async {
 
   runApp(
     const GlobalBlocs(
-      child: MainApp(),
+      child: GlobalListeners(
+        child: MainApp(),
+      ),
     ),
   );
 }
@@ -36,11 +38,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlobalListeners(
-      child: MaterialApp.router(
-        routerConfig: appRouter,
-        theme: appThemeData,
-      ),
+    return MaterialApp.router(
+      routerConfig: appRouter,
+      theme: appThemeData,
     );
   }
 }

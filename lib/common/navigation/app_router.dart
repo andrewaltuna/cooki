@@ -1,5 +1,6 @@
 import 'package:cooki/common/component/authenticated_blocs.dart';
-import 'package:cooki/common/map/presentation/screen/map_screen.dart';
+import 'package:cooki/common/component/authenticated_listeners.dart';
+import 'package:cooki/feature/map/presentation/screen/map_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
@@ -42,7 +43,9 @@ final _routes = [
     navigatorKey: _authShellNavigatorKey,
     builder: (_, __, child) {
       return AuthenticatedBlocs(
-        child: child,
+        child: AuthenticatedListeners(
+          child: child,
+        ),
       );
     },
     routes: [

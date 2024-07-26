@@ -56,6 +56,7 @@ class BeaconProximityIndicator extends StatelessWidget {
 
         return _IndicatorContainer(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               for (var beacon in state.beacons) ...[
                 Text(
