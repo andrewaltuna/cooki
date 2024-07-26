@@ -13,21 +13,6 @@ class CreateShoppingListItemInput extends Equatable {
   final String productId;
   final int quantity;
 
-  // * Form helper
-  CreateShoppingListItemInput copyWith({
-    String? shoppingListId,
-    String? label,
-    String? productId,
-    int? quantity,
-  }) {
-    return CreateShoppingListItemInput(
-      shoppingListId: shoppingListId ?? this.shoppingListId,
-      label: label ?? this.label,
-      productId: productId ?? this.productId,
-      quantity: quantity ?? this.quantity,
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'shoppingListId': shoppingListId,
