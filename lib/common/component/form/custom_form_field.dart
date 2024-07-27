@@ -13,6 +13,7 @@ class CustomFormField extends StatelessWidget {
     this.errorText,
     this.icon,
     this.obscureText = false,
+    this.minLines = 1,
     this.maxLines = 1,
     this.fillColor = AppColors.backgroundTextField,
     this.inputBorder,
@@ -36,6 +37,7 @@ class CustomFormField extends StatelessWidget {
   final String? errorText;
   final IconData? icon;
   final bool obscureText;
+  final int? minLines;
   final int? maxLines;
   final Color? fillColor;
   final InputBorder? inputBorder;
@@ -71,6 +73,7 @@ class CustomFormField extends StatelessWidget {
           autovalidateMode: autovalidateMode,
           controller: controller,
           focusNode: focusNode,
+          minLines: minLines,
           maxLines: maxLines,
           onChanged: onChanged,
           onFieldSubmitted: onSubmitted,

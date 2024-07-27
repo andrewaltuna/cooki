@@ -1,3 +1,4 @@
+import 'package:cooki/common/extension/graphql_extensions.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ChatRemoteSource {
@@ -6,24 +7,30 @@ class ChatRemoteSource {
   final GraphQLClient _graphQlClient;
 
   // Example only, API might be removed in the future
-  Future<String> createGeminiHealthCheck(String input) async {
+  Future<String> chat(String input) async {
     final response = await _graphQlClient.query(
       QueryOptions(
         document: gql(_createGeminiHealthCheckMutation),
         variables: {
-          "createGeminiHealthCheckInput": {
-            "input": input,
-          },
+          "input": input,
         },
       ),
     );
 
-    return response.data!['createGeminiHealthCheck'] as String;
+    return response.result(
+      onSuccess: (data) {
+        final result = data['chat'] as Map<String, dynamic>;
+
+        return result['message'] as String;
+      },
+    );
   }
 }
 
 const _createGeminiHealthCheckMutation = r'''
-  mutation createGeminiHealthCheck($createGeminiHealthCheckInput: CreateGeminiHealthCheckInput!) {
-    createGeminiHealthCheck(createGeminiHealthCheckInput: $createGeminiHealthCheckInput) 
+  mutation chat($input: String!) {
+    chat(message: $input) {
+      message
+    }
   }
 ''';

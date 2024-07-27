@@ -8,6 +8,6 @@ class ChatRepository implements ChatRepositoryInterface {
 
   @override
   Future<String> sendMessage(String message) async {
-    return await _remoteSource.createGeminiHealthCheck(message);
+    return await _remoteSource.chat(message);
   }
 }

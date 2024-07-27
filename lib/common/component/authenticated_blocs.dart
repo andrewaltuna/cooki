@@ -1,3 +1,5 @@
+import 'package:cooki/feature/map/data/di/map_service_locator.dart';
+import 'package:cooki/feature/map/presentation/view_model/map_view_model.dart';
 import 'package:cooki/feature/beacon/data/di/beacon_service_locator.dart';
 import 'package:cooki/feature/beacon/presentation/view_model/beacon_view_model.dart';
 import 'package:cooki/feature/chat/data/di/chat_service_locator.dart';
@@ -26,9 +28,16 @@ class AuthenticatedBlocs extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          lazy: false,
           create: (_) => BeaconViewModel(beaconRepository)
             ..add(const BeaconSubscriptionInitialized())
             ..add(const BeaconPermissionsValidated()),
+        ),
+        BlocProvider(
+          create: (_) => MapViewModel(mapRepository)
+            ..add(
+              const MapInitialized(),
+            ),
         ),
         BlocProvider(
           create: (_) => ChatViewModel(chatRepository),

@@ -8,6 +8,7 @@ void _refreshRouter() => appRouter.refresh();
 final routingListeners = [
   BlocListener<AuthViewModel, AuthState>(
     listenWhen: (previous, current) =>
+        previous.status != current.status ||
         previous.isAuthenticated != current.isAuthenticated ||
         previous.isRegistered != current.isRegistered,
     listener: (context, state) {
