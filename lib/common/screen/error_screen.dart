@@ -1,4 +1,3 @@
-import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

@@ -8,8 +8,7 @@ import 'package:cooki/feature/product/data/di/product_service_locator.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_event.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
 import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
-import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_item_view_model.dart';
-import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,8 +38,8 @@ class AuthenticatedBlocs extends StatelessWidget {
             ..add(const PreferencesRequested()),
         ),
         BlocProvider(
-            create: (_) => ShoppingListViewModel(shoppingListRepository)
-              ..add(const ShoppingListsRequested())),
+            create: (_) => ShoppingListCatalogViewModel(shoppingListRepository)
+              ..add(const ShoppingListCatalogRequested())),
         BlocProvider(
             create: (_) => ProductViewModel(productRepository)
               ..add(const ProductsRequested())),
