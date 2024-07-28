@@ -15,8 +15,6 @@ class ShoppingListItemDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Wrap with BlocProvider (ShoppingListViewModel)
-    // and conditionally render update or create
     return ShoppingListRequestHandler(
       shoppingListId: shoppingListId,
       child: Builder(

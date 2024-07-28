@@ -225,43 +225,8 @@ class _ItemDetails extends StatelessWidget {
             horizontal: 12,
             vertical: 8,
           ),
-          // TODO: Breakdown further
-          child: Row(
-            children: [
-              Checkbox(
-                value: item.isChecked,
-                onChanged: (res) {
-                  context.read<ShoppingListViewModel>().add(
-                        ShoppingListItemUpdated(
-                          input: UpdateShoppingListItemInput(
-                            id: item.id,
-                            isChecked: !item.isChecked,
-                          ),
-                        ),
-                      );
-                },
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        item.label,
-                        style: AppTextStyles.bodyLarge,
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        '(${item.quantity.toString()} x ${item.product.unitSize})',
-                      ),
-                    ],
-                  ),
-                  Text(
-                    'Php ${item.product.price.toString()}',
-                  ),
-                ],
-              ),
-            ],
+          child: _ItemInformation(
+            item: item,
           ),
         ),
         const Spacer(),
@@ -277,6 +242,56 @@ class _ItemDetails extends StatelessWidget {
             );
           },
         )
+      ],
+    );
+  }
+}
+
+class _ItemInformation extends StatelessWidget {
+  const _ItemInformation({
+    super.key,
+    required this.item,
+  });
+
+  final ShoppingListItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Checkbox(
+          value: item.isChecked,
+          onChanged: (res) {
+            context.read<ShoppingListViewModel>().add(
+                  ShoppingListItemUpdated(
+                    input: UpdateShoppingListItemInput(
+                      id: item.id,
+                      isChecked: !item.isChecked,
+                    ),
+                  ),
+                );
+          },
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  item.label,
+                  style: AppTextStyles.bodyLarge,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  '(${item.quantity.toString()} x ${item.product.unitSize})',
+                ),
+              ],
+            ),
+            Text(
+              'Php ${item.product.price.toString()}',
+            ),
+          ],
+        ),
       ],
     );
   }

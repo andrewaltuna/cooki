@@ -22,7 +22,9 @@ class ShoppingListRequestHandler extends StatelessWidget {
         .read<ShoppingListCatalogViewModel>()
         .state
         .shoppingLists
-        .firstWhere((list) => list.id == shoppingListId);
+        .firstWhere(
+          (list) => list.id == shoppingListId,
+        );
 
     return BlocProvider(
       create: (_) => ShoppingListViewModel(shoppingListRepository)
@@ -35,6 +37,10 @@ class ShoppingListRequestHandler extends StatelessWidget {
         listenWhen: (previous, current) =>
             previous.shoppingList != current.shoppingList ||
             previous.updateStatus != current.updateStatus,
+        // previous.deleteStatus != current.deleteStatus ||
+        // previous.createItemStatus != current.createItemStatus ||
+        // previous.updateItemStatus != current.updateItemStatus ||
+        // previous.deleteItemStatus != current.deleteItemStatus,
         listener: (context, state) {
           context.read<ShoppingListCatalogViewModel>().add(
                 ShoppingListEntryUpdated(

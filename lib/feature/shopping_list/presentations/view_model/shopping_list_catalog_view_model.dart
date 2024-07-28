@@ -1,6 +1,5 @@
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,10 +15,8 @@ class ShoppingListCatalogViewModel
     on<ShoppingListCatalogRequested>(_onRequested);
     on<ShoppingListCreated>(_onCreated);
     on<ShoppingListEntryUpdated>(_onUpdated);
-    // TODO: Delete
-    on<ShoppingListSelected>(_onSelected);
-    on<ShoppingListDeleted>(_onDeleted);
-    on<ShoppingListItemToggled>(_onItemToggle);
+    // TODO: Delete button is on catalog page and only this view model is available there
+    // So find a way to delete an item from that page
   }
 
   final ShoppingListRepositoryInterface _repository;
@@ -102,99 +99,6 @@ class ShoppingListCatalogViewModel
         state.copyWith(
           status: ViewModelStatus.success,
           shoppingLists: [...state.shoppingLists, result],
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
-
-  Future<void> _onSelected(
-    ShoppingListSelected event,
-    Emitter<ShoppingListCatalogState> emit,
-  ) async {
-    try {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.loading,
-        ),
-      );
-
-      final result = await _repository.getShoppingList(event.id);
-
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          selectedShoppingList: result,
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
-
-  Future<void> _onDeleted(
-    ShoppingListDeleted event,
-    Emitter<ShoppingListCatalogState> emit,
-  ) async {
-    try {
-      emit(
-        state.copyWith(
-          submissionStatus: ViewModelStatus.loading,
-        ),
-      );
-
-      final result = await _repository.deleteShoppingList(event.id);
-
-      emit(
-        state.copyWith(
-          submissionStatus: ViewModelStatus.success,
-          shoppingLists: state.shoppingLists
-              .where((list) => list.id != result.id)
-              .toList(),
-          selectedShoppingList: null,
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          submissionStatus: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
-
-  Future<void> _onItemToggle(
-    ShoppingListItemToggled event,
-    Emitter<ShoppingListCatalogState> emit,
-  ) async {
-    try {
-      emit(
-        state.copyWith(status: ViewModelStatus.loading),
-      );
-
-      final result = await _repository.updateShoppingListItem(event.input);
-
-      final shoppingList = state.selectedShoppingList!;
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          selectedShoppingList: shoppingList.copyWith(
-            items: shoppingList.items
-                .map((list) => list.id == result.id ? result : list)
-                .toList(),
-          ),
         ),
       );
     } on Exception catch (error) {

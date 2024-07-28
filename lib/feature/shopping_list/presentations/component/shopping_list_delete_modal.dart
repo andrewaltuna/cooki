@@ -1,13 +1,12 @@
-import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
-import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ShoppingListDeleteModalContent extends StatelessWidget {
   const ShoppingListDeleteModalContent({
+    super.key,
     required this.shoppingListId,
   });
 
@@ -18,12 +17,9 @@ class ShoppingListDeleteModalContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ShoppingListCatalogViewModel, ShoppingListCatalogState>(
-      // listenWhen: (previous, current) =>
-      //     previous.submissionStatus != current.submissionStatus,
+    return BlocListener<ShoppingListViewModel, ShoppingListState>(
       listener: (context, state) {
-        if (state.submissionStatus.isSuccess) {
-          context.go(AppRoutes.shoppingLists);
+        if (state.deleteStatus.isSuccess) {
           Navigator.pop(context);
         }
       },
@@ -59,12 +55,11 @@ class ShoppingListDeleteModalContent extends StatelessWidget {
                   width: 24,
                 ),
                 TextButton(
-                  onPressed: () =>
-                      context.read<ShoppingListCatalogViewModel>().add(
-                            ShoppingListDeleted(
-                              id: shoppingListId,
-                            ),
-                          ),
+                  onPressed: () => context.read<ShoppingListViewModel>().add(
+                        ShoppingListDeleted(
+                          id: shoppingListId,
+                        ),
+                      ),
                   child: Text(
                     'Delete',
                   ),

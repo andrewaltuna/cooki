@@ -86,11 +86,6 @@ class _ItemCreateForm extends HookWidget {
               input: input,
             ),
           );
-
-      // TODO: Redirect on success
-      // context.go(
-      //   Uri(path: '${AppRoutes.shoppingLists}/${shoppingListId}').toString(),
-      // );
     }
   }
 

@@ -7,9 +7,7 @@ import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_helper.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

@@ -41,37 +41,37 @@ class ShoppingListEntryUpdated extends ShoppingListCatalogEvent {
 }
 
 // TODO: Remove
-class ShoppingListSelected extends ShoppingListCatalogEvent {
-  const ShoppingListSelected(this.id);
+// class ShoppingListSelected extends ShoppingListCatalogEvent {
+//   const ShoppingListSelected(this.id);
 
-  final String id;
+//   final String id;
 
-  @override
-  List<Object?> get props => [
-        id,
-      ];
-}
+//   @override
+//   List<Object?> get props => [
+//         id,
+//       ];
+// }
 
-class ShoppingListDeleted extends ShoppingListCatalogEvent {
-  const ShoppingListDeleted({
-    required this.id,
-  });
+// class ShoppingListDeleted extends ShoppingListCatalogEvent {
+//   const ShoppingListDeleted({
+//     required this.id,
+//   });
 
-  final String id;
+//   final String id;
 
-  @override
-  List<Object?> get props => [id];
-}
+//   @override
+//   List<Object?> get props => [id];
+// }
 
-class ShoppingListItemToggled extends ShoppingListCatalogEvent {
-  const ShoppingListItemToggled({
-    required this.input,
-  });
+// class ShoppingListItemToggled extends ShoppingListCatalogEvent {
+//   const ShoppingListItemToggled({
+//     required this.input,
+//   });
 
-  final UpdateShoppingListItemInput input;
+//   final UpdateShoppingListItemInput input;
 
-  @override
-  List<Object?> get props => [
-        input,
-      ];
-}
+//   @override
+//   List<Object?> get props => [
+//         input,
+//       ];
+// }

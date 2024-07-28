@@ -94,11 +94,16 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      await _repository.deleteShoppingList(event.id);
+      await _repository.deleteShoppingList(
+        event.id,
+      );
 
+      // TODO: Deal with bug where state doesn't update on deletion
+      // bc if it's null, state doesn't know which entry to remove
       emit(
         state.copyWith(
           deleteStatus: ViewModelStatus.success,
+          shoppingList: null,
         ),
       );
     } on Exception catch (error) {

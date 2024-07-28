@@ -40,7 +40,9 @@ class ShoppingListDeleted extends ShoppingListEvent {
   final String id;
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [
+        id,
+      ];
 }
 
 // Item methods
