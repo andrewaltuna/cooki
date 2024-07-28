@@ -8,6 +8,7 @@ import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,21 +40,36 @@ class ShoppingListItemCreateView extends StatelessWidget {
       );
     }
 
-    return MainScaffold(
-      title: "Create Item",
-      leading: IconButton(
-        onPressed: () {
-          context.go(
-            '${AppRoutes.shoppingLists}/$shoppingListId',
-          );
-        },
-        icon: const Icon(
-          Icons.arrow_back,
-        ),
-      ),
-      body: _ItemCreateForm(
-        shoppingListId: shoppingListId,
-      ),
+    return BlocConsumer<ShoppingListViewModel, ShoppingListState>(
+      listener: (context, state) {
+        context.read<ShoppingListCatalogViewModel>().add(
+              ShoppingListEntryUpdated(
+                updatedShoppingList: state.shoppingList!,
+              ),
+            );
+
+        if (state.createItemStatus.isSuccess) {
+          Navigator.of(context).pop();
+        }
+      },
+      builder: (context, state) {
+        return MainScaffold(
+          title: "Create Item",
+          leading: IconButton(
+            onPressed: () {
+              context.go(
+                '${AppRoutes.shoppingLists}/$shoppingListId',
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
+          ),
+          body: _ItemCreateForm(
+            shoppingListId: shoppingListId,
+          ),
+        );
+      },
     );
   }
 }
@@ -99,10 +115,7 @@ class _ItemCreateForm extends HookWidget {
       ),
     );
 
-    // TODO: Make read or fetch request trigger early (instead of requesting per item create/update)
-    final products = context.select(
-      (ProductViewModel viewModel) => viewModel.state.products,
-    );
+    final products = context.read<ProductViewModel>().state.products;
 
     return Container(
       padding: const EdgeInsets.symmetric(

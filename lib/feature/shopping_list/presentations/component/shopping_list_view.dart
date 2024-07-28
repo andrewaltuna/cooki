@@ -10,6 +10,7 @@ import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_lis
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_helper.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,52 +28,67 @@ class ShoppingListView extends StatelessWidget {
     ShoppingListHelper.of(context).showDeleteShoppingListModal(id);
   }
 
-  // TODO: Wrap this with BlocConsumer (it's not useful if it's in request helper since state isn't being referenced)
   @override
   Widget build(BuildContext context) {
-    final (isFetching, shoppingList) = context.select(
-      (ShoppingListViewModel viewModel) => (
-        viewModel.state.isInitialLoading,
-        viewModel.state.shoppingList,
-      ),
-    );
+    return BlocConsumer<ShoppingListViewModel, ShoppingListState>(
+      listener: (context, state) {
+        context.read<ShoppingListCatalogViewModel>().add(
+              ShoppingListEntryUpdated(
+                updatedShoppingList: state.shoppingList!,
+              ),
+            );
 
-    if (isFetching) {
-      return const LoadingScreen();
-    } else if (shoppingList == null) {
-      return const ErrorScreen(
-        errorMessage: 'Not found',
-        path: AppRoutes.shoppingLists,
-      );
-    }
+        if (state.deleteStatus.isSuccess) {
+          context.read<ShoppingListCatalogViewModel>().add(
+                ShoppingListEntryDeleted(
+                  shoppingListId: state.shoppingList!.id,
+                ),
+              );
+          Navigator.of(context).pop();
+          context.go(AppRoutes.shoppingLists);
+        }
+      },
+      builder: (context, state) {
+        final shoppingList = state.shoppingList;
+        final isFetching = state.isInitialLoading;
 
-    return MainScaffold(
-      title: shoppingList.name,
-      leading: IconButton(
-        onPressed: () {
-          context.go(
-            Uri(
-              path: AppRoutes.shoppingLists,
-            ).toString(),
+        if (isFetching) {
+          return const LoadingScreen();
+        } else if (shoppingList == null) {
+          return const ErrorScreen(
+            errorMessage: 'Not found',
+            path: AppRoutes.shoppingLists,
           );
-        },
-        icon: const Icon(Icons.arrow_back),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () => _onSubmit(
-            context,
-            shoppingList.id,
+        }
+        return MainScaffold(
+          title: shoppingList.name,
+          leading: IconButton(
+            onPressed: () {
+              context.go(
+                Uri(
+                  path: AppRoutes.shoppingLists,
+                ).toString(),
+              );
+            },
+            icon: const Icon(Icons.arrow_back),
           ),
-          icon: const Icon(
-            Icons.delete,
+          actions: [
+            IconButton(
+              onPressed: () => _onSubmit(
+                context,
+                shoppingList.id,
+              ),
+              icon: const Icon(
+                Icons.delete,
+              ),
+            ),
+          ],
+          contentPadding: EdgeInsets.zero,
+          body: _ShoppingListContent(
+            shoppingList: shoppingList,
           ),
-        ),
-      ],
-      contentPadding: EdgeInsets.zero,
-      body: _ShoppingListContent(
-        shoppingList: shoppingList,
-      ),
+        );
+      },
     );
   }
 }

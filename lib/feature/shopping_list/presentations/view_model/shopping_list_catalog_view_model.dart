@@ -15,8 +15,7 @@ class ShoppingListCatalogViewModel
     on<ShoppingListCatalogRequested>(_onRequested);
     on<ShoppingListCreated>(_onCreated);
     on<ShoppingListEntryUpdated>(_onUpdated);
-    // TODO: Delete button is on catalog page and only this view model is available there
-    // So find a way to delete an item from that page
+    on<ShoppingListEntryDeleted>(_onDeleted);
   }
 
   final ShoppingListRepositoryInterface _repository;
@@ -36,37 +35,6 @@ class ShoppingListCatalogViewModel
         state.copyWith(
           status: ViewModelStatus.success,
           shoppingLists: result,
-        ),
-      );
-    } on Exception catch (error) {
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.error,
-          error: error,
-        ),
-      );
-    }
-  }
-
-  void _onUpdated(
-    ShoppingListEntryUpdated event,
-    Emitter<ShoppingListCatalogState> emit,
-  ) {
-    try {
-      emit(
-        state.copyWith(status: ViewModelStatus.loading),
-      );
-
-      final shoppingLists = state.shoppingLists
-          .map((list) => list.id == event.updatedShoppingList.id
-              ? event.updatedShoppingList
-              : list)
-          .toList();
-
-      emit(
-        state.copyWith(
-          status: ViewModelStatus.success,
-          shoppingLists: shoppingLists,
         ),
       );
     } on Exception catch (error) {
@@ -99,6 +67,70 @@ class ShoppingListCatalogViewModel
         state.copyWith(
           status: ViewModelStatus.success,
           shoppingLists: [...state.shoppingLists, result],
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
+  void _onUpdated(
+    ShoppingListEntryUpdated event,
+    Emitter<ShoppingListCatalogState> emit,
+  ) {
+    try {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.loading,
+        ),
+      );
+
+      final shoppingLists = state.shoppingLists
+          .map((list) => list.id == event.updatedShoppingList.id
+              ? event.updatedShoppingList
+              : list)
+          .toList();
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          shoppingLists: shoppingLists,
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onDeleted(
+    ShoppingListEntryDeleted event,
+    Emitter<ShoppingListCatalogState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.loading,
+        ),
+      );
+
+      final shoppingLists = state.shoppingLists
+          .where((list) => list.id != event.shoppingListId)
+          .toList();
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          shoppingLists: shoppingLists,
         ),
       );
     } on Exception catch (error) {

@@ -39,3 +39,16 @@ class ShoppingListEntryUpdated extends ShoppingListCatalogEvent {
         updatedShoppingList,
       ];
 }
+
+class ShoppingListEntryDeleted extends ShoppingListCatalogEvent {
+  const ShoppingListEntryDeleted({
+    required this.shoppingListId,
+  });
+
+  final String shoppingListId;
+
+  @override
+  List<Object?> get props => [
+        shoppingListId,
+      ];
+}

@@ -3,6 +3,7 @@ import 'package:cooki/common/component/authenticated_listeners.dart';
 import 'package:cooki/feature/map/presentation/screen/map_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
+import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_bloc.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_catalog_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_details_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_details_screen.dart';
@@ -66,41 +67,52 @@ final _routes = [
       ),
       _goRoute(
         path: AppRoutes.shoppingLists,
-        // child: const ShoppingListsScreen(),
         builder: (_) => const ShoppingListCatalogScreen(),
         routes: [
-          _goRoute(
-            path: ':id',
-            builder: (state) {
+          ShellRoute(
+            builder: (_, state, child) {
               final String shoppingListId =
                   state.pathParameters["id"] as String;
-              return ShoppingListDetailsScreen(
+              return ShoppingListBloc(
                 shoppingListId: shoppingListId,
+                child: child,
               );
             },
             routes: [
               _goRoute(
-                path: 'create-item',
+                path: ':id',
                 builder: (state) {
                   final String shoppingListId =
                       state.pathParameters["id"] as String;
-                  return ShoppingListItemDetailsScreen(
+                  return ShoppingListDetailsScreen(
                     shoppingListId: shoppingListId,
                   );
                 },
-              ),
-              _goRoute(
-                path: 'edit-item/:itemId',
-                builder: (state) {
-                  final String shoppingListId =
-                      state.pathParameters["id"] as String;
-                  final String shoppingListItemId =
-                      state.pathParameters["itemId"] as String;
-                  return ShoppingListItemDetailsScreen(
-                    shoppingListId: shoppingListId,
-                    shoppingListItemId: shoppingListItemId,
-                  );
-                },
+                routes: [
+                  _goRoute(
+                    path: 'create-item',
+                    builder: (state) {
+                      final String shoppingListId =
+                          state.pathParameters["id"] as String;
+                      return ShoppingListItemDetailsScreen(
+                        shoppingListId: shoppingListId,
+                      );
+                    },
+                  ),
+                  _goRoute(
+                    path: 'edit-item/:itemId',
+                    builder: (state) {
+                      final String shoppingListId =
+                          state.pathParameters["id"] as String;
+                      final String shoppingListItemId =
+                          state.pathParameters["itemId"] as String;
+                      return ShoppingListItemDetailsScreen(
+                        shoppingListId: shoppingListId,
+                        shoppingListItemId: shoppingListItemId,
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),

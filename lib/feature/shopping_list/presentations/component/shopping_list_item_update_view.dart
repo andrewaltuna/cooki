@@ -42,52 +42,59 @@ class ShoppingListItemUpdateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (status, shoppingList) = context.select(
-      (ShoppingListViewModel viewModel) => (
-        viewModel.state.status,
-        viewModel.state.shoppingList,
-      ),
-    );
+    return BlocConsumer<ShoppingListViewModel, ShoppingListState>(
+      listener: (context, state) {
+        if (state.updateItemStatus.isSuccess ||
+            state.deleteItemStatus.isSuccess) {
+          Navigator.of(context).pop();
+        }
+      },
+      builder: (context, state) {
+        final status = context.read<ShoppingListViewModel>().state.status;
 
-    final shoppingListItem = shoppingList?.items
-        .firstWhereOrNull((item) => item.id == shoppingListItemId);
+        final shoppingList =
+            context.read<ShoppingListViewModel>().state.shoppingList;
 
-    if (status.isLoading) {
-      return const LoadingScreen();
-    } else if (status.isError || shoppingListItem == null) {
-      return const ErrorScreen(
-        errorMessage: 'Not found',
-        path: AppRoutes.shoppingLists,
-      );
-    }
+        final shoppingListItem = shoppingList?.items
+            .firstWhereOrNull((item) => item.id == shoppingListItemId);
 
-    return MainScaffold(
-      title: "Update Item",
-      leading: IconButton(
-        onPressed: () {
-          context.go(
-            '${AppRoutes.shoppingLists}/$shoppingListId',
+        if (status.isLoading) {
+          return const LoadingScreen();
+        } else if (status.isError || shoppingListItem == null) {
+          return const ErrorScreen(
+            errorMessage: 'Not found',
+            path: AppRoutes.shoppingLists,
           );
-        },
-        icon: const Icon(
-          Icons.arrow_back,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () => _onSubmitted(
-            context,
-            shoppingListItemId,
+        }
+        return MainScaffold(
+          title: "Update Item",
+          leading: IconButton(
+            onPressed: () {
+              context.go(
+                '${AppRoutes.shoppingLists}/$shoppingListId',
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
           ),
-          icon: Icon(
-            Icons.delete,
+          actions: [
+            IconButton(
+              onPressed: () => _onSubmitted(
+                context,
+                shoppingListItemId,
+              ),
+              icon: Icon(
+                Icons.delete,
+              ),
+            ),
+          ],
+          body: _ItemUpdateForm(
+            shoppingListId: shoppingListId,
+            shoppingListItem: shoppingListItem,
           ),
-        ),
-      ],
-      body: _ItemUpdateForm(
-        shoppingListId: shoppingListId,
-        shoppingListItem: shoppingListItem,
-      ),
+        );
+      },
     );
   }
 }
@@ -134,10 +141,7 @@ class _ItemUpdateForm extends HookWidget {
       ),
     );
 
-    // TODO: Make read or fetch request trigger early (instead of requesting per item create/update)
-    final products = context.select(
-      (ProductViewModel viewModel) => viewModel.state.products,
-    );
+    final products = context.read<ProductViewModel>().state.products;
     final selectedProduct = products
         .firstWhereOrNull((product) => product.id == formInput.value.productId);
 

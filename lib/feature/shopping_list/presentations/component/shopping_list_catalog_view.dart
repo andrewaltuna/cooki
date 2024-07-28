@@ -20,51 +20,47 @@ class ShoppingListCatalogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (
-      status,
-      shoppingLists,
-    ) = context.select(
-      (ShoppingListCatalogViewModel viewModel) => (
-        viewModel.state.status,
-        viewModel.state.shoppingLists,
-      ),
-    );
+    return BlocBuilder<ShoppingListCatalogViewModel, ShoppingListCatalogState>(
+      builder: (context, state) {
+        final status = state.status;
+        final shoppingLists = state.shoppingLists;
 
-    if (status.isLoading) {
-      return const LoadingScreen();
-    }
+        if (status.isLoading) {
+          return const LoadingScreen();
+        }
 
-    if (status.isError) {
-      return const ErrorScreen(
-        errorMessage: 'Something went wrong.',
-      );
-    }
+        if (status.isError) {
+          return const ErrorScreen(
+            errorMessage: 'Something went wrong.',
+          );
+        }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(height: 16),
-          // TODO: Remake screens (use listener/builder for wrapper)
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  for (var list in shoppingLists)
-                    _ShoppingListCard(
-                      shoppingList: list,
-                    ),
-                ],
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(height: 16),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (var list in shoppingLists)
+                        _ShoppingListCard(
+                          shoppingList: list,
+                        ),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              PrimaryButton(
+                label: 'Create List',
+                onPress: () => _onSubmitted(context),
+              ),
+            ],
           ),
-          PrimaryButton(
-            label: 'Create List',
-            onPress: () => _onSubmitted(context),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -126,37 +122,16 @@ class _ShoppingListInformation extends StatelessWidget {
 
   final ShoppingList shoppingList;
 
-  void _onClick(BuildContext context, String shoppingListId) {
-    ShoppingListHelper.of(context).showDeleteShoppingListModal(shoppingListId);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            IconButton(
-              onPressed: () => _onClick(
-                context,
-                shoppingList.id,
-              ),
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(
-              shoppingList.name,
-              style: AppTextStyles.titleMedium.copyWith(
-                color: Colors.white,
-              ),
-            ),
-          ],
+        Text(
+          shoppingList.name,
+          style: AppTextStyles.titleMedium.copyWith(
+            color: Colors.white,
+          ),
         ),
         Text(
           '${shoppingList.items.length.toString()} items',

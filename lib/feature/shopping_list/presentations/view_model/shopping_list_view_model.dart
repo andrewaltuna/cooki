@@ -31,14 +31,10 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     try {
       emit(
         state.copyWith(
-          status: ViewModelStatus.loading,
+          status: ViewModelStatus.success,
+          shoppingList: event.shoppingList,
         ),
       );
-
-      emit(state.copyWith(
-        status: ViewModelStatus.success,
-        shoppingList: event.shoppingList,
-      ));
     } on Exception catch (error) {
       emit(
         state.copyWith(
@@ -66,13 +62,15 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
 
       final shoppingList = state.shoppingList!;
 
-      emit(state.copyWith(
-        updateStatus: ViewModelStatus.success,
-        shoppingList: shoppingList.copyWith(
-          name: result.name,
-          budget: result.budget,
+      emit(
+        state.copyWith(
+          updateStatus: ViewModelStatus.success,
+          shoppingList: shoppingList.copyWith(
+            name: result.name,
+            budget: result.budget,
+          ),
         ),
-      ));
+      );
     } on Exception catch (error) {
       emit(
         state.copyWith(
@@ -98,12 +96,9 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         event.id,
       );
 
-      // TODO: Deal with bug where state doesn't update on deletion
-      // bc if it's null, state doesn't know which entry to remove
       emit(
         state.copyWith(
           deleteStatus: ViewModelStatus.success,
-          shoppingList: null,
         ),
       );
     } on Exception catch (error) {
@@ -132,6 +127,7 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         event.input,
       );
       final shoppingList = state.shoppingList!;
+
       emit(
         state.copyWith(
           createItemStatus: ViewModelStatus.success,
