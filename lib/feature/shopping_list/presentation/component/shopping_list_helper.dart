@@ -47,7 +47,6 @@ class ShoppingListHelper {
       context: _context,
       barrierDismissible: false,
       builder: (_) {
-        print('BUILDING DIALOG');
         return PopScope(
           canPop: false,
           child: BlocProvider.value(

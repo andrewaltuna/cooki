@@ -16,9 +16,6 @@ class ShoppingListBloc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('[ShoppingListBloc] $shoppingListId');
-    print(
-        '[ShoppingListBloc] state: ${context.read<ShoppingListCatalogViewModel>().state.shoppingLists}');
     final shoppingList = context
         .read<ShoppingListCatalogViewModel>()
         .state

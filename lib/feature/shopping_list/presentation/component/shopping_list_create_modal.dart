@@ -70,7 +70,9 @@ class ShoppingListCreateModalContent extends HookWidget {
                     textInputAction: TextInputAction.next,
                     hintText: "Budget (in PHP)",
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d*\.?\d*'),
+                      ),
                     ],
                   )
                 ],
@@ -113,7 +115,10 @@ class ShoppingListCreateModalContent extends HookWidget {
                     ),
                   ),
                   onPressed: () => _onCreate(
-                      context, nameInputController, budgetInputController),
+                    context,
+                    nameInputController,
+                    budgetInputController,
+                  ),
                 )
               ],
             )
