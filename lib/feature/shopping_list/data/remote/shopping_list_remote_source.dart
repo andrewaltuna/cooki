@@ -30,14 +30,14 @@ class ShoppingListRemoteSource {
   }
 
   Future<ShoppingList> getShoppingList(String id) async {
-    final response = await this._graphQLClient.query(
-          QueryOptions(
-            document: gql(_getShoppingListQuery),
-            variables: {
-              'id': id,
-            },
-          ),
-        );
+    final response = await _graphQLClient.query(
+      QueryOptions(
+        document: gql(_getShoppingListQuery),
+        variables: {
+          'id': id,
+        },
+      ),
+    );
     return response.result(
       onSuccess: (data) {
         final result = new Map<String, dynamic>.from(data['shoppingList']);

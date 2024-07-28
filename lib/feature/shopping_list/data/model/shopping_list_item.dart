@@ -1,5 +1,4 @@
 import 'package:cooki/feature/product/data/model/product.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
 import 'package:equatable/equatable.dart';
 
 class ShoppingListItem extends Equatable {
@@ -34,14 +33,6 @@ class ShoppingListItem extends Equatable {
   final Product product;
   final int quantity;
   final bool isChecked;
-
-  ShoppingListItemInput toInput() {
-    return ShoppingListItemInput(
-      label: label,
-      productId: product.id,
-      quantity: quantity,
-    );
-  }
 
   ShoppingListItem copyWith({
     String? id,

@@ -30,7 +30,6 @@ class ShoppingListItemInput extends Equatable {
       'label': label,
       'productId': productId,
       'quantity': quantity,
-      'price': 0.0,
     };
   }
 
