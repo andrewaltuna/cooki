@@ -67,55 +67,44 @@ final _routes = [
       _goRoute(
         path: AppRoutes.shoppingLists,
         // child: const ShoppingListsScreen(),
-        child: const ShoppingListCatalogScreen(),
-      ),
-      // TODO: Consolidate w/ _goRoute
-      GoRoute(
-        path: '${AppRoutes.shoppingLists}/:id',
-        pageBuilder: (_, state) {
-          final String shoppingListId = state.pathParameters["id"] as String;
-          return _pageWithDefaultTransition(
-            state,
-            // child: ShoppingListScreen(
-            //   id: shoppingListId,
-            // ),
-            child: ShoppingListDetailsScreen(
-              shoppingListId: shoppingListId,
-            ),
-          );
-        },
-      ),
-      GoRoute(
-        path: '${AppRoutes.shoppingLists}/:id/create-item',
-        pageBuilder: (_, state) {
-          final String shoppingListId = state.pathParameters["id"] as String;
-          return _pageWithDefaultTransition(state,
-              // child: ShoppingListItemCreateScreen(
-              //   shoppingListId: shoppingListId,
-              // ),
-              child: ShoppingListItemDetailsScreen(
+        builder: (_) => const ShoppingListCatalogScreen(),
+        routes: [
+          _goRoute(
+            path: ':id',
+            builder: (state) {
+              final String shoppingListId =
+                  state.pathParameters["id"] as String;
+              return ShoppingListDetailsScreen(
                 shoppingListId: shoppingListId,
-              ));
-        },
-      ),
-      GoRoute(
-        path: '${AppRoutes.shoppingLists}/:id/edit-item/:itemId',
-        pageBuilder: (_, state) {
-          final String shoppingListId = state.pathParameters["id"] as String;
-          final String shoppingListItemId =
-              state.pathParameters["itemId"] as String;
-          return _pageWithDefaultTransition(
-            state,
-            // child: ShoppingListItemUpdateScreen(
-            //   shoppingListId: shoppingListId,
-            //   shoppingListItemId: shoppingListItemId,
-            // ),
-            child: ShoppingListItemDetailsScreen(
-              shoppingListId: shoppingListId,
-              shoppingListItemId: shoppingListItemId,
-            ),
-          );
-        },
+              );
+            },
+            routes: [
+              _goRoute(
+                path: 'create-item',
+                builder: (state) {
+                  final String shoppingListId =
+                      state.pathParameters["id"] as String;
+                  return ShoppingListItemDetailsScreen(
+                    shoppingListId: shoppingListId,
+                  );
+                },
+              ),
+              _goRoute(
+                path: 'edit-item/:itemId',
+                builder: (state) {
+                  final String shoppingListId =
+                      state.pathParameters["id"] as String;
+                  final String shoppingListItemId =
+                      state.pathParameters["itemId"] as String;
+                  return ShoppingListItemDetailsScreen(
+                    shoppingListId: shoppingListId,
+                    shoppingListItemId: shoppingListItemId,
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   ),
