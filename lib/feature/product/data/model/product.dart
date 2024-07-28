@@ -1,4 +1,3 @@
-import 'package:cooki/common/extension/enum_extension.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:equatable/equatable.dart';
 
@@ -37,7 +36,7 @@ class Product extends Equatable {
     return empty.copyWith(
       id: json['_id'],
       category: ProductCategory.values.firstWhere(
-        (element) => element.apiValue == productCategory,
+        (element) => element.displayLabel == productCategory,
         orElse: () => ProductCategory.values.first,
       ),
       section: json['section'],
