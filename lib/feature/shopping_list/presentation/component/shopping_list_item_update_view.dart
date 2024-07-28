@@ -5,6 +5,7 @@ import 'package:cooki/common/screen/error_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_helper.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_form.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +27,12 @@ class ShoppingListItemUpdateView extends StatelessWidget {
     String itemId,
   ) {
     {
-      context.read<ShoppingListViewModel>().add(
-            ShoppingListItemDeleted(
-              id: itemId,
-            ),
-          );
+      // context.read<ShoppingListViewModel>().add(
+      //       ShoppingListItemDeleted(
+      //         id: itemId,
+      //       ),
+      //     );
+      ShoppingListHelper.of(context).showDeleteShoppingListItemModal(itemId);
     }
   }
 

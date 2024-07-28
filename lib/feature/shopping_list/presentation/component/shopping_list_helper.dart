@@ -1,6 +1,7 @@
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_create_modal.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_delete_modal.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_delete_modal.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,32 @@ class ShoppingListHelper {
               ),
               child: ShoppingListDeleteModalContent(
                 shoppingListId: shoppingListId,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showDeleteShoppingListItemModal(String itemId) async {
+    await showDialog(
+      context: _context,
+      barrierDismissible: false,
+      builder: (_) {
+        return PopScope(
+          canPop: false,
+          child: BlocProvider.value(
+            value: BlocProvider.of<ShoppingListViewModel>(_context),
+            child: Dialog(
+              backgroundColor: AppColors.backgroundPrimary,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
+                ),
+              ),
+              child: ShoppingListItemDeleteModal(
+                itemId: itemId,
               ),
             ),
           ),
