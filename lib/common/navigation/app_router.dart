@@ -24,21 +24,21 @@ final _routes = [
   // Default route
   _goRoute(
     path: AppRoutes.loading,
-    child: const LoadingScreen(),
+    builder: (_) => const LoadingScreen(),
   ),
 
   // Unauthenticated routes
   _goRoute(
     path: AppRoutes.login,
-    child: const LoginScreen(),
+    builder: (_) => const LoginScreen(),
   ),
   _goRoute(
     path: AppRoutes.registration,
-    child: const RegistrationScreen(),
+    builder: (_) => const RegistrationScreen(),
   ),
   _goRoute(
     path: AppRoutes.completeRegistration,
-    child: const CompleteRegistrationScreen(),
+    builder: (_) => const CompleteRegistrationScreen(),
   ),
 
   // Authenticated routes
@@ -54,15 +54,15 @@ final _routes = [
     routes: [
       _goRoute(
         path: AppRoutes.home,
-        child: const ChatScreen(),
+        builder: (_) => const ChatScreen(),
       ),
       _goRoute(
         path: AppRoutes.map,
-        child: const MapScreen(),
+        builder: (_) => const MapScreen(),
       ),
       _goRoute(
         path: AppRoutes.settings,
-        child: const PreferencesScreen(),
+        builder: (_) => const PreferencesScreen(),
       ),
       _goRoute(
         path: AppRoutes.shoppingLists,
@@ -150,13 +150,15 @@ final appRouter = GoRouter(
 
 GoRoute _goRoute({
   required String path,
-  required Widget child,
+  required Widget Function(GoRouterState) builder,
+  List<RouteBase> routes = const [],
 }) {
   return GoRoute(
     path: path,
+    routes: routes,
     pageBuilder: (_, state) => _pageWithDefaultTransition(
       state,
-      child: child,
+      child: builder(state),
     ),
   );
 }

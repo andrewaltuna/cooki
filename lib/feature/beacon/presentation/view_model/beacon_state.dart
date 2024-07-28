@@ -26,11 +26,11 @@ class BeaconState extends Equatable {
     );
   }
 
-  /// Get closest beacons if there are at least [minumum] beacons.
-  List<BeaconDetails>? closestBeaconsOrNull(int minumum) {
-    if (beacons.length < minumum) return null;
+  /// Gets [amount] closest beacons if there are at least [amount].
+  List<BeaconDetails>? closestBeaconsOrNull(int amount) {
+    if (beacons.length < amount) return null;
 
-    return beacons;
+    return beacons.take(amount).toList();
   }
 
   @override
