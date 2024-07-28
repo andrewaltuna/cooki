@@ -3,10 +3,10 @@ import 'package:cooki/common/component/authenticated_listeners.dart';
 import 'package:cooki/feature/map/presentation/screen/map_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
-import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_bloc.dart';
-import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_catalog_screen.dart';
-import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_details_screen.dart';
-import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_details_screen.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_bloc.dart';
+import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_catalog_screen.dart';
+import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_screen.dart';
+import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_item_screen.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
 import 'package:cooki/feature/preferences/presentation/screen/preferences_screen.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +84,7 @@ final _routes = [
                 builder: (state) {
                   final String shoppingListId =
                       state.pathParameters["id"] as String;
-                  return ShoppingListDetailsScreen(
+                  return ShoppingListScreen(
                     shoppingListId: shoppingListId,
                   );
                 },
@@ -94,7 +94,7 @@ final _routes = [
                     builder: (state) {
                       final String shoppingListId =
                           state.pathParameters["id"] as String;
-                      return ShoppingListItemDetailsScreen(
+                      return ShoppingListItemScreen(
                         shoppingListId: shoppingListId,
                       );
                     },
@@ -106,7 +106,7 @@ final _routes = [
                           state.pathParameters["id"] as String;
                       final String shoppingListItemId =
                           state.pathParameters["itemId"] as String;
-                      return ShoppingListItemDetailsScreen(
+                      return ShoppingListItemScreen(
                         shoppingListId: shoppingListId,
                         shoppingListItemId: shoppingListItemId,
                       );

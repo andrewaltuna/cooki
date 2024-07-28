@@ -10,7 +10,7 @@ import 'package:cooki/feature/product/presentation/view_model/product_view_model
 import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
-import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

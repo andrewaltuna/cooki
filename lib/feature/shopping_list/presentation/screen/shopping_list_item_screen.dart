@@ -1,9 +1,9 @@
-import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_item_create_view.dart';
-import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_item_update_view.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_create_view.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_update_view.dart';
 import 'package:flutter/widgets.dart';
 
-class ShoppingListItemDetailsScreen extends StatelessWidget {
-  const ShoppingListItemDetailsScreen({
+class ShoppingListItemScreen extends StatelessWidget {
+  const ShoppingListItemScreen({
     super.key,
     required this.shoppingListId,
     this.shoppingListItemId,
