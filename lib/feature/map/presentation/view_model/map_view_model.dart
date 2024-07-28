@@ -45,7 +45,7 @@ class MapViewModel extends Bloc<MapEvent, MapState> {
       );
 
       _timer = Timer.periodic(
-        const Duration(seconds: 1),
+        const Duration(seconds: 5),
         (_) => add(const MapUserCoordinatesRequestFlagged()),
       );
     } on Exception catch (_) {
