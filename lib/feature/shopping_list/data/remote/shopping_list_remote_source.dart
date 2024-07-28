@@ -1,6 +1,7 @@
 import 'package:cooki/common/extension/graphql_extensions.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
@@ -67,6 +68,25 @@ class ShoppingListRemoteSource {
     );
   }
 
+  Future<ShoppingList> updateShoppingList(
+    UpdateShoppingListInput input,
+  ) async {
+    final response = await _graphQLClient.mutate(
+      MutationOptions(
+        document: gql(_updateShoppingListMutation),
+        variables: {
+          'input': input.toJson(),
+        },
+      ),
+    );
+
+    return response.result(onSuccess: (data) {
+      final result = data['updateShoppingList'];
+      final shoppingListData = ShoppingList.fromJson(result);
+      return shoppingListData;
+    });
+  }
+
   Future<ShoppingList> deleteShoppingList(String id) async {
     final response = await _graphQLClient.mutate(
       MutationOptions(
@@ -108,7 +128,8 @@ class ShoppingListRemoteSource {
   }
 
   Future<ShoppingListItem> updateShoppingListItem(
-      UpdateShoppingListItemInput input) async {
+    UpdateShoppingListItemInput input,
+  ) async {
     final response = await _graphQLClient.mutate(
       MutationOptions(
         document: gql(_updateShoppingListItemMutation),
@@ -173,8 +194,20 @@ query GetShoppingLists {
     _id
     name
     userId
+    budget
     items {
       _id
+      label
+      quantity
+      isInCart
+      product {
+        _id
+        brand
+        productCategory
+        price
+        section
+        unitSize
+      }
     }
   }
 }
@@ -217,6 +250,19 @@ const _createShoppingListMutation = r'''
   }
 ''';
 
+const _updateShoppingListMutation = r'''
+  mutation UpdateShoppingList($input: UpdateShoppingListInput!) {
+    updateShoppingList(updateShoppingListInput: $input) {
+      _id
+      name
+      budget
+      items {
+        _id
+      }
+    }
+  }
+''';
+
 const _deleteShoppingListMutation = r'''
   mutation DeleteShoppingList($id: String!) {
     removeShoppingList(_id: $id) {
@@ -248,6 +294,17 @@ const _updateShoppingListItemMutation = r'''
   mutation UpdateShoppingListItem($input: UpdateShoppingListItemInput!) {
     updateShoppingListItem(updateShoppingListItemInput: $input) {
       _id
+      label
+      quantity
+      isInCart
+      product {
+        _id
+        brand
+        productCategory
+        price
+        section
+        unitSize
+      }
     }
   }
 ''';
@@ -256,6 +313,17 @@ const _createShoppingListItemMutation = r'''
   mutation CreateShoppingListItem($input: CreateShoppingListItemInput!) {
     createShoppingListItem(createShoppingListItemInput: $input) {
       _id
+      label
+      quantity
+      isInCart
+      product {
+        _id
+        brand
+        productCategory
+        price
+        section
+        unitSize
+      }
     }
   }
 ''';

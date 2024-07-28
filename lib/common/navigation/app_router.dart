@@ -3,7 +3,11 @@ import 'package:cooki/common/component/authenticated_listeners.dart';
 import 'package:cooki/feature/map/presentation/screen/map_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
+import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_item_create_view.dart';
+import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_catalog_screen.dart';
+import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_details_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_create_screen.dart';
+import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_details_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_item_update_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_list_screen.dart';
 import 'package:cooki/feature/shopping_list/presentations/screen/shopping_lists_screen.dart';
@@ -67,7 +71,8 @@ final _routes = [
       ),
       _goRoute(
         path: AppRoutes.shoppingLists,
-        child: const ShoppingListsScreen(),
+        // child: const ShoppingListsScreen(),
+        child: const ShoppingListCatalogScreen(),
       ),
       // TODO: Consolidate w/ _goRoute
       GoRoute(
@@ -76,8 +81,11 @@ final _routes = [
           final String shoppingListId = state.pathParameters["id"] as String;
           return _pageWithDefaultTransition(
             state,
-            child: ShoppingListScreen(
-              id: shoppingListId,
+            // child: ShoppingListScreen(
+            //   id: shoppingListId,
+            // ),
+            child: ShoppingListDetailsScreen(
+              shoppingListId: shoppingListId,
             ),
           );
         },
@@ -86,12 +94,13 @@ final _routes = [
         path: '${AppRoutes.shoppingLists}/:id/create-item',
         pageBuilder: (_, state) {
           final String shoppingListId = state.pathParameters["id"] as String;
-          return _pageWithDefaultTransition(
-            state,
-            child: ShoppingListItemCreateScreen(
-              shoppingListId: shoppingListId,
-            ),
-          );
+          return _pageWithDefaultTransition(state,
+              // child: ShoppingListItemCreateScreen(
+              //   shoppingListId: shoppingListId,
+              // ),
+              child: ShoppingListItemDetailsScreen(
+                shoppingListId: shoppingListId,
+              ));
         },
       ),
       GoRoute(
@@ -102,7 +111,11 @@ final _routes = [
               state.pathParameters["itemId"] as String;
           return _pageWithDefaultTransition(
             state,
-            child: ShoppingListItemUpdateScreen(
+            // child: ShoppingListItemUpdateScreen(
+            //   shoppingListId: shoppingListId,
+            //   shoppingListItemId: shoppingListItemId,
+            // ),
+            child: ShoppingListItemDetailsScreen(
               shoppingListId: shoppingListId,
               shoppingListItemId: shoppingListItemId,
             ),

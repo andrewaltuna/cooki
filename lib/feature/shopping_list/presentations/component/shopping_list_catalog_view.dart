@@ -1,47 +1,83 @@
-import 'package:cooki/common/hook/use_on_widget_load.dart';
+import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
+import 'package:cooki/common/screen/error_screen.dart';
+import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_helper.dart';
 import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
-class ShoppingListCatalog extends HookWidget {
-  const ShoppingListCatalog({
-    super.key,
-  });
+class ShoppingListCatalogView extends StatelessWidget {
+  const ShoppingListCatalogView({super.key});
+
+  void _onSubmitted(BuildContext context) {
+    ShoppingListHelper.of(context).showCreateShoppingListModal();
+  }
 
   @override
   Widget build(BuildContext context) {
-    useOnWidgetLoad(() {
-      context
-          .read<ShoppingListCatalogViewModel>()
-          .add(const ShoppingListCatalogRequested());
-    });
+    final (
+      status,
+      shoppingLists,
+    ) = context.select(
+      (ShoppingListCatalogViewModel viewModel) => (
+        viewModel.state.status,
+        viewModel.state.shoppingLists,
+      ),
+    );
 
-    return BlocBuilder<ShoppingListCatalogViewModel, ShoppingListCatalogState>(
-        builder: (context, state) {
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            for (var list in state.shoppingLists) _ShoppingListCard(list: list),
-          ],
-        ),
+    if (status.isLoading) {
+      return const LoadingScreen();
+    }
+
+    if (status.isError) {
+      return const ErrorScreen(
+        errorMessage: 'Something went wrong.',
       );
-    });
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(height: 16),
+          // TODO: Remake screens (use listener/builder for wrapper)
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  for (var list in shoppingLists)
+                    _ShoppingListCard(
+                      shoppingList: list,
+                    ),
+                ],
+              ),
+            ),
+          ),
+          PrimaryButton(
+            label: 'Create List',
+            onPress: () => _onSubmitted(context),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class _ShoppingListCard extends StatelessWidget {
   const _ShoppingListCard({
-    required this.list,
+    super.key,
+    required this.shoppingList,
   });
 
-  final ShoppingList list;
+  final ShoppingList shoppingList;
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +92,7 @@ class _ShoppingListCard extends StatelessWidget {
       ),
       onPressed: () => {
         context.go(
-          // Uri(
-          //   path: '${AppRoutes.shoppingLists}/${list.id}',
-          // ).toString(),
-          '${AppRoutes.shoppingLists}/${list.id}',
+          '${AppRoutes.shoppingLists}/${shoppingList.id}',
         ),
       },
       child: Column(
@@ -75,7 +108,7 @@ class _ShoppingListCard extends StatelessWidget {
                 vertical: 24.0,
                 horizontal: 16.0,
               ),
-              child: _ShoppingListCardContent(list: list),
+              child: _ShoppingListInformation(shoppingList: shoppingList),
             ),
           ),
           const SizedBox(
@@ -87,13 +120,13 @@ class _ShoppingListCard extends StatelessWidget {
   }
 }
 
-class _ShoppingListCardContent extends StatelessWidget {
-  const _ShoppingListCardContent({
+class _ShoppingListInformation extends StatelessWidget {
+  const _ShoppingListInformation({
     super.key,
-    required this.list,
+    required this.shoppingList,
   });
 
-  final ShoppingList list;
+  final ShoppingList shoppingList;
 
   void _onClick(BuildContext context, String shoppingListId) {
     ShoppingListHelper.of(context).showDeleteShoppingListModal(shoppingListId);
@@ -109,7 +142,7 @@ class _ShoppingListCardContent extends StatelessWidget {
             IconButton(
               onPressed: () => _onClick(
                 context,
-                list.id,
+                shoppingList.id,
               ),
               icon: const Icon(
                 Icons.delete,
@@ -120,7 +153,7 @@ class _ShoppingListCardContent extends StatelessWidget {
               width: 8,
             ),
             Text(
-              list.name,
+              shoppingList.name,
               style: AppTextStyles.titleMedium.copyWith(
                 color: Colors.white,
               ),
@@ -128,11 +161,11 @@ class _ShoppingListCardContent extends StatelessWidget {
           ],
         ),
         Text(
-          '${list.items.length.toString()} items',
+          '${shoppingList.items.length.toString()} items',
           style: AppTextStyles.bodyMedium.copyWith(
             color: Colors.white,
           ),
-        )
+        ),
       ],
     );
   }

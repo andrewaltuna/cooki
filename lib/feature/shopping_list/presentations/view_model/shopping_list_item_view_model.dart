@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'shopping_list_item_state.dart';
 part 'shopping_list_item_event.dart';
 
-// TODO: Refactor states
 class ShoppingListItemViewModel
     extends Bloc<ShoppingListItemEvent, ShoppingListItemState> {
   ShoppingListItemViewModel(this._repository)

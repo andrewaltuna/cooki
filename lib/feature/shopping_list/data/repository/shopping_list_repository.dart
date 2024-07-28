@@ -1,5 +1,6 @@
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
@@ -24,6 +25,11 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   @override
   Future<ShoppingList> createShoppingList(CreateShoppingListInput input) async {
     return _remoteSource.createShoppingList(input);
+  }
+
+  @override
+  Future<ShoppingList> updateShoppingList(UpdateShoppingListInput input) {
+    return _remoteSource.updateShoppingList(input);
   }
 
   @override

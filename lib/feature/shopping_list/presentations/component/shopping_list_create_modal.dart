@@ -1,7 +1,7 @@
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
-import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +20,7 @@ class ShoppingListCreateModalContent extends HookWidget {
       TextEditingController budgetController) {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
-      context.read<ShoppingListViewModel>().add(
+      context.read<ShoppingListCatalogViewModel>().add(
             ShoppingListCreated(
               name: nameController.text,
               budget: budgetController.text,
@@ -34,7 +34,7 @@ class ShoppingListCreateModalContent extends HookWidget {
     final nameInputController = useTextEditingController();
     final budgetInputController = useTextEditingController();
 
-    return BlocListener<ShoppingListViewModel, ShoppingListState>(
+    return BlocListener<ShoppingListCatalogViewModel, ShoppingListCatalogState>(
       listener: (context, state) {
         if (state.status.isSuccess) {
           Navigator.pop(context);

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
+import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/common/extension/enum_extension.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
@@ -10,7 +11,8 @@ import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
-import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentations/component/shopping_list_helper.dart';
+import 'package:cooki/feature/shopping_list/presentations/view_model/shopping_list_catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,27 +26,43 @@ class ShoppingListScreen extends HookWidget {
 
   final String id;
 
+  void _onSubmit(
+    BuildContext context,
+    String id,
+  ) {
+    // context.read<ShoppingListViewModel>().add(
+    //       ShoppingListDeleted(
+    //         id: id,
+    //       ),
+    //     );
+    ShoppingListHelper.of(context).showDeleteShoppingListModal(id);
+  }
+
   @override
   Widget build(BuildContext context) {
-    useOnWidgetLoad(() {
-      context.read<ShoppingListViewModel>().add(
-            ShoppingListRequested(id),
-          );
-    });
+    useOnWidgetLoad(
+      () {
+        context.read<ShoppingListCatalogViewModel>().add(
+              ShoppingListSelected(id),
+            );
+      },
+    );
 
     final (
-      isFetching,
+      isFetchingShoppingList,
       shoppingList,
+      // shoppingListItems,
     ) = context.select(
-      (ShoppingListViewModel viewModel) => (
-        viewModel.state.status,
+      (ShoppingListCatalogViewModel viewModel) => (
+        viewModel.state.isFetchingShoppingList,
         viewModel.state.selectedShoppingList,
+        // viewModel.state.selectedShoppingList?.items,
       ),
     );
 
     // TODO: Use isInitialLoading (already takes this into account)
     // Maybe separate selected shopping list to its own state
-    if (isFetching.isLoading && shoppingList == null) {
+    if (isFetchingShoppingList) {
       return LoadingScreen();
     } else if (shoppingList == null) {
       return ErrorScreen(
@@ -58,89 +76,101 @@ class ShoppingListScreen extends HookWidget {
     final itemsByCategory = groupBy(
         shoppingList.items, (ShoppingListItem obj) => obj.product.category);
 
-    return MainScaffold(
-      title: shoppingList.name,
-      leading: IconButton(
-        onPressed: () {
-          context.go(
-            Uri(
-              path: AppRoutes.shoppingLists,
-            ).toString(),
-          );
-        },
-        icon: const Icon(Icons.arrow_back),
-      ),
-      actions: [
-        IconButton(
+    return BlocListener<ShoppingListCatalogViewModel, ShoppingListCatalogState>(
+      listener: (context, state) {
+        // if (state.submissionStatus == ViewModelStatus.success) {
+        //   context.go(
+        //     Uri(
+        //       path: AppRoutes.shoppingLists,
+        //     ).toString(),
+        //   );
+        // }
+      },
+      child: MainScaffold(
+        title: shoppingList.name,
+        leading: IconButton(
           onPressed: () {
-            // TODO: Redirect to lists page after deletion
-            context.read<ShoppingListViewModel>().add(ShoppingListDeleted(id));
+            context.go(
+              Uri(
+                path: AppRoutes.shoppingLists,
+              ).toString(),
+            );
+            // context.pop();
           },
-          icon: const Icon(Icons.delete),
+          icon: const Icon(Icons.arrow_back),
         ),
-      ],
-      contentPadding: EdgeInsets.zero,
-      body: SizedBox(
-        height: double.infinity,
-        child: Padding(
-          padding: const EdgeInsetsDirectional.symmetric(
-            vertical: 12,
+        actions: [
+          IconButton(
+            onPressed: () => _onSubmit(
+              context,
+              id,
+            ),
+            icon: const Icon(Icons.delete),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  for (var category in itemsByCategory.keys)
-                    _ShoppingListCategory(
-                      shoppingListId: id,
-                      category: category,
-                      items: itemsByCategory[category] ?? [],
-                    ),
-                  Container(
-                    width: double.infinity,
-                    color: AppColors.backgroundSecondary,
-                    padding: EdgeInsets.all(
-                      12,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(children: [
-                          Icon(
-                            Icons.monetization_on,
-                            size: 24,
+        ],
+        contentPadding: EdgeInsets.zero,
+        body: SizedBox(
+          height: double.infinity,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.symmetric(
+              vertical: 12,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    for (var category in itemsByCategory.keys)
+                      _ShoppingListCategory(
+                        shoppingListId: id,
+                        category: category,
+                        items: itemsByCategory[category] ?? [],
+                      ),
+                    Container(
+                      width: double.infinity,
+                      color: AppColors.backgroundSecondary,
+                      padding: EdgeInsets.all(
+                        12,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            Icon(
+                              Icons.monetization_on,
+                              size: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            Text("Total"),
+                          ]),
+                          Text(
+                            'Php ${shoppingList.budget.toStringAsFixed(2)}',
                           ),
-                          const SizedBox(width: 12),
-                          Text("Total"),
-                        ]),
-                        Text(
-                          'Php ${shoppingList.budget.toStringAsFixed(2)}',
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              IconButton(
-                color: AppColors.accent,
-                style: IconButton.styleFrom(
-                  backgroundColor: AppColors.backgroundSecondary,
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                padding: const EdgeInsets.all(
-                  16.0,
+                IconButton(
+                  color: AppColors.accent,
+                  style: IconButton.styleFrom(
+                    backgroundColor: AppColors.backgroundSecondary,
+                  ),
+                  padding: const EdgeInsets.all(
+                    16.0,
+                  ),
+                  onPressed: () => context.go(
+                    Uri(
+                      path: '${AppRoutes.shoppingLists}/$id/create-item',
+                    ).toString(),
+                  ),
+                  icon: Icon(
+                    Icons.add,
+                    size: 24.0,
+                  ),
                 ),
-                onPressed: () => context.go(
-                  Uri(
-                    path: '${AppRoutes.shoppingLists}/$id/create-item',
-                  ).toString(),
-                ),
-                icon: Icon(
-                  Icons.add,
-                  size: 24.0,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -225,7 +255,7 @@ class _ShoppingListItem extends StatelessWidget {
               Checkbox(
                 value: item.isChecked,
                 onChanged: (res) {
-                  context.read<ShoppingListViewModel>().add(
+                  context.read<ShoppingListCatalogViewModel>().add(
                         ShoppingListItemToggled(
                           input: UpdateShoppingListItemInput(
                             id: item.id,

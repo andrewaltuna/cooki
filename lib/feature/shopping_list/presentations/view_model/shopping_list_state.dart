@@ -3,43 +3,59 @@ part of 'shopping_list_view_model.dart';
 class ShoppingListState extends Equatable {
   const ShoppingListState({
     this.status = ViewModelStatus.initial,
-    this.shoppingLists = const [],
-    this.selectedShoppingList,
+    this.updateStatus = ViewModelStatus.initial,
+    this.deleteStatus = ViewModelStatus.initial,
+    this.createItemStatus = ViewModelStatus.initial,
+    this.updateItemStatus = ViewModelStatus.initial,
+    this.deleteItemStatus = ViewModelStatus.initial,
+    this.shoppingList,
     this.error,
   });
 
   final ViewModelStatus status;
-  final List<ShoppingList> shoppingLists;
-  final ShoppingList? selectedShoppingList;
+  final ViewModelStatus updateStatus;
+  final ViewModelStatus deleteStatus;
+  final ViewModelStatus createItemStatus;
+  final ViewModelStatus updateItemStatus;
+  final ViewModelStatus deleteItemStatus;
+  final ShoppingList? shoppingList;
   final Exception? error;
 
   ShoppingListState copyWith({
     ViewModelStatus? status,
-    List<ShoppingList>? shoppingLists,
-    ShoppingList? selectedShoppingList,
-    ShoppingListItem? selectedShoppingListItem,
+    ViewModelStatus? updateStatus,
+    ViewModelStatus? deleteStatus,
+    ViewModelStatus? createItemStatus,
+    ViewModelStatus? updateItemStatus,
+    ViewModelStatus? deleteItemStatus,
+    ShoppingList? shoppingList,
     Exception? error,
   }) {
     return ShoppingListState(
       status: status ?? this.status,
-      shoppingLists: shoppingLists ?? this.shoppingLists,
-      selectedShoppingList: selectedShoppingList ?? this.selectedShoppingList,
+      updateStatus: updateStatus ?? this.updateStatus,
+      deleteStatus: deleteStatus ?? this.deleteStatus,
+      createItemStatus: createItemStatus ?? this.createItemStatus,
+      updateItemStatus: updateItemStatus ?? this.updateItemStatus,
+      deleteItemStatus: deleteItemStatus ?? this.deleteItemStatus,
+      shoppingList: shoppingList ?? this.shoppingList,
       error: error ?? this.error,
     );
   }
 
   bool get isInitialLoading =>
       status == ViewModelStatus.initial ||
-      (status == ViewModelStatus.loading && shoppingLists.isEmpty);
-
-  bool get isFetchingShoppingList =>
-      status == ViewModelStatus.loading && selectedShoppingList == null;
+      (status == ViewModelStatus.loading && shoppingList == null);
 
   @override
   List<Object?> get props => [
         status,
-        shoppingLists,
-        selectedShoppingList,
+        updateStatus,
+        deleteStatus,
+        createItemStatus,
+        updateItemStatus,
+        deleteItemStatus,
+        shoppingList,
         error,
       ];
 }

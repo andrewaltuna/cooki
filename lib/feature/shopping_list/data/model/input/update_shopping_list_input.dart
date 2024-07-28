@@ -19,10 +19,8 @@ class UpdateShoppingListInput extends Equatable {
       '_id': id,
     };
 
+    // Item operations are handled separately
     if (name != null) data['name'] = name;
-    if (items != null) {
-      data['items'] = items!.map((item) => item.toJson()).toList();
-    }
     if (budget != null) data['budget'] = budget;
     return data;
   }

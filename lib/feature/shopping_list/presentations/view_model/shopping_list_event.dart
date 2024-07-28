@@ -1,40 +1,21 @@
 part of 'shopping_list_view_model.dart';
 
-sealed class ShoppingListEvent extends Equatable {
+class ShoppingListEvent extends Equatable {
   const ShoppingListEvent();
-
   @override
   List<Object?> get props => [];
 }
 
-class ShoppingListsRequested extends ShoppingListEvent {
-  const ShoppingListsRequested();
-}
-
 class ShoppingListRequested extends ShoppingListEvent {
-  const ShoppingListRequested(this.id);
-
-  final String id;
-
-  @override
-  List<Object?> get props => [
-        id,
-      ];
-}
-
-class ShoppingListCreated extends ShoppingListEvent {
-  const ShoppingListCreated({
-    required this.name,
-    required this.budget,
+  const ShoppingListRequested({
+    required this.shoppingList,
   });
 
-  final String name;
-  final String budget;
+  final ShoppingList shoppingList;
 
   @override
   List<Object?> get props => [
-        name,
-        budget,
+        shoppingList,
       ];
 }
 
@@ -52,7 +33,9 @@ class ShoppingListUpdated extends ShoppingListEvent {
 }
 
 class ShoppingListDeleted extends ShoppingListEvent {
-  const ShoppingListDeleted(this.id);
+  const ShoppingListDeleted({
+    required this.id,
+  });
 
   final String id;
 
@@ -60,8 +43,22 @@ class ShoppingListDeleted extends ShoppingListEvent {
   List<Object?> get props => [id];
 }
 
-class ShoppingListItemToggled extends ShoppingListEvent {
-  const ShoppingListItemToggled({
+// Item methods
+class ShoppingListItemCreated extends ShoppingListEvent {
+  const ShoppingListItemCreated({
+    required this.input,
+  });
+
+  final CreateShoppingListItemInput input;
+
+  @override
+  List<Object?> get props => [
+        input,
+      ];
+}
+
+class ShoppingListItemUpdated extends ShoppingListEvent {
+  const ShoppingListItemUpdated({
     required this.input,
   });
 
@@ -70,5 +67,18 @@ class ShoppingListItemToggled extends ShoppingListEvent {
   @override
   List<Object?> get props => [
         input,
+      ];
+}
+
+class ShoppingListItemDeleted extends ShoppingListEvent {
+  const ShoppingListItemDeleted({
+    required this.id,
+  });
+
+  final String id;
+
+  @override
+  List<Object?> get props => [
+        id,
       ];
 }
