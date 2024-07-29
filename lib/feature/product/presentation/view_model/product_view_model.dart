@@ -46,7 +46,9 @@ class ProductViewModel extends Bloc<ProductEvent, ProductState> {
       final result = await _repository.getProduct(event.id);
       emit(
         state.copyWith(
-            status: ViewModelStatus.success, selectedProduct: result),
+          status: ViewModelStatus.success,
+          selectedProduct: result,
+        ),
       );
     } on Exception catch (error) {
       emit(

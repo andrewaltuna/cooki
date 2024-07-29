@@ -1,3 +1,4 @@
+import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
@@ -52,79 +53,102 @@ class ShoppingListCreateModalContent extends HookWidget {
             const SizedBox(
               height: 24,
             ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CustomFormField(
-                    controller: nameInputController,
-                    hintText: "List name",
-                    icon: Icons.list,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  const SizedBox(height: 16),
-                  CustomFormField(
-                    controller: budgetInputController,
-                    keyboardType: TextInputType.number,
-                    icon: Icons.monetization_on,
-                    textInputAction: TextInputAction.next,
-                    hintText: "Budget (in PHP)",
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d*\.?\d*'),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            _CreateForm(
+              formKey: _formKey,
+              nameInputController: nameInputController,
+              budgetInputController: budgetInputController,
             ),
             const SizedBox(
               height: 16.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                      backgroundColor: AppColors.backgroundSecondary,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 24.0,
-                      )),
-                  onPressed: () => _onClose(context),
-                  child: Text(
-                    "Close",
-                    style: AppTextStyles.titleSmall.copyWith(
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: AppColors.accent,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 24.0,
-                    ),
-                  ),
-                  child: Text(
-                    "Create",
-                    style: AppTextStyles.titleSmall.copyWith(
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                  onPressed: () => _onCreate(
-                    context,
-                    nameInputController,
-                    budgetInputController,
-                  ),
-                )
-              ],
-            )
+            _ModalActions(
+              onClose: () => _onClose(context),
+              onCreate: () => _onCreate(
+                context,
+                nameInputController,
+                budgetInputController,
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CreateForm extends StatelessWidget {
+  const _CreateForm({
+    super.key,
+    required GlobalKey<FormState> formKey,
+    required this.nameInputController,
+    required this.budgetInputController,
+  }) : _formKey = formKey;
+
+  final GlobalKey<FormState> _formKey;
+  final TextEditingController nameInputController;
+  final TextEditingController budgetInputController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          CustomFormField(
+            controller: nameInputController,
+            hintText: "List name",
+            icon: Icons.list,
+            textInputAction: TextInputAction.next,
+          ),
+          const SizedBox(height: 16),
+          CustomFormField(
+            controller: budgetInputController,
+            keyboardType: TextInputType.number,
+            icon: Icons.monetization_on,
+            textInputAction: TextInputAction.next,
+            hintText: "Budget (in PHP)",
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'^\d*\.?\d*'),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _ModalActions extends StatelessWidget {
+  const _ModalActions({
+    super.key,
+    required this.onClose,
+    required this.onCreate,
+  });
+
+  final Function() onClose;
+  final Function() onCreate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        PrimaryButton(
+          label: 'Close',
+          onPress: onClose,
+          width: 100.0,
+          height: 50.0,
+          bgColor: AppColors.backgroundSecondary,
+        ),
+        const SizedBox(width: 16.0),
+        PrimaryButton(
+          label: "Create",
+          onPress: onCreate,
+          width: 100.0,
+          height: 50.0,
+        ),
+      ],
     );
   }
 }

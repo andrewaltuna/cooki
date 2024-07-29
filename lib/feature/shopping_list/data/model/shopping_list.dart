@@ -24,7 +24,13 @@ class ShoppingList extends Equatable {
       id: json['_id'],
       name: json['name'],
       budget: json['budget'],
-      items: listItems?.map((item) => ShoppingListItem.fromJson(item)).toList(),
+      items: listItems
+          ?.map(
+            (item) => ShoppingListItem.fromJson(
+              item,
+            ),
+          )
+          .toList(),
       userId: json['userId'],
     );
   }

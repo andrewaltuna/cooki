@@ -15,14 +15,11 @@ class UpdateShoppingListInput extends Equatable {
   final double? budget;
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = {
+    return {
       '_id': id,
+      if (name != null) 'name': name,
+      if (budget != null) 'budget': budget,
     };
-
-    // Item operations are handled separately
-    if (name != null) data['name'] = name;
-    if (budget != null) data['budget'] = budget;
-    return data;
   }
 
   @override

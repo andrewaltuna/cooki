@@ -40,7 +40,7 @@ class ShoppingListItemCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (status) = context.select(
+    final status = context.select(
       (ShoppingListViewModel viewModel) => (viewModel.state.status),
     );
 

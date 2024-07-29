@@ -134,7 +134,7 @@ class _ShoppingListInformation extends StatelessWidget {
           ),
         ),
         Text(
-          '${shoppingList.items.length.toString()} items',
+          '${shoppingList.items.length} items',
           style: AppTextStyles.bodyMedium.copyWith(
             color: Colors.white,
           ),
