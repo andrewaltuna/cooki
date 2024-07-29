@@ -1,11 +1,13 @@
+import 'package:cooki/common/component/app_icons.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PreferencesSelectableItem extends StatelessWidget {
   const PreferencesSelectableItem({
     required this.label,
-    required this.icon,
+    required this.svgIcon,
     required this.onSelected,
     this.isSelected = false,
     super.key,
@@ -13,7 +15,7 @@ class PreferencesSelectableItem extends StatelessWidget {
 
   final bool isSelected;
   final String label;
-  final Widget icon;
+  final SvgPicture svgIcon;
   final VoidCallback onSelected;
 
   @override
@@ -33,12 +35,20 @@ class PreferencesSelectableItem extends StatelessWidget {
             SizedBox(
               height: 16,
               width: 16,
-              child: icon,
+              child: svgIcon.copyWith(
+                color: isSelected
+                    ? AppColors.fontSecondary
+                    : AppColors.fontPrimary,
+              ),
             ),
             const SizedBox(width: 6),
             Text(
               label,
-              style: AppTextStyles.bodySmall,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: isSelected
+                    ? AppColors.fontSecondary
+                    : AppColors.fontPrimary,
+              ),
             ),
           ],
         ),

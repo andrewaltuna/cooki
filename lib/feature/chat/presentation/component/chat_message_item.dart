@@ -18,7 +18,6 @@ class ChatMessageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSenderUser = messageDetails.sender.isUser;
-    final message = messageDetails.message;
 
     return Row(
       mainAxisAlignment:
@@ -45,7 +44,12 @@ class ChatMessageItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
               ],
-              _MessageBody(message: message),
+              _MessageBody(
+                message: messageDetails.message,
+                color: isSenderUser
+                    ? AppColors.fontSecondary
+                    : AppColors.fontPrimary,
+              ),
             ],
           ),
         ),
@@ -57,17 +61,22 @@ class ChatMessageItem extends StatelessWidget {
 class _MessageBody extends StatelessWidget {
   const _MessageBody({
     required this.message,
+    required this.color,
   });
 
   final String message;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     final header = AppTextStyles.bodyLarge.copyWith(
+      color: color,
       fontSize: 20,
       fontWeight: FontWeight.bold,
     );
-    final body = AppTextStyles.bodyLarge;
+    final body = AppTextStyles.bodyLarge.copyWith(
+      color: color,
+    );
 
     final styleSheet = MarkdownStyleSheet(
       h1: header,

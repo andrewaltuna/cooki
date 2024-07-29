@@ -50,7 +50,10 @@ class PrimaryButton extends StatelessWidget {
                   ],
                   Text(
                     label,
-                    style: style ?? AppTextStyles.bodyMedium,
+                    style: style ??
+                        AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.fontSecondary,
+                        ),
                   ),
                   if (suffixIcon != null) ...[
                     const SizedBox(width: 4),

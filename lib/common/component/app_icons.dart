@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AppIcons {
@@ -35,4 +37,22 @@ class AppIcons {
       SvgPicture.asset('$_chatPath/recipe_generator.svg');
   static SvgPicture get specialOffers =>
       SvgPicture.asset('$_chatPath/special_offers.svg');
+}
+
+extension SvgPictureExtension on SvgPicture {
+  SvgPicture copyWith({
+    Color? color,
+  }) {
+    final assetName = (bytesLoader as SvgAssetLoader).assetName;
+
+    return SvgPicture.asset(
+      assetName,
+      colorFilter: color == null
+          ? colorFilter
+          : ColorFilter.mode(
+              color,
+              BlendMode.srcIn,
+            ),
+    );
+  }
 }

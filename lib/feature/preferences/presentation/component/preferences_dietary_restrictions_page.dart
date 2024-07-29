@@ -28,7 +28,7 @@ class PreferencesDietaryRestrictionsPage extends StatelessWidget {
         return PreferencesSelectableItem(
           isSelected: isSelected,
           label: restriction.displayLabel,
-          icon: restriction.icon,
+          svgIcon: restriction.icon,
           onSelected: () => context.read<PreferencesViewModel>().add(
                 PreferencesDietaryRestrictionSelected(restriction),
               ),

@@ -5,11 +5,12 @@ import 'package:cooki/common/navigation/app_routes.dart';
 extension ContextRoute on BuildContext {
   GoRouterState get routerState => GoRouterState.of(this);
 
-  String? get topRoutePath => routerState.topRoute?.path;
+  String? get fullPath => routerState.fullPath;
 
   // Route identifiers
-  bool get isHomeRoute => topRoutePath == AppRoutes.home;
-  bool get isMapRoute => topRoutePath == AppRoutes.map;
-  bool get isShoppingListRoute => topRoutePath == AppRoutes.shoppingLists;
-  bool get isSettingsRoute => topRoutePath == AppRoutes.settings;
+  bool get isHomeRoute => fullPath?.contains(AppRoutes.home) ?? false;
+  bool get isMapRoute => fullPath?.contains(AppRoutes.map) ?? false;
+  bool get isShoppingListRoute =>
+      fullPath?.contains(AppRoutes.shoppingLists) ?? false;
+  bool get isSettingsRoute => fullPath?.contains(AppRoutes.settings) ?? false;
 }

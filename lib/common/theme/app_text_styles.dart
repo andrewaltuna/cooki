@@ -5,46 +5,40 @@ class AppTextStyles {
   const AppTextStyles._();
 
   static const _primaryFontFamily = 'Poppins';
-  static const _secondaryFontFamily = 'Roboto';
 
-  static const _primaryFontStyle = TextStyle(
+  static const _baseTextStyle = TextStyle(
     fontFamily: _primaryFontFamily,
     color: AppColors.fontPrimary,
   );
 
-  static const _secondaryFontStyle = TextStyle(
-    fontFamily: _secondaryFontFamily,
-    color: AppColors.fontPrimary,
-  );
-
   // Title
-  static final titleLarge = _primaryFontStyle.copyWith(
+  static final titleLarge = _baseTextStyle.copyWith(
     fontSize: 24,
     fontWeight: FontWeight.bold,
   );
-  static final titleMedium = _primaryFontStyle.copyWith(
+  static final titleMedium = _baseTextStyle.copyWith(
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
-  static final titleSmall = _primaryFontStyle.copyWith(
+  static final titleSmall = _baseTextStyle.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
 
   // Subtitle
-  static final subtitle = _primaryFontStyle.copyWith(
+  static final subtitle = _baseTextStyle.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w600,
   );
 
   // Body
-  static final bodyLarge = _secondaryFontStyle.copyWith(
+  static final bodyLarge = _baseTextStyle.copyWith(
     fontSize: 16,
   );
-  static final bodyMedium = _secondaryFontStyle.copyWith(
+  static final bodyMedium = _baseTextStyle.copyWith(
     fontSize: 14,
   );
-  static final bodySmall = _secondaryFontStyle.copyWith(
+  static final bodySmall = _baseTextStyle.copyWith(
     fontSize: 12,
   );
 }
