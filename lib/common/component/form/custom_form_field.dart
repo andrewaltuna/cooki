@@ -9,6 +9,7 @@ class CustomFormField extends StatelessWidget {
     this.focusNode,
     this.label,
     this.hintText,
+    this.initialText,
     this.errorText,
     this.icon,
     this.obscureText = false,
@@ -32,6 +33,7 @@ class CustomFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final String? label;
   final String? hintText;
+  final String? initialText;
   final String? errorText;
   final IconData? icon;
   final bool obscureText;
@@ -67,11 +69,12 @@ class CustomFormField extends StatelessWidget {
           const SizedBox(height: 3),
         ],
         TextFormField(
+          initialValue: initialText,
+          autovalidateMode: autovalidateMode,
           controller: controller,
           focusNode: focusNode,
           minLines: minLines,
           maxLines: maxLines,
-          autovalidateMode: autovalidateMode,
           onChanged: onChanged,
           onFieldSubmitted: onSubmitted,
           onEditingComplete: onEditingComplete,

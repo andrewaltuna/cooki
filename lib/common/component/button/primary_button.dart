@@ -14,6 +14,7 @@ class PrimaryButton extends StatelessWidget {
     this.suffixIcon,
     this.style,
     this.state = ButtonState.idle,
+    this.bgColor = AppColors.accent,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class PrimaryButton extends StatelessWidget {
   final Widget? suffixIcon;
   final TextStyle? style;
   final ButtonState state;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class PrimaryButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPress,
         style: TextButton.styleFrom(
-          backgroundColor: AppColors.accent,
+          backgroundColor: bgColor,
           padding: EdgeInsets.zero,
         ),
         child: state.isLoading

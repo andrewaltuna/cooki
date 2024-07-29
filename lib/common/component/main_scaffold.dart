@@ -12,6 +12,7 @@ class MainScaffold extends StatelessWidget {
     this.isScrollable = false,
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     this.backgroundColor,
+    this.leading,
     this.actions,
     super.key,
   });
@@ -26,6 +27,9 @@ class MainScaffold extends StatelessWidget {
 
   /// Optional actions to be displayed in the app bar. Has no effect if [title] is null.
   final List<Widget>? actions;
+
+  /// Optional action to be displayed on the left of the app bar.
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,7 @@ class MainScaffold extends StatelessWidget {
                 surfaceTintColor: Colors.transparent,
                 shadowColor: AppColors.shadow,
                 actions: actions,
+                leading: leading,
               )
             : null,
         body: SafeArea(

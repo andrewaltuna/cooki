@@ -8,7 +8,13 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: LoadingIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Loading...'),
+            LoadingIndicator(),
+          ],
+        ),
       ),
     );
   }

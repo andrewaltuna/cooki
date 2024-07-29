@@ -15,6 +15,6 @@ class AppRoutes {
 
   static const home = '/home';
   static const map = '/map';
-  static const shoppingList = '/shopping-list';
+  static const shoppingLists = '/shopping-list';
   static const settings = '/settings';
 }
