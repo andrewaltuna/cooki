@@ -27,11 +27,6 @@ class ShoppingListItemUpdateView extends StatelessWidget {
     String itemId,
   ) {
     {
-      // context.read<ShoppingListViewModel>().add(
-      //       ShoppingListItemDeleted(
-      //         id: itemId,
-      //       ),
-      //     );
       ShoppingListHelper.of(context).showDeleteShoppingListItemModal(itemId);
     }
   }
