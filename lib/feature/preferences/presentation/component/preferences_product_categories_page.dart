@@ -28,7 +28,7 @@ class PreferencesProductCategoriesPage extends StatelessWidget {
         return PreferencesSelectableItem(
           isSelected: isSelected,
           label: category.displayLabel,
-          icon: category.icon,
+          svgIcon: category.icon,
           onSelected: () => context.read<PreferencesViewModel>().add(
                 PreferencesProductCategorySelected(category),
               ),

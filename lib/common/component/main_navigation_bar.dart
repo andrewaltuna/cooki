@@ -82,7 +82,7 @@ class _MainNavBarItem extends StatelessWidget {
 
     return Expanded(
       child: GestureDetector(
-        onTap: () => isSelected ? null : context.go(location),
+        onTap: () => context.go(location),
         behavior: HitTestBehavior.translucent,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
