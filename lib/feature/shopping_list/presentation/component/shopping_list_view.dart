@@ -20,6 +20,27 @@ class ShoppingListView extends StatelessWidget {
     super.key,
   });
 
+  void _listener(
+    BuildContext context,
+    ShoppingListState state,
+  ) {
+    context.read<ShoppingListCatalogViewModel>().add(
+          ShoppingListEntryUpdated(
+            updatedShoppingList: state.shoppingList!,
+          ),
+        );
+
+    if (state.deleteStatus.isSuccess) {
+      context.read<ShoppingListCatalogViewModel>().add(
+            ShoppingListEntryDeleted(
+              shoppingListId: state.shoppingList!.id,
+            ),
+          );
+      Navigator.of(context).pop();
+      context.go(AppRoutes.shoppingLists);
+    }
+  }
+
   void _onSubmit(
     BuildContext context,
     String id,
@@ -30,23 +51,10 @@ class ShoppingListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShoppingListViewModel, ShoppingListState>(
-      listener: (context, state) {
-        context.read<ShoppingListCatalogViewModel>().add(
-              ShoppingListEntryUpdated(
-                updatedShoppingList: state.shoppingList!,
-              ),
-            );
-
-        if (state.deleteStatus.isSuccess) {
-          context.read<ShoppingListCatalogViewModel>().add(
-                ShoppingListEntryDeleted(
-                  shoppingListId: state.shoppingList!.id,
-                ),
-              );
-          Navigator.of(context).pop();
-          context.go(AppRoutes.shoppingLists);
-        }
-      },
+      listenWhen: (previous, current) =>
+          previous.shoppingList != current.shoppingList ||
+          previous.deleteStatus != current.deleteStatus,
+      listener: _listener,
       builder: (context, state) {
         final shoppingList = state.shoppingList;
         final isFetching = state.isInitialLoading;
