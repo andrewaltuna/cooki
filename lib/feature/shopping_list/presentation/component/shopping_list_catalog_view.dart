@@ -67,7 +67,6 @@ class ShoppingListCatalogView extends StatelessWidget {
 
 class _ShoppingListCard extends StatelessWidget {
   const _ShoppingListCard({
-    super.key,
     required this.shoppingList,
   });
 
@@ -84,11 +83,9 @@ class _ShoppingListCard extends StatelessWidget {
           EdgeInsets.zero,
         ),
       ),
-      onPressed: () => {
-        context.go(
-          '${AppRoutes.shoppingLists}/${shoppingList.id}',
-        ),
-      },
+      onPressed: () => context.go(
+        '${AppRoutes.shoppingLists}/${shoppingList.id}',
+      ),
       child: Column(
         children: [
           Container(
@@ -116,7 +113,6 @@ class _ShoppingListCard extends StatelessWidget {
 
 class _ShoppingListInformation extends StatelessWidget {
   const _ShoppingListInformation({
-    super.key,
     required this.shoppingList,
   });
 

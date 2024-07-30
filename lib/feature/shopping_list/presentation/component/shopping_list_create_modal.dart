@@ -5,7 +5,6 @@ import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -78,7 +77,6 @@ class ShoppingListCreateModalContent extends HookWidget {
 
 class _CreateForm extends StatelessWidget {
   const _CreateForm({
-    super.key,
     required GlobalKey<FormState> formKey,
     required this.nameInputController,
     required this.budgetInputController,
@@ -121,7 +119,6 @@ class _CreateForm extends StatelessWidget {
 
 class _ModalActions extends StatelessWidget {
   const _ModalActions({
-    super.key,
     required this.onClose,
     required this.onCreate,
   });

@@ -103,7 +103,6 @@ class ShoppingListView extends StatelessWidget {
 
 class _ShoppingListContent extends StatelessWidget {
   const _ShoppingListContent({
-    super.key,
     required this.shoppingList,
   });
 
@@ -113,7 +112,7 @@ class _ShoppingListContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: double.infinity,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 12,
       ),
       child: Column(
@@ -134,7 +133,6 @@ class _ShoppingListContent extends StatelessWidget {
 
 class _ShoppingListDetails extends StatelessWidget {
   const _ShoppingListDetails({
-    super.key,
     required this.shoppingList,
   });
 
@@ -163,7 +161,6 @@ class _ShoppingListDetails extends StatelessWidget {
 
 class _ShoppingListActions extends StatelessWidget {
   const _ShoppingListActions({
-    super.key,
     required this.shoppingListId,
   });
 
@@ -185,7 +182,7 @@ class _ShoppingListActions extends StatelessWidget {
           onPressed: () => context.go(
             '${AppRoutes.shoppingLists}/$shoppingListId/create-item',
           ),
-          icon: Icon(
+          icon: const Icon(
             Icons.add,
             size: 24.0,
           ),

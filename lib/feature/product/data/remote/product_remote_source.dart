@@ -14,7 +14,7 @@ class ProductRemoteSource {
     );
 
     return response.result(onSuccess: (data) {
-      final result = new List<Map<String, dynamic>>.from(data['products']);
+      final result = List<Map<String, dynamic>>.from(data['products']);
       final productData = result.map(Product.fromJson).toList();
       return productData;
     });
@@ -31,7 +31,7 @@ class ProductRemoteSource {
     );
 
     return response.result(onSuccess: (data) {
-      final result = new Map<String, dynamic>.from(data['product']);
+      final result = Map<String, dynamic>.from(data['product']);
       final productData = Product.fromJson(result);
       return productData;
     });

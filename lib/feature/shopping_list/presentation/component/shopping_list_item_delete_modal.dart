@@ -48,7 +48,7 @@ class ShoppingListItemDeleteModal extends HookWidget {
               children: [
                 TextButton(
                   onPressed: () => _onClose(context),
-                  child: Text(
+                  child: const Text(
                     'Close',
                   ),
                 ),
@@ -61,7 +61,7 @@ class ShoppingListItemDeleteModal extends HookWidget {
                           id: itemId,
                         ),
                       ),
-                  child: Text(
+                  child: const Text(
                     'Delete',
                   ),
                 ),

@@ -1,7 +1,6 @@
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShoppingListDeleteModalContent extends StatelessWidget {
@@ -47,7 +46,7 @@ class ShoppingListDeleteModalContent extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () => _onClose(context),
-                  child: Text(
+                  child: const Text(
                     'Close',
                   ),
                 ),
@@ -60,7 +59,7 @@ class ShoppingListDeleteModalContent extends StatelessWidget {
                           id: shoppingListId,
                         ),
                       ),
-                  child: Text(
+                  child: const Text(
                     'Delete',
                   ),
                 ),
