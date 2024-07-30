@@ -19,10 +19,7 @@ class ShoppingListBloc extends StatelessWidget {
     final shoppingList = context
         .read<ShoppingListCatalogViewModel>()
         .state
-        .shoppingLists
-        .firstWhere(
-          (list) => list.id == shoppingListId,
-        );
+        .shoppingListById(shoppingListId);
 
     return BlocProvider(
       create: (_) => ShoppingListViewModel(shoppingListRepository)

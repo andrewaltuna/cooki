@@ -5,27 +5,24 @@ class ShoppingListState extends Equatable {
     this.status = ViewModelStatus.initial,
     this.updateStatus = ViewModelStatus.initial,
     this.deleteStatus = ViewModelStatus.initial,
-    this.createItemStatus = ViewModelStatus.initial,
-    this.updateItemStatus = ViewModelStatus.initial,
-    this.deleteItemStatus = ViewModelStatus.initial,
-    this.shoppingList,
+    this.itemStatus = ViewModelStatus.initial,
+    this.shoppingList = ShoppingList.empty,
     this.error,
   });
 
   final ViewModelStatus status;
   final ViewModelStatus updateStatus;
   final ViewModelStatus deleteStatus;
-  final ViewModelStatus createItemStatus;
-  final ViewModelStatus updateItemStatus;
-  final ViewModelStatus deleteItemStatus;
-  final ShoppingList? shoppingList;
+  final ViewModelStatus itemStatus;
+
+  final ShoppingList shoppingList;
   final Exception? error;
 
   ShoppingListState copyWith({
     ViewModelStatus? status,
     ViewModelStatus? updateStatus,
     ViewModelStatus? deleteStatus,
-    ViewModelStatus? createItemStatus,
+    ViewModelStatus? itemStatus,
     ViewModelStatus? updateItemStatus,
     ViewModelStatus? deleteItemStatus,
     ShoppingList? shoppingList,
@@ -35,9 +32,7 @@ class ShoppingListState extends Equatable {
       status: status ?? this.status,
       updateStatus: updateStatus ?? this.updateStatus,
       deleteStatus: deleteStatus ?? this.deleteStatus,
-      createItemStatus: createItemStatus ?? this.createItemStatus,
-      updateItemStatus: updateItemStatus ?? this.updateItemStatus,
-      deleteItemStatus: deleteItemStatus ?? this.deleteItemStatus,
+      itemStatus: itemStatus ?? this.itemStatus,
       shoppingList: shoppingList ?? this.shoppingList,
       error: error ?? this.error,
     );
@@ -45,16 +40,14 @@ class ShoppingListState extends Equatable {
 
   bool get isInitialLoading =>
       status == ViewModelStatus.initial ||
-      (status == ViewModelStatus.loading && shoppingList == null);
+      (status == ViewModelStatus.loading && shoppingList.isEmpty);
 
   @override
   List<Object?> get props => [
         status,
         updateStatus,
         deleteStatus,
-        createItemStatus,
-        updateItemStatus,
-        deleteItemStatus,
+        itemStatus,
         shoppingList,
         error,
       ];

@@ -1,6 +1,10 @@
+import 'package:cooki/common/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
+
+const _btnDefaultWidth = 150.0;
+const _btnDefaultHeight = 35.0;
 
 class DialogHelper {
   const DialogHelper(this._context);
@@ -15,6 +19,9 @@ class DialogHelper {
       barrierDismissible: args.barrierDismissable,
       builder: (context) {
         return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
             child: Column(
@@ -40,19 +47,22 @@ class DialogHelper {
                     Navigator.of(context).pop();
                     args.onConfirm();
                   },
-                  height: 50,
-                  width: 150,
+                  height: _btnDefaultHeight,
+                  width: _btnDefaultWidth,
                 ),
                 const SizedBox(height: 8),
-                TextButton(
-                  onPressed: () {
+                PrimaryButton(
+                  label: args.dismissText,
+                  backgroundColor: AppColors.backgroundSecondary,
+                  onPress: () {
                     Navigator.of(context).pop();
                     args.onCancel?.call();
                   },
-                  child: Text(
-                    args.dismissText,
-                    style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.fontPrimary,
                   ),
+                  height: _btnDefaultHeight,
+                  width: _btnDefaultWidth,
                 ),
               ],
             ),

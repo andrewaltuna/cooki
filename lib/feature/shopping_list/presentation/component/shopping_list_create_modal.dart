@@ -136,7 +136,7 @@ class _ModalActions extends StatelessWidget {
           onPress: onClose,
           width: 100.0,
           height: 50.0,
-          bgColor: AppColors.backgroundSecondary,
+          backgroundColor: AppColors.backgroundSecondary,
         ),
         const SizedBox(width: 16.0),
         PrimaryButton(

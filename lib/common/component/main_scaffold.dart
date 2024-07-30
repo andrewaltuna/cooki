@@ -1,7 +1,9 @@
+import 'package:cooki/common/component/button/app_bar_action_button.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cooki/common/component/main_navigation_bar.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
+import 'package:go_router/go_router.dart';
 
 class MainScaffold extends StatelessWidget {
   const MainScaffold({
@@ -12,7 +14,7 @@ class MainScaffold extends StatelessWidget {
     this.isScrollable = false,
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     this.backgroundColor,
-    this.leading,
+    this.hasBackButton = false,
     this.actions,
     super.key,
   });
@@ -29,7 +31,7 @@ class MainScaffold extends StatelessWidget {
   final List<Widget>? actions;
 
   /// Optional action to be displayed on the left of the app bar.
-  final Widget? leading;
+  final bool hasBackButton;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,12 @@ class MainScaffold extends StatelessWidget {
                 surfaceTintColor: Colors.transparent,
                 shadowColor: AppColors.shadow,
                 actions: actions,
-                leading: leading,
+                leading: hasBackButton
+                    ? AppBarActionButton(
+                        onPressed: () => context.pop(),
+                        icon: Icons.arrow_back,
+                      )
+                    : null,
               )
             : null,
         body: SafeArea(

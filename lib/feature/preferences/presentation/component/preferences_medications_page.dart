@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:cooki/common/component/button/ink_well_button.dart';
-import 'package:cooki/common/component/custom_dropdown_menu.dart';
+import 'package:cooki/common/component/dropdown/custom_dropdown_menu.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/preferences/data/enum/medication.dart';
