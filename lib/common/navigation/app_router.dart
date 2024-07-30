@@ -1,10 +1,12 @@
-import 'package:cooki/common/component/authenticated_blocs.dart';
-import 'package:cooki/common/component/authenticated_listeners.dart';
+import 'package:cooki/common/component/global/authenticated_blocs.dart';
+import 'package:cooki/common/component/global/authenticated_listeners.dart';
 import 'package:cooki/feature/map/presentation/screen/map_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
 import 'package:cooki/feature/account/presentation/screen/complete_registration_screen.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_bloc.dart';
 import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_catalog_screen.dart';
+import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_item_create_screen.dart';
+import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_item_update_screen.dart';
 import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_screen.dart';
 import 'package:cooki/feature/shopping_list/presentation/screen/shopping_list_item_screen.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
@@ -70,47 +72,43 @@ final _routes = [
         builder: (_) => const ShoppingListCatalogScreen(),
         routes: [
           ShellRoute(
-            builder: (_, state, child) {
-              final String shoppingListId =
-                  state.pathParameters["id"] as String;
-              return ShoppingListBloc(
-                shoppingListId: shoppingListId,
+            pageBuilder: (_, state, child) => _pageWithDefaultTransition(
+              state,
+              child: ShoppingListBloc(
+                shoppingListId: state.pathParameters['id'] ?? '',
                 child: child,
-              );
-            },
+              ),
+            ),
             routes: [
               _goRoute(
                 path: ':id',
-                builder: (state) {
-                  final String shoppingListId =
-                      state.pathParameters["id"] as String;
-                  return ShoppingListScreen(
-                    shoppingListId: shoppingListId,
-                  );
-                },
+                builder: (_) => const ShoppingListScreen(),
                 routes: [
                   _goRoute(
-                    path: 'create-item',
+                    path: 'item/:itemId',
                     builder: (state) {
-                      final String shoppingListId =
-                          state.pathParameters["id"] as String;
+                      final params = state.pathParameters;
+
                       return ShoppingListItemScreen(
-                        shoppingListId: shoppingListId,
+                        shoppingListItemId: params['itemId'] ?? '',
                       );
                     },
+                    routes: [
+                      _goRoute(
+                        path: 'edit-item',
+                        builder: (state) {
+                          final params = state.pathParameters;
+
+                          return ShoppingListItemUpdateScreen(
+                            shoppingListItemId: params['itemId'] ?? '',
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   _goRoute(
-                    path: 'edit-item/:itemId',
-                    builder: (state) {
-                      final String shoppingListId =
-                          state.pathParameters["id"] as String;
-                      final String shoppingListItemId =
-                          state.pathParameters["itemId"] as String;
-                      return ShoppingListItemScreen(
-                        shoppingListId: shoppingListId,
-                        shoppingListItemId: shoppingListItemId,
-                      );
-                    },
+                    path: 'create-item',
+                    builder: (_) => const ShoppingListItemCreateScreen(),
                   ),
                 ],
               ),
@@ -172,6 +170,7 @@ CustomTransitionPage _pageWithDefaultTransition(
     key: state.pageKey,
     child: child,
     transitionDuration: const Duration(milliseconds: 50),
+    reverseTransitionDuration: const Duration(milliseconds: 50),
     transitionsBuilder: (_, animation, __, child) => FadeTransition(
       opacity: animation,
       child: child,

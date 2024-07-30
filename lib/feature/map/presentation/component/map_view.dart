@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:cooki/common/component/custom_dropdown_menu.dart';
+import 'package:cooki/common/component/dropdown/custom_dropdown_menu.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/map/presentation/component/interactive_map.dart';
 import 'package:cooki/feature/map/presentation/view_model/map_view_model.dart';

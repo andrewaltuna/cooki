@@ -16,9 +16,9 @@ class ShoppingListItemForm extends HookWidget {
     required this.onSubmit,
   });
 
-  final ShoppingListItemInput initialValue;
   static final _formKey = GlobalKey<FormState>();
 
+  final ShoppingListItemInput initialValue;
   final void Function(ShoppingListItemInput) onSubmit;
 
   @override
@@ -42,7 +42,7 @@ class ShoppingListItemForm extends HookWidget {
               children: [
                 CustomFormField(
                   initialText: formInput.value.label,
-                  hintText: "Item Name",
+                  hintText: 'Item Name',
                   icon: Icons.list,
                   textInputAction: TextInputAction.next,
                   onChanged: (value) =>
@@ -55,7 +55,7 @@ class ShoppingListItemForm extends HookWidget {
                 ),
                 CustomFormField(
                   initialText: formInput.value.quantity.toString(),
-                  hintText: "Quantity",
+                  hintText: 'Quantity',
                   icon: Icons.list,
                   onChanged: (value) =>
                       formInput.value = formInput.value.copyWith(
@@ -69,7 +69,7 @@ class ShoppingListItemForm extends HookWidget {
                   initialSelection: initialProduct,
                   enableFilter: true,
                   requestFocusOnTap: true,
-                  hintText: "Product",
+                  hintText: 'Product',
                   onSelected: (value) =>
                       formInput.value = formInput.value.copyWith(
                     productId: value?.id,
@@ -96,7 +96,7 @@ class ShoppingListItemForm extends HookWidget {
               }
             },
             child: const Text(
-              "Save",
+              'Save',
             ),
           ),
         ],

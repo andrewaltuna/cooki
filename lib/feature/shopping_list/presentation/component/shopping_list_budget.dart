@@ -1,4 +1,5 @@
 import 'package:cooki/common/theme/app_colors.dart';
+import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class ShoppingListBudget extends StatelessWidget {
@@ -14,26 +15,22 @@ class ShoppingListBudget extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: AppColors.backgroundSecondary,
-      padding: const EdgeInsets.all(
-        12,
-      ),
+      padding: const EdgeInsets.all(12),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Row(children: [
-            Icon(
-              Icons.monetization_on,
-              size: 24,
-            ),
-            SizedBox(
-              width: 12,
-            ),
-            Text(
-              "Total",
-            ),
-          ]),
+          const Icon(
+            Icons.attach_money,
+            size: 24,
+          ),
+          const SizedBox(width: 12),
+          Text(
+            'Total',
+            style: AppTextStyles.titleSmall,
+          ),
+          const Spacer(),
           Text(
             'Php ${budget.toStringAsFixed(2)}',
+            style: AppTextStyles.bodyLarge,
           ),
         ],
       ),

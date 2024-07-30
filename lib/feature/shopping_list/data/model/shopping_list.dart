@@ -1,5 +1,10 @@
+import 'package:collection/collection.dart';
+import 'package:cooki/feature/preferences/data/enum/product_category.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:equatable/equatable.dart';
+
+typedef ShoppingListItemsByCategory
+    = Map<ProductCategory, List<ShoppingListItem>>;
 
 class ShoppingList extends Equatable {
   const ShoppingList({
@@ -54,6 +59,21 @@ class ShoppingList extends Equatable {
       budget: budget ?? this.budget,
       items: items ?? this.items,
       userId: userId ?? this.userId,
+    );
+  }
+
+  bool get isEmpty => this == ShoppingList.empty;
+  bool get isNotEmpty => !isEmpty;
+
+  ShoppingListItemsByCategory get itemsByCategory => groupBy(
+        items,
+        (ShoppingListItem item) => item.product.category,
+      );
+
+  ShoppingListItem itemById(String id) {
+    return items.firstWhere(
+      (item) => item.id == id,
+      orElse: () => ShoppingListItem.empty,
     );
   }
 

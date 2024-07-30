@@ -1,5 +1,5 @@
 import 'package:cooki/common/component/indicator/page_view_indicator.dart';
-import 'package:cooki/common/component/labeled_checkbox.dart';
+import 'package:cooki/common/component/checkbox/labeled_checkbox.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/preferences/presentation/component/preferences_dietary_restrictions_page.dart';

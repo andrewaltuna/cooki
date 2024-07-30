@@ -42,6 +42,12 @@ class ShoppingListCatalogState extends Equatable {
       submissionStatus == ViewModelStatus.success &&
       selectedShoppingList == null;
 
+  ShoppingList shoppingListById(String id) {
+    return shoppingLists.firstWhere(
+      (list) => list.id == id,
+    );
+  }
+
   @override
   List<Object?> get props => [
         status,
