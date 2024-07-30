@@ -12,7 +12,7 @@ class CompleteRegistrationScreen extends HookWidget {
 
     return AuthScreenWrapper(
       title: 'Create a nickname',
-      description: "Choose a nickname to get started!",
+      description: 'Choose a nickname to get started!',
       child: CompleteRegistrationForm(
         controller: controller,
       ),

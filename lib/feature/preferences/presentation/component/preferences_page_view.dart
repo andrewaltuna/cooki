@@ -100,7 +100,7 @@ class PreferencesPageView extends HookWidget {
                           isLastPage,
                         ) ??
                         const SizedBox.shrink(),
-                  ]
+                  ],
                 ],
               ),
             ),

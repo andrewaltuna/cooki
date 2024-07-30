@@ -47,8 +47,9 @@ class AuthenticatedBlocs extends StatelessWidget {
             ..add(const PreferencesRequested()),
         ),
         BlocProvider(
-            create: (_) => ShoppingListCatalogViewModel(shoppingListRepository)
-              ..add(const ShoppingListCatalogRequested())),
+          create: (_) => ShoppingListCatalogViewModel(shoppingListRepository)
+            ..add(const ShoppingListCatalogRequested()),
+        ),
         BlocProvider(
           create: (_) => ProductViewModel(productRepository)
             ..add(const ProductsRequested()),

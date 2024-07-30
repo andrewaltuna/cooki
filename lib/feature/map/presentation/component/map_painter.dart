@@ -66,11 +66,17 @@ class MapPainter extends CustomPainter {
 
     // Draw horizontal line
     canvas.drawLine(
-        Offset(0, centerY), Offset(size.width, centerY), crossPaint);
+      Offset(0, centerY),
+      Offset(size.width, centerY),
+      crossPaint,
+    );
 
     // Draw vertical line
     canvas.drawLine(
-        Offset(centerX, 0), Offset(centerX, size.height), crossPaint);
+      Offset(centerX, 0),
+      Offset(centerX, size.height),
+      crossPaint,
+    );
   }
 
   void _drawDirections(Canvas canvas, Size size) {

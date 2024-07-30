@@ -27,7 +27,7 @@ class LabeledCheckbox extends StatelessWidget {
             label,
             style: AppTextStyles.bodyMedium,
           ),
-        )
+        ),
       ],
     );
   }
