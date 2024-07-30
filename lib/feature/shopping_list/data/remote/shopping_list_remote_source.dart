@@ -211,6 +211,14 @@ query GetShoppingLists {
         section
         unitSize
       }
+      interferedRestrictions {
+        dietaryRestrictions {
+          restrictionName
+        }
+        medications {
+          genericName
+        }
+      }
     }
   }
 }
@@ -234,6 +242,14 @@ const _getShoppingListQuery = r'''
           price
           section
           unitSize
+        }
+        interferedRestrictions {
+          dietaryRestrictions {
+            restrictionName
+          }
+          medications {
+            genericName
+          }
         }
       }
     }
@@ -289,6 +305,14 @@ const _getShoppingListItemQuery = r'''
         section
         unitSize
       }
+      interferedRestrictions {
+        dietaryRestrictions {
+          restrictionName
+        }
+        medications {
+          genericName
+        }
+      }
     }
   }
 ''';
@@ -308,6 +332,14 @@ const _updateShoppingListItemMutation = r'''
         section
         unitSize
       }
+      interferedRestrictions {
+        dietaryRestrictions {
+          restrictionName
+        }
+        medications {
+          genericName
+        }
+      }
     }
   }
 ''';
@@ -326,6 +358,10 @@ const _createShoppingListItemMutation = r'''
         price
         section
         unitSize
+      }
+      interferedRestrictions {
+        dietaryRestrictions
+        medications
       }
     }
   }
