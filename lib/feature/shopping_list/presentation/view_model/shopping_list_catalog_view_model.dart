@@ -48,7 +48,9 @@ class ShoppingListCatalogViewModel
   }
 
   Future<void> _onCreated(
-      ShoppingListCreated event, Emitter<ShoppingListCatalogState> emit) async {
+    ShoppingListCreated event,
+    Emitter<ShoppingListCatalogState> emit,
+  ) async {
     try {
       emit(
         state.copyWith(status: ViewModelStatus.loading),
@@ -91,9 +93,11 @@ class ShoppingListCatalogViewModel
       );
 
       final shoppingLists = state.shoppingLists
-          .map((list) => list.id == event.updatedShoppingList.id
-              ? event.updatedShoppingList
-              : list)
+          .map(
+            (list) => list.id == event.updatedShoppingList.id
+                ? event.updatedShoppingList
+                : list,
+          )
           .toList();
 
       emit(

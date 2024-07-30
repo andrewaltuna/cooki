@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'beacon-e7c30.appspot.com',
     iosBundleId: 'com.example.groceryHelper',
   );
-
 }

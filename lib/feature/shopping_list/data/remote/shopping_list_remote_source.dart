@@ -21,12 +21,13 @@ class ShoppingListRemoteSource {
       ),
     );
 
-    return response.result(onSuccess: (data) {
-      final result = List<Map<String, dynamic>>.from(data['shoppingLists']);
+    return response.result(
+      onSuccess: (data) {
+        final result = List<Map<String, dynamic>>.from(data['shoppingLists']);
 
-      final shoppingListData = result.map(ShoppingList.fromJson).toList();
-      return shoppingListData;
-    });
+        return result.map(ShoppingList.fromJson).toList();
+      },
+    );
   }
 
   Future<ShoppingList> getShoppingList(String id) async {
@@ -41,8 +42,8 @@ class ShoppingListRemoteSource {
     return response.result(
       onSuccess: (data) {
         final result = Map<String, dynamic>.from(data['shoppingList']);
-        final shoppingListData = ShoppingList.fromJson(result);
-        return shoppingListData;
+
+        return ShoppingList.fromJson(result);
       },
     );
   }
@@ -62,8 +63,8 @@ class ShoppingListRemoteSource {
     return response.result(
       onSuccess: (data) {
         final result = data['createShoppingList'];
-        final shoppingListData = ShoppingList.fromJson(result);
-        return shoppingListData;
+
+        return ShoppingList.fromJson(result);
       },
     );
   }
@@ -80,11 +81,13 @@ class ShoppingListRemoteSource {
       ),
     );
 
-    return response.result(onSuccess: (data) {
-      final result = data['updateShoppingList'];
-      final shoppingListData = ShoppingList.fromJson(result);
-      return shoppingListData;
-    });
+    return response.result(
+      onSuccess: (data) {
+        final result = data['updateShoppingList'];
+
+        return ShoppingList.fromJson(result);
+      },
+    );
   }
 
   Future<ShoppingList> deleteShoppingList(String id) async {
@@ -99,10 +102,9 @@ class ShoppingListRemoteSource {
 
     return response.result(
       onSuccess: (data) {
-        final result =
-            Map<String, dynamic>.from(data['removeShoppingList']);
-        final shoppingListData = ShoppingList.fromJson(result);
-        return shoppingListData;
+        final result = Map<String, dynamic>.from(data['removeShoppingList']);
+
+        return ShoppingList.fromJson(result);
       },
     );
   }
@@ -119,10 +121,9 @@ class ShoppingListRemoteSource {
     );
     return response.result(
       onSuccess: (data) {
-        final result =
-            Map<String, dynamic>.from(data['getShoppingListItem']);
-        final shoppingListItemData = ShoppingListItem.fromJson(result);
-        return shoppingListItemData;
+        final result = Map<String, dynamic>.from(data['getShoppingListItem']);
+
+        return ShoppingListItem.fromJson(result);
       },
     );
   }
@@ -142,8 +143,8 @@ class ShoppingListRemoteSource {
     return response.result(
       onSuccess: (data) {
         final result = data['updateShoppingListItem'];
-        final shoppingListItemData = ShoppingListItem.fromJson(result);
-        return shoppingListItemData;
+
+        return ShoppingListItem.fromJson(result);
       },
     );
   }
@@ -164,8 +165,8 @@ class ShoppingListRemoteSource {
       onSuccess: (data) {
         final result =
             Map<String, dynamic>.from(data['createShoppingListItem']);
-        final shoppingListItemData = ShoppingListItem.fromJson(result);
-        return shoppingListItemData;
+
+        return ShoppingListItem.fromJson(result);
       },
     );
   }
@@ -175,16 +176,18 @@ class ShoppingListRemoteSource {
       MutationOptions(
         document: gql(_deleteShoppingListItemMutation),
         variables: {
-          "id": id,
+          'id': id,
         },
       ),
     );
 
-    return response.result(onSuccess: (data) {
-      final result = data['removeShoppingListItem'];
-      final shoppingListItemData = ShoppingListItem.fromJson(result);
-      return shoppingListItemData;
-    });
+    return response.result(
+      onSuccess: (data) {
+        final result = data['removeShoppingListItem'];
+
+        return ShoppingListItem.fromJson(result);
+      },
+    );
   }
 }
 

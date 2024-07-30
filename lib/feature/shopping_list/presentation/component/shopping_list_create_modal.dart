@@ -16,8 +16,11 @@ class ShoppingListCreateModalContent extends HookWidget {
     Navigator.pop(context);
   }
 
-  void _onCreate(BuildContext context, TextEditingController nameController,
-      TextEditingController budgetController) {
+  void _onCreate(
+    BuildContext context,
+    TextEditingController nameController,
+    TextEditingController budgetController,
+  ) {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       context.read<ShoppingListCatalogViewModel>().add(
@@ -49,17 +52,13 @@ class ShoppingListCreateModalContent extends HookWidget {
               'Create Shopping List',
               style: AppTextStyles.titleMedium,
             ),
-            const SizedBox(
-              height: 24,
-            ),
+            const SizedBox(height: 24),
             _CreateForm(
               formKey: _formKey,
               nameInputController: nameInputController,
               budgetInputController: budgetInputController,
             ),
-            const SizedBox(
-              height: 16.0,
-            ),
+            const SizedBox(height: 16.0),
             _ModalActions(
               onClose: () => _onClose(context),
               onCreate: () => _onCreate(
@@ -94,7 +93,7 @@ class _CreateForm extends StatelessWidget {
         children: [
           CustomFormField(
             controller: nameInputController,
-            hintText: "List name",
+            hintText: 'List name',
             icon: Icons.list,
             textInputAction: TextInputAction.next,
           ),
@@ -104,13 +103,13 @@ class _CreateForm extends StatelessWidget {
             keyboardType: TextInputType.number,
             icon: Icons.monetization_on,
             textInputAction: TextInputAction.next,
-            hintText: "Budget (in PHP)",
+            hintText: 'Budget (in PHP)',
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                 RegExp(r'^\d*\.?\d*'),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -140,7 +139,7 @@ class _ModalActions extends StatelessWidget {
         ),
         const SizedBox(width: 16.0),
         PrimaryButton(
-          label: "Create",
+          label: 'Create',
           onPress: onCreate,
           width: 100.0,
           height: 50.0,

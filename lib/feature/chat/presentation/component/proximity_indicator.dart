@@ -35,7 +35,7 @@ class BeaconProximityIndicator extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: textStyle,
                   ),
-                )
+                ),
               ],
             ),
           );

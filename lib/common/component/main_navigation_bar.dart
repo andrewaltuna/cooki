@@ -98,7 +98,7 @@ class _MainNavBarItem extends StatelessWidget {
                 color: color,
                 fontWeight: fontWeight,
               ),
-            )
+            ),
           ],
         ),
       ),

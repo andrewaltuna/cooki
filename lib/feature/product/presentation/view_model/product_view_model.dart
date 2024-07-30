@@ -17,9 +17,7 @@ class ProductViewModel extends Bloc<ProductEvent, ProductState> {
     Emitter<ProductState> emit,
   ) async {
     try {
-      emit(state.copyWith(
-        status: ViewModelStatus.loading,
-      ));
+      emit(state.copyWith(status: ViewModelStatus.loading));
 
       final result = await _repository.getProducts();
 
@@ -40,7 +38,9 @@ class ProductViewModel extends Bloc<ProductEvent, ProductState> {
   }
 
   Future<void> _onSelected(
-      ProductRequested event, Emitter<ProductState> emit) async {
+    ProductRequested event,
+    Emitter<ProductState> emit,
+  ) async {
     try {
       emit(state.copyWith(status: ViewModelStatus.loading));
       final result = await _repository.getProduct(event.id);

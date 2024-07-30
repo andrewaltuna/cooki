@@ -12,7 +12,7 @@ class ChatRemoteSource {
       QueryOptions(
         document: gql(_createGeminiHealthCheckMutation),
         variables: {
-          "input": input,
+          'input': input,
         },
       ),
     );

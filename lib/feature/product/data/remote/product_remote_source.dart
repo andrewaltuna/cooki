@@ -13,11 +13,13 @@ class ProductRemoteSource {
       ),
     );
 
-    return response.result(onSuccess: (data) {
-      final result = List<Map<String, dynamic>>.from(data['products']);
-      final productData = result.map(Product.fromJson).toList();
-      return productData;
-    });
+    return response.result(
+      onSuccess: (data) {
+        final result = List<Map<String, dynamic>>.from(data['products']);
+
+        return result.map(Product.fromJson).toList();
+      },
+    );
   }
 
   Future<Product> getProduct(String id) async {
@@ -30,11 +32,13 @@ class ProductRemoteSource {
       ),
     );
 
-    return response.result(onSuccess: (data) {
-      final result = Map<String, dynamic>.from(data['product']);
-      final productData = Product.fromJson(result);
-      return productData;
-    });
+    return response.result(
+      onSuccess: (data) {
+        final result = Map<String, dynamic>.from(data['product']);
+
+        return Product.fromJson(result);
+      },
+    );
   }
 }
 
