@@ -16,13 +16,11 @@ class ShoppingListUpdateHandler extends StatelessWidget {
     BuildContext context,
     ShoppingListState state,
   ) {
-    if (state.updateStatus.isSuccess) {
-      context.read<ShoppingListCatalogViewModel>().add(
-            ShoppingListEntryUpdated(
-              updatedShoppingList: state.shoppingList,
-            ),
-          );
-    }
+    context.read<ShoppingListCatalogViewModel>().add(
+          ShoppingListEntryUpdated(
+            updatedShoppingList: state.shoppingList,
+          ),
+        );
   }
 
   void _deleteListener(
@@ -51,7 +49,7 @@ class ShoppingListUpdateHandler extends StatelessWidget {
         ),
         BlocListener<ShoppingListViewModel, ShoppingListState>(
           listenWhen: (previous, current) =>
-              previous.updateStatus != current.updateStatus,
+              previous.shoppingList != current.shoppingList,
           listener: _updateListener,
         ),
       ],

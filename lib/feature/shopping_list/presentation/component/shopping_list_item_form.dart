@@ -59,7 +59,7 @@ class ShoppingListItemForm extends HookWidget {
                   icon: Icons.list,
                   onChanged: (value) =>
                       formInput.value = formInput.value.copyWith(
-                    quantity: int.parse(value),
+                    quantity: int.tryParse(value) ?? 0,
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
