@@ -101,7 +101,7 @@ class ShoppingListItemUpdateView extends StatelessWidget {
                 context,
                 shoppingListItemId,
               ),
-              icon: Icon(
+              icon: const Icon(
                 Icons.delete,
               ),
             ),

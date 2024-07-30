@@ -22,7 +22,7 @@ class ShoppingListRemoteSource {
     );
 
     return response.result(onSuccess: (data) {
-      final result = new List<Map<String, dynamic>>.from(data['shoppingLists']);
+      final result = List<Map<String, dynamic>>.from(data['shoppingLists']);
 
       final shoppingListData = result.map(ShoppingList.fromJson).toList();
       return shoppingListData;
@@ -40,7 +40,7 @@ class ShoppingListRemoteSource {
     );
     return response.result(
       onSuccess: (data) {
-        final result = new Map<String, dynamic>.from(data['shoppingList']);
+        final result = Map<String, dynamic>.from(data['shoppingList']);
         final shoppingListData = ShoppingList.fromJson(result);
         return shoppingListData;
       },
@@ -100,7 +100,7 @@ class ShoppingListRemoteSource {
     return response.result(
       onSuccess: (data) {
         final result =
-            new Map<String, dynamic>.from(data['removeShoppingList']);
+            Map<String, dynamic>.from(data['removeShoppingList']);
         final shoppingListData = ShoppingList.fromJson(result);
         return shoppingListData;
       },
@@ -120,7 +120,7 @@ class ShoppingListRemoteSource {
     return response.result(
       onSuccess: (data) {
         final result =
-            new Map<String, dynamic>.from(data['getShoppingListItem']);
+            Map<String, dynamic>.from(data['getShoppingListItem']);
         final shoppingListItemData = ShoppingListItem.fromJson(result);
         return shoppingListItemData;
       },
@@ -163,7 +163,7 @@ class ShoppingListRemoteSource {
     return response.result(
       onSuccess: (data) {
         final result =
-            new Map<String, dynamic>.from(data['createShoppingListItem']);
+            Map<String, dynamic>.from(data['createShoppingListItem']);
         final shoppingListItemData = ShoppingListItem.fromJson(result);
         return shoppingListItemData;
       },

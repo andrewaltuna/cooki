@@ -19,7 +19,7 @@ class ErrorScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline),
+            const Icon(Icons.error_outline),
             Text(errorMessage ?? 'Something went wrong.'),
             TextButton(
               onPressed: () {

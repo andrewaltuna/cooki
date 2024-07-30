@@ -41,7 +41,6 @@ class ItemGroup extends StatelessWidget {
 
 class _ItemCategory extends StatelessWidget {
   const _ItemCategory({
-    super.key,
     required this.category,
   });
 
@@ -80,7 +79,6 @@ class _ItemCategory extends StatelessWidget {
 
 class _ItemDetails extends StatelessWidget {
   const _ItemDetails({
-    super.key,
     required this.shoppingListId,
     required this.item,
   });
@@ -103,7 +101,7 @@ class _ItemDetails extends StatelessWidget {
         ),
         const Spacer(),
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.edit,
           ),
           onPressed: () {
@@ -121,7 +119,6 @@ class _ItemDetails extends StatelessWidget {
 
 class _ItemInformation extends StatelessWidget {
   const _ItemInformation({
-    super.key,
     required this.item,
   });
 
