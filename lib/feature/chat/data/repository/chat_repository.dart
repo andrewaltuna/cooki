@@ -1,3 +1,4 @@
+import 'package:cooki/feature/chat/data/model/chat_message.dart';
 import 'package:cooki/feature/chat/data/remote/chat_remote_source.dart';
 import 'package:cooki/feature/chat/data/repository/chat_repository_interface.dart';
 
@@ -7,7 +8,7 @@ class ChatRepository implements ChatRepositoryInterface {
   final ChatRemoteSource _remoteSource;
 
   @override
-  Future<String> sendMessage(String message) async {
+  Future<ChatMessage> sendMessage(String message) async {
     return await _remoteSource.chat(message);
   }
 }
