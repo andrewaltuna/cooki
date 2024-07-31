@@ -1,7 +1,7 @@
 import 'package:cooki/common/extension/screen_size.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
-import 'package:cooki/feature/chat/data/model/chat_message_details.dart';
+import 'package:cooki/feature/chat/data/model/chat_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
@@ -13,7 +13,7 @@ class ChatMessageItem extends StatelessWidget {
     super.key,
   });
 
-  final ChatMessageDetails messageDetails;
+  final ChatMessage messageDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +38,21 @@ class ChatMessageItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (!isSenderUser) ...[
-                Text(
-                  'Cooki',
-                  style: AppTextStyles.titleMedium,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 24,
+                      child: Image.asset(
+                        'assets/imgs/cooki_chat.png',
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Cooki',
+                      style: AppTextStyles.titleMedium,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
               ],

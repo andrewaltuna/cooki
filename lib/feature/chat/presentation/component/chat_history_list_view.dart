@@ -1,4 +1,4 @@
-import 'package:cooki/feature/chat/data/model/chat_message_details.dart';
+import 'package:cooki/feature/chat/data/model/chat_message.dart';
 import 'package:cooki/feature/chat/presentation/component/chat_message_item.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class ChatHistoryListView extends StatelessWidget {
   });
 
   final ScrollController scrollController;
-  final List<ChatMessageDetails> items;
+  final List<ChatMessage> items;
 
   @override
   Widget build(BuildContext context) {
