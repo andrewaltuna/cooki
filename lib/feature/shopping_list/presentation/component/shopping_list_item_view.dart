@@ -1,4 +1,5 @@
 import 'package:cooki/common/theme/app_text_styles.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_restrictions.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +40,8 @@ class ShoppingListItemView extends StatelessWidget {
             label: 'Quantity',
             description: item.quantity.toString(),
           ),
+          const SizedBox(height: 16),
+          ItemRestrictions(item: item),
         ],
       ),
     );
