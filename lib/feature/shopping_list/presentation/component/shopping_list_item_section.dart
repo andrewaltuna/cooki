@@ -23,11 +23,15 @@ class ShoppingListItemSection extends StatelessWidget {
   final ProductCategory category;
   final List<ShoppingListItem> items;
 
-  @override
-  Widget build(BuildContext context) {
-    final num budget = items
+  num _computeTotalPrice(List<ShoppingListItem> items) {
+    return items
         .map((item) => item.product.price * item.quantity)
         .reduce((a, b) => a + b);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final num totalPrice = _computeTotalPrice(items);
 
     return GestureDetector(
       child: Column(
@@ -35,7 +39,7 @@ class ShoppingListItemSection extends StatelessWidget {
         children: [
           _CategoryHeader(
             category: category,
-            totalPrice: budget,
+            totalPrice: totalPrice,
           ),
           for (final item in items)
             _Item(
