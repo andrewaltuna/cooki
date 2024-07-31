@@ -1,6 +1,6 @@
 import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_form.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/item_form_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,19 +17,13 @@ class ShoppingListItemUpdateView extends StatelessWidget {
 
   void _onItemUpdate(
     BuildContext context,
-    ShoppingListItemInput formInput,
+    ShoppingListItemInput formOutput,
     String itemId,
   ) {
-    final input = UpdateShoppingListItemInput(
-      id: itemId,
-      label: formInput.label,
-      productId: formInput.productId,
-      quantity: formInput.quantity,
-    );
-
     context.read<ShoppingListViewModel>().add(
           ShoppingListItemUpdated(
-            input: input,
+            itemId: itemId,
+            formOutput: formOutput,
           ),
         );
   }
@@ -42,18 +36,21 @@ class ShoppingListItemUpdateView extends StatelessWidget {
           shoppingListItemId,
         );
 
-        final formInput = ShoppingListItemInput(
-          label: shoppingListItem.label,
-          productId: shoppingListItem.product.id,
-          quantity: shoppingListItem.quantity,
-        );
-
-        return ShoppingListItemForm(
-          initialValue: formInput,
-          onSubmit: (formInput) => _onItemUpdate(
-            context,
-            formInput,
-            shoppingListItemId,
+        return BlocProvider(
+          create: (_) => ItemFormViewModel()
+            ..add(
+              ItemFormInitialized(
+                shoppingListItem.label,
+                shoppingListItem.product.id,
+                shoppingListItem.quantity,
+              ),
+            ),
+          child: ShoppingListItemForm(
+            onSubmit: (formOutput) => _onItemUpdate(
+              context,
+              formOutput,
+              shoppingListItemId,
+            ),
           ),
         );
       },

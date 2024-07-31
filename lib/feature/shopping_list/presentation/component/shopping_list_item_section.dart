@@ -4,7 +4,6 @@ import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -134,11 +133,9 @@ class _ItemDetails extends StatelessWidget {
 
   void _onToggled(BuildContext context) {
     context.read<ShoppingListViewModel>().add(
-          ShoppingListItemUpdated(
-            input: UpdateShoppingListItemInput(
-              id: item.id,
-              isChecked: !item.isChecked,
-            ),
+          ShoppingListItemToggled(
+            itemId: item.id,
+            checked: !item.isChecked,
           ),
         );
   }

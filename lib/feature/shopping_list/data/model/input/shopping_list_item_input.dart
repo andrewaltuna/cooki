@@ -11,28 +11,6 @@ class ShoppingListItemInput extends Equatable {
   final String productId;
   final int quantity;
 
-  // * Form helper
-  ShoppingListItemInput copyWith({
-    String? shoppingListId,
-    String? label,
-    String? productId,
-    int? quantity,
-  }) {
-    return ShoppingListItemInput(
-      label: label ?? this.label,
-      productId: productId ?? this.productId,
-      quantity: quantity ?? this.quantity,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'label': label,
-      'productId': productId,
-      'quantity': quantity,
-    };
-  }
-
   @override
   List<Object?> get props => [
         label,
