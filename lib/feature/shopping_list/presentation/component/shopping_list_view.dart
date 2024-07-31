@@ -2,7 +2,7 @@ import 'package:cooki/common/component/button/custom_icon_button.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_section.dart';
-import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_budget.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_summary.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +28,8 @@ class ShoppingListView extends StatelessWidget {
                 shoppingList: shoppingList,
               ),
             ),
-            ShoppingListBudget(
+            ShoppingListSummary(
+              totalPrice: shoppingList.totalPrice,
               budget: shoppingList.budget,
             ),
           ],

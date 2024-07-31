@@ -23,14 +23,23 @@ class ShoppingListItemSection extends StatelessWidget {
   final ProductCategory category;
   final List<ShoppingListItem> items;
 
+  num _computeTotalPrice(List<ShoppingListItem> items) {
+    return items
+        .map((item) => item.product.price * item.quantity)
+        .reduce((a, b) => a + b);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final num totalPrice = _computeTotalPrice(items);
+
     return GestureDetector(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _CategoryHeader(
             category: category,
+            totalPrice: totalPrice,
           ),
           for (final item in items)
             _Item(
@@ -46,9 +55,11 @@ class ShoppingListItemSection extends StatelessWidget {
 class _CategoryHeader extends StatelessWidget {
   const _CategoryHeader({
     required this.category,
+    required this.totalPrice,
   });
 
   final ProductCategory category;
+  final num totalPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -56,19 +67,30 @@ class _CategoryHeader extends StatelessWidget {
       color: AppColors.accent,
       padding: const EdgeInsets.all(12),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            height: 24,
-            width: 24,
-            child: category.icon.copyWith(
-              color: AppColors.fontSecondary,
-            ),
-          ),
-          const SizedBox(
-            width: 12,
+          Row(
+            children: [
+              SizedBox(
+                height: 24,
+                width: 24,
+                child: category.icon.copyWith(
+                  color: AppColors.fontSecondary,
+                ),
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              Text(
+                category.displayLabel,
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: AppColors.fontSecondary,
+                ),
+              ),
+            ],
           ),
           Text(
-            category.displayLabel,
+            'Php ${totalPrice.toStringAsFixed(2)}',
             style: AppTextStyles.titleSmall.copyWith(
               color: AppColors.fontSecondary,
             ),

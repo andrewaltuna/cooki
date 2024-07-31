@@ -70,6 +70,9 @@ class ShoppingList extends Equatable {
         (ShoppingListItem item) => item.product.category,
       );
 
+  num get totalPrice =>
+      items.map((item) => item.product.price * item.quantity).sum;
+
   ShoppingListItem itemById(String id) {
     return items.firstWhere(
       (item) => item.id == id,
