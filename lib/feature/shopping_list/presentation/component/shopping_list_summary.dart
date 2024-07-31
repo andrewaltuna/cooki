@@ -21,12 +21,14 @@ class ShoppingListSummary extends StatelessWidget {
           detail: totalPrice,
           backgroundColor: AppColors.accent,
           color: AppColors.fontSecondary,
+          icon: Icons.attach_money,
         ),
         _SummaryRow(
           label: 'Budget',
           detail: budget,
           backgroundColor: AppColors.backgroundSecondary,
           color: AppColors.fontPrimary,
+          icon: Icons.savings_rounded,
         ),
       ],
     );
@@ -39,12 +41,14 @@ class _SummaryRow extends StatelessWidget {
     required this.color,
     required this.label,
     required this.detail,
+    required this.icon,
   });
 
   final String label;
   final num detail;
   final Color backgroundColor;
   final Color color;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +59,7 @@ class _SummaryRow extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            Icons.attach_money,
+            icon,
             size: 24,
             color: color,
           ),
