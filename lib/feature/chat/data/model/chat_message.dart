@@ -1,21 +1,25 @@
-import 'package:cooki/feature/product/data/model/product.dart';
+import 'package:cooki/feature/shopping_list/data/model/chat_shopping_list_item.dart';
 import 'package:equatable/equatable.dart';
 
 class ChatMessage extends Equatable {
   const ChatMessage({
     required this.sender,
-    required this.message,
-    required this.products,
+    required this.body,
+    required this.convertibleItems,
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
-    final products = json['products'] as List;
+    final items = json['products'] as List;
 
     return ChatMessage(
       sender: ChatMessageSender.cooki,
-      message: json['message'],
-      products: products
-          .map((item) => Product.fromJson(item as Map<String, dynamic>))
+      body: json['message'],
+      convertibleItems: items
+          .map(
+            (item) => ChatShoppingListItem.fromJson(
+              item as Map<String, dynamic>,
+            ),
+          )
           .toList(),
     );
   }
@@ -23,28 +27,38 @@ class ChatMessage extends Equatable {
   factory ChatMessage.user(String message) {
     return ChatMessage(
       sender: ChatMessageSender.user,
-      message: message,
-      products: const [],
+      body: message,
+      convertibleItems: const [],
+    );
+  }
+
+  factory ChatMessage.error([String? message]) {
+    return ChatMessage(
+      sender: ChatMessageSender.error,
+      body: '\u24D8 ${message ?? 'An error occurred. Please try again.'}',
+      convertibleItems: const [],
     );
   }
 
   final ChatMessageSender sender;
-  final String message;
-  final List<Product> products;
+  final String body;
+  final List<ChatShoppingListItem> convertibleItems;
 
-  bool get isConvertibleToShoppingList => products.isNotEmpty;
+  bool get isConvertibleToShoppingList => convertibleItems.isNotEmpty;
 
   @override
   List<Object?> get props => [
         sender,
-        message,
+        body,
       ];
 }
 
 enum ChatMessageSender {
   user,
-  cooki;
+  cooki,
+  error;
 
   bool get isUser => this == user;
   bool get isCooki => this == cooki;
+  bool get isError => this == error;
 }

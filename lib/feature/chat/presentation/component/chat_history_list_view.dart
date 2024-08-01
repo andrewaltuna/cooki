@@ -1,5 +1,5 @@
 import 'package:cooki/feature/chat/data/model/chat_message.dart';
-import 'package:cooki/feature/chat/presentation/component/chat_message_item.dart';
+import 'package:cooki/feature/chat/presentation/component/chat_message_view.dart';
 import 'package:flutter/material.dart';
 
 class ChatHistoryListView extends StatelessWidget {
@@ -18,9 +18,8 @@ class ChatHistoryListView extends StatelessWidget {
       controller: scrollController,
       itemCount: items.length,
       itemBuilder: (_, index) {
-        final messageDetails = items[index];
-        final messageWidget = ChatMessageItem(
-          messageDetails: messageDetails,
+        final messageWidget = ChatMessageView(
+          message: items[index],
         );
 
         if (index == 0) {

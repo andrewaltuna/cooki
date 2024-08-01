@@ -8,7 +8,13 @@ class ChatRepository implements ChatRepositoryInterface {
   final ChatRemoteSource _remoteSource;
 
   @override
-  Future<ChatMessage> sendMessage(String message) async {
-    return await _remoteSource.chat(message);
+  Future<ChatMessage> sendMessage(
+    String message, {
+    required bool isFirstMessage,
+  }) async {
+    return await _remoteSource.chat(
+      message,
+      isFirstMessage,
+    );
   }
 }

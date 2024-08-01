@@ -1,4 +1,5 @@
 import 'package:cooki/common/extension/graphql_extensions.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/create_gemini_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
@@ -43,6 +44,27 @@ class ShoppingListRemoteSource {
     return response.result(
       onSuccess: (data) {
         final result = Map<String, dynamic>.from(data['shoppingList']);
+
+        return ShoppingList.fromJson(result);
+      },
+    );
+  }
+
+  Future<ShoppingList> createGeminiShoppingList(
+    CreateGeminiShoppingListInput input,
+  ) async {
+    final response = await _graphQLClient.mutate(
+      MutationOptions(
+        document: gql(_createGeminiShoppingListMutation),
+        variables: {
+          'input': input.toJson(),
+        },
+      ),
+    );
+
+    return response.result(
+      onSuccess: (data) {
+        final result = data['createGeminiShoppingList'];
 
         return ShoppingList.fromJson(result);
       },
@@ -230,6 +252,39 @@ const _getShoppingListQuery = r'''
     shoppingList(_id: $id) {
       _id
       name
+      budget
+      items {
+        _id
+        label
+        quantity
+        isInCart
+        product {
+          _id
+          brand
+          productCategory
+          price
+          section
+          unitSize
+        }
+        interferedRestrictions {
+          dietaryRestrictions {
+            restrictionName
+          }
+          medications {
+            genericName
+          }
+        }
+      }
+    }
+  }
+''';
+
+const _createGeminiShoppingListMutation = r'''
+  mutation createGeminiShoppingList($input: CreateGeminiShoppingListInput!) {
+    createGeminiShoppingList(createGeminiShoppingListInput: $input) {
+      _id
+      name
+      userId
       budget
       items {
         _id

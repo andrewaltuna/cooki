@@ -1,6 +1,5 @@
 import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
-import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
 import 'package:cooki/feature/account/presentation/view_model/auth_view_model.dart';
@@ -49,9 +48,7 @@ class PreferencesScreen extends StatelessWidget {
             builder: (context, submissionStatus) {
               return PrimaryButton(
                 label: 'Save',
-                state: submissionStatus.isLoading
-                    ? ButtonState.loading
-                    : ButtonState.idle,
+                isLoading: submissionStatus.isLoading,
                 onPress: () => _onSaved(context),
               );
             },

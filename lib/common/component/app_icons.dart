@@ -9,6 +9,7 @@ class AppIcons {
 
   static const _prefsPath = '$_basePath/preferences';
   static const _chatPath = '$_basePath/chat';
+  static const _mapPath = '$_basePath/map';
 
   // Product category
   static SvgPicture get frozen => SvgPicture.asset('$_prefsPath/frozen.svg');
@@ -37,6 +38,9 @@ class AppIcons {
       SvgPicture.asset('$_chatPath/recipe_generator.svg');
   static SvgPicture get specialOffers =>
       SvgPicture.asset('$_chatPath/special_offers.svg');
+
+  // Map
+  static SvgPicture get map => SvgPicture.asset('$_mapPath/map.svg');
 }
 
 extension SvgPictureExtension on SvgPicture {

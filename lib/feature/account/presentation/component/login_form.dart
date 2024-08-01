@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/component/button/primary_button.dart';
-import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/common/helper/toast_helper.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
@@ -121,9 +120,7 @@ class LoginForm extends StatelessWidget {
                       label: 'Sign In',
                       width: double.infinity,
                       onPress: () => _onSubmitted(context),
-                      state: status.isLoading
-                          ? ButtonState.loading
-                          : ButtonState.idle,
+                      isLoading: status.isLoading,
                     );
                   },
                 ),

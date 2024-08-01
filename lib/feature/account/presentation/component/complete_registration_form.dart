@@ -1,6 +1,5 @@
 import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
-import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/common/helper/input_formatter/name_case_input_formatter.dart';
 import 'package:cooki/constant/auth_form_errors.dart';
@@ -76,8 +75,7 @@ class CompleteRegistrationForm extends StatelessWidget {
                   label: 'Complete',
                   width: double.infinity,
                   onPress: () => _onSubmitted(context),
-                  state:
-                      status.isLoading ? ButtonState.loading : ButtonState.idle,
+                  isLoading: status.isLoading,
                 );
               },
             ),

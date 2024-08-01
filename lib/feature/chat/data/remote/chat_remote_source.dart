@@ -8,19 +8,25 @@ class ChatRemoteSource {
   final GraphQLClient _graphQlClient;
 
   // Example only, API might be removed in the future
-  Future<ChatMessage> chat(String input) async {
+  Future<ChatMessage> chat(
+    String message,
+    bool isFirstMessage,
+  ) async {
     final response = await _graphQlClient.query(
       QueryOptions(
         document: gql(_createGeminiHealthCheckMutation),
         variables: {
-          'input': input,
+          'message': message,
+          'isFirstMessage': isFirstMessage,
         },
       ),
     );
 
     return response.result(
       onSuccess: (data) {
-        final result = data['chat'] as Map<String, dynamic>;
+        final result = data['chat'] as Map<String, dynamic>?;
+
+        if (result == null) throw Exception('Invalid response');
 
         return ChatMessage.fromJson(result);
       },
@@ -29,19 +35,13 @@ class ChatRemoteSource {
 }
 
 const _createGeminiHealthCheckMutation = r'''
-  mutation chat($input: String!) {
-    chat(message: $input) {
+  mutation chat($message: String!, $isFirstMessage: Boolean!) {
+    chat(message: $message, isFirstMessage: $isFirstMessage) {
       message
       products {
-        _id
-        productCategory
-        section
-        brand
-        key_ingredients
-        description
-        price
-        unitSize
-        manufacturer
+        productId
+        label
+        quantity
       }
     }
   }

@@ -1,4 +1,6 @@
 import 'package:cooki/common/enum/view_model_status.dart';
+import 'package:cooki/feature/shopping_list/data/model/chat_shopping_list_item.dart';
+import 'package:cooki/feature/shopping_list/data/model/input/create_gemini_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
@@ -13,6 +15,7 @@ class ShoppingListCatalogViewModel
   ShoppingListCatalogViewModel(this._repository)
       : super(const ShoppingListCatalogState()) {
     on<ShoppingListCatalogRequested>(_onRequested);
+    on<ShoppingListByGeminiCreated>(_onGeminiCreated);
     on<ShoppingListCreated>(_onCreated);
     on<ShoppingListEntryUpdated>(_onUpdated);
     on<ShoppingListEntryDeleted>(_onDeleted);
@@ -47,6 +50,36 @@ class ShoppingListCatalogViewModel
     }
   }
 
+  Future<void> _onGeminiCreated(
+    ShoppingListByGeminiCreated event,
+    Emitter<ShoppingListCatalogState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(status: ViewModelStatus.loading));
+
+      final result = await _repository.createGeminiShoppingList(
+        CreateGeminiShoppingListInput(
+          name: event.name,
+          items: event.items,
+        ),
+      );
+
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.success,
+          shoppingLists: [...state.shoppingLists, result],
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
   Future<void> _onCreated(
     ShoppingListCreated event,
     Emitter<ShoppingListCatalogState> emit,
@@ -59,7 +92,7 @@ class ShoppingListCatalogViewModel
       final result = await _repository.createShoppingList(
         CreateShoppingListInput(
           name: event.name,
-          budget: double.parse(event.budget),
+          budget: event.budget,
         ),
       );
 

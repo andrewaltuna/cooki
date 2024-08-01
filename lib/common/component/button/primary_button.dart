@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cooki/common/component/indicator/loading_indicator.dart';
-import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 
@@ -13,7 +12,7 @@ class PrimaryButton extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.style,
-    this.state = ButtonState.idle,
+    this.isLoading = false,
     this.backgroundColor = AppColors.accent,
     super.key,
   });
@@ -25,7 +24,7 @@ class PrimaryButton extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final TextStyle? style;
-  final ButtonState state;
+  final bool isLoading;
   final Color? backgroundColor;
 
   @override
@@ -34,12 +33,13 @@ class PrimaryButton extends StatelessWidget {
       height: height,
       width: width ?? double.infinity,
       child: TextButton(
-        onPressed: onPress,
+        onPressed: isLoading ? null : onPress,
         style: TextButton.styleFrom(
           backgroundColor: backgroundColor,
+          disabledBackgroundColor: backgroundColor,
           padding: EdgeInsets.zero,
         ),
-        child: state.isLoading
+        child: isLoading
             ? LoadingIndicator(
                 color: style?.color ?? AppColors.fontSecondary,
               )
