@@ -34,10 +34,12 @@ class ShoppingListItem extends Equatable {
       isChecked: json['isInCart'],
     );
 
-    if (json['interferedRestrictions'] != null) {
-      final medications = json['interferedRestrictions']['medications'] as List;
+    final interferedRestrictions = json['interferedRestrictions'];
+
+    if (interferedRestrictions != null) {
+      final medications = interferedRestrictions['medications'] as List;
       final dietaryRestrictions =
-          json['interferedRestrictions']['dietaryRestrictions'] as List;
+          interferedRestrictions['dietaryRestrictions'] as List;
 
       return output.copyWith(
         medications: medications
