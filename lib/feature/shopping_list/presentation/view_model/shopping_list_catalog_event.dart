@@ -11,6 +11,22 @@ class ShoppingListCatalogRequested extends ShoppingListCatalogEvent {
   const ShoppingListCatalogRequested();
 }
 
+class ShoppingListByGeminiCreated extends ShoppingListCatalogEvent {
+  const ShoppingListByGeminiCreated({
+    required this.name,
+    required this.items,
+  });
+
+  final String name;
+  final List<ChatShoppingListItem> items;
+
+  @override
+  List<Object?> get props => [
+        name,
+        items,
+      ];
+}
+
 class ShoppingListCreated extends ShoppingListCatalogEvent {
   const ShoppingListCreated({
     required this.name,
@@ -18,7 +34,7 @@ class ShoppingListCreated extends ShoppingListCatalogEvent {
   });
 
   final String name;
-  final String budget;
+  final double budget;
 
   @override
   List<Object?> get props => [

@@ -2,23 +2,31 @@ part of 'chat_view_model.dart';
 
 class ChatState extends Equatable {
   const ChatState({
-    this.messagingStatus = ViewModelStatus.initial,
+    this.status = ViewModelStatus.initial,
     this.history = const [],
+    this.error,
   });
 
-  final ViewModelStatus messagingStatus;
+  final ViewModelStatus status;
   final List<ChatMessage> history;
+  final Exception? error;
 
   ChatState copyWith({
-    ViewModelStatus? messagingStatus,
+    ViewModelStatus? status,
     List<ChatMessage>? history,
+    Exception? error,
   }) {
     return ChatState(
-      messagingStatus: messagingStatus ?? this.messagingStatus,
+      status: status ?? this.status,
       history: history ?? this.history,
+      error: error ?? this.error,
     );
   }
 
   @override
-  List<Object> get props => [history];
+  List<Object?> get props => [
+        status,
+        history,
+        error,
+      ];
 }

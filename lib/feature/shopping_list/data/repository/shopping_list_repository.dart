@@ -1,3 +1,4 @@
+import 'package:cooki/feature/shopping_list/data/model/input/create_gemini_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
@@ -20,6 +21,13 @@ class ShoppingListRepository implements ShoppingListRepositoryInterface {
   @override
   Future<ShoppingList> getShoppingList(String id) {
     return _remoteSource.getShoppingList(id);
+  }
+
+  @override
+  Future<ShoppingList> createGeminiShoppingList(
+    CreateGeminiShoppingListInput input,
+  ) async {
+    return _remoteSource.createGeminiShoppingList(input);
   }
 
   @override

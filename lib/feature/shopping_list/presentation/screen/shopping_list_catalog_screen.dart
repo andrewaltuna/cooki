@@ -11,6 +11,7 @@ class ShoppingListCatalogScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MainScaffold(
       title: 'Shopping Lists',
+      contentPadding: EdgeInsets.zero,
       body: ShoppingListCatalogView(),
     );
   }
