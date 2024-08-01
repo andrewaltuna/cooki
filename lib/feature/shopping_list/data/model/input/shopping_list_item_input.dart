@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class ShoppingListItemInput extends Equatable {
-  const ShoppingListItemInput({
+class ShoppingListFormOutput extends Equatable {
+  const ShoppingListFormOutput({
     required this.label,
     required this.productId,
     required this.quantity,

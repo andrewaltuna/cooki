@@ -7,7 +7,7 @@ import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/presentation/view_model/item_form_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_item_form_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,11 +26,11 @@ class ShoppingListItemForm extends HookWidget {
   static final _formKey = GlobalKey<FormState>();
 
   final void Function(
-    ShoppingListItemInput input,
+    ShoppingListFormOutput input,
   ) onSubmit;
 
   void _onLabelChange(BuildContext context, String value) {
-    context.read<ItemFormViewModel>()
+    context.read<ShoppingListItemFormViewModel>()
       ..add(
         const ItemFormLabelErrorChanged(),
       )
@@ -45,7 +45,7 @@ class ShoppingListItemForm extends HookWidget {
     final quantity = int.tryParse(value);
     if (quantity == null) return;
 
-    context.read<ItemFormViewModel>()
+    context.read<ShoppingListItemFormViewModel>()
       ..add(
         const ItemFormQuantityErrorChanged(),
       )
@@ -58,7 +58,7 @@ class ShoppingListItemForm extends HookWidget {
 
   void _onProductSelected(BuildContext context, Product? value) {
     if (value == null) {
-      context.read<ItemFormViewModel>().add(
+      context.read<ShoppingListItemFormViewModel>().add(
             const ItemFormProductIdErrorChanged(
               _productEmptyError,
             ),
@@ -66,7 +66,7 @@ class ShoppingListItemForm extends HookWidget {
       return;
     }
 
-    context.read<ItemFormViewModel>()
+    context.read<ShoppingListItemFormViewModel>()
       ..add(const ItemFormProductIdErrorChanged())
       ..add(
         ItemFormProductSelected(
@@ -76,7 +76,7 @@ class ShoppingListItemForm extends HookWidget {
   }
 
   void _onSubmit(BuildContext context) {
-    final viewModel = context.read<ItemFormViewModel>();
+    final viewModel = context.read<ShoppingListItemFormViewModel>();
     final isProductIdValid = viewModel.state.productId.isNotEmpty;
     final isValid = _formKey.currentState!.validate() && isProductIdValid;
 
@@ -97,9 +97,10 @@ class ShoppingListItemForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ItemFormViewModel>();
+    final viewModel = context.read<ShoppingListItemFormViewModel>();
 
-    return BlocBuilder<ItemFormViewModel, ItemFormState>(
+    return BlocBuilder<ShoppingListItemFormViewModel,
+        ShoppingListItemFormState>(
       builder: (context, state) {
         if (state.status.isInitial) {
           return const LoadingScreen();

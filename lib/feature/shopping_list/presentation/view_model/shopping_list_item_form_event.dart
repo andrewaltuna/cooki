@@ -1,13 +1,13 @@
-part of 'item_form_view_model.dart';
+part of 'shopping_list_item_form_view_model.dart';
 
-class ItemFormEvent extends Equatable {
-  const ItemFormEvent();
+class ShoppingListItemFormEvent extends Equatable {
+  const ShoppingListItemFormEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class ItemFormInitialized extends ItemFormEvent {
+class ItemFormInitialized extends ShoppingListItemFormEvent {
   const ItemFormInitialized([
     this.label,
     this.productId,
@@ -26,7 +26,7 @@ class ItemFormInitialized extends ItemFormEvent {
       ];
 }
 
-class ItemFormProductSelected extends ItemFormEvent {
+class ItemFormProductSelected extends ShoppingListItemFormEvent {
   const ItemFormProductSelected(
     this.productId,
   );
@@ -37,7 +37,7 @@ class ItemFormProductSelected extends ItemFormEvent {
   List<Object> get props => [productId];
 }
 
-class ItemFormLabelChanged extends ItemFormEvent {
+class ItemFormLabelChanged extends ShoppingListItemFormEvent {
   const ItemFormLabelChanged(
     this.label,
   );
@@ -48,7 +48,7 @@ class ItemFormLabelChanged extends ItemFormEvent {
   List<Object> get props => [label];
 }
 
-class ItemFormQuantityChanged extends ItemFormEvent {
+class ItemFormQuantityChanged extends ShoppingListItemFormEvent {
   const ItemFormQuantityChanged(
     this.quantity,
   );
@@ -59,7 +59,7 @@ class ItemFormQuantityChanged extends ItemFormEvent {
   List<Object> get props => [quantity];
 }
 
-class ItemFormLabelErrorChanged extends ItemFormEvent {
+class ItemFormLabelErrorChanged extends ShoppingListItemFormEvent {
   const ItemFormLabelErrorChanged([
     this.labelError = '',
   ]);
@@ -70,7 +70,7 @@ class ItemFormLabelErrorChanged extends ItemFormEvent {
   List<Object> get props => [labelError];
 }
 
-class ItemFormQuantityErrorChanged extends ItemFormEvent {
+class ItemFormQuantityErrorChanged extends ShoppingListItemFormEvent {
   const ItemFormQuantityErrorChanged([
     this.quantityError = '',
   ]);
@@ -81,7 +81,7 @@ class ItemFormQuantityErrorChanged extends ItemFormEvent {
   List<Object> get props => [quantityError];
 }
 
-class ItemFormProductIdErrorChanged extends ItemFormEvent {
+class ItemFormProductIdErrorChanged extends ShoppingListItemFormEvent {
   const ItemFormProductIdErrorChanged([
     this.productIdError = '',
   ]);

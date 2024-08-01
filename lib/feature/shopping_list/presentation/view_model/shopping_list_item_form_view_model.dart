@@ -3,23 +3,24 @@ import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'item_form_event.dart';
-part 'item_form_state.dart';
+part 'shopping_list_item_form_event.dart';
+part 'shopping_list_item_form_state.dart';
 
-class ItemFormViewModel extends Bloc<ItemFormEvent, ItemFormState> {
-  ItemFormViewModel() : super(const ItemFormState()) {
+class ShoppingListItemFormViewModel
+    extends Bloc<ShoppingListItemFormEvent, ShoppingListItemFormState> {
+  ShoppingListItemFormViewModel() : super(const ShoppingListItemFormState()) {
     on<ItemFormInitialized>(_onInitialized);
     on<ItemFormProductSelected>(_onProductSelected);
-    on<ItemFormLabelChanged>(_onLabelChange);
-    on<ItemFormQuantityChanged>(_onQuantityChange);
-    on<ItemFormLabelErrorChanged>(_onLabelErrorChange);
-    on<ItemFormQuantityErrorChanged>(_onQuantityErrorChange);
-    on<ItemFormProductIdErrorChanged>(_onProductIdErrorChange);
+    on<ItemFormLabelChanged>(_onLabelChanged);
+    on<ItemFormQuantityChanged>(_onQuantityChanged);
+    on<ItemFormLabelErrorChanged>(_onLabelErrorChanged);
+    on<ItemFormQuantityErrorChanged>(_onQuantityErrorChanged);
+    on<ItemFormProductIdErrorChanged>(_onProductIdErrorChanged);
   }
 
   void _onInitialized(
     ItemFormInitialized event,
-    Emitter<ItemFormState> emit,
+    Emitter<ShoppingListItemFormState> emit,
   ) {
     emit(
       state.copyWith(
@@ -33,7 +34,7 @@ class ItemFormViewModel extends Bloc<ItemFormEvent, ItemFormState> {
 
   void _onProductSelected(
     ItemFormProductSelected event,
-    Emitter<ItemFormState> emit,
+    Emitter<ShoppingListItemFormState> emit,
   ) {
     emit(
       state.copyWith(
@@ -42,9 +43,9 @@ class ItemFormViewModel extends Bloc<ItemFormEvent, ItemFormState> {
     );
   }
 
-  void _onLabelChange(
+  void _onLabelChanged(
     ItemFormLabelChanged event,
-    Emitter<ItemFormState> emit,
+    Emitter<ShoppingListItemFormState> emit,
   ) {
     emit(
       state.copyWith(
@@ -53,9 +54,9 @@ class ItemFormViewModel extends Bloc<ItemFormEvent, ItemFormState> {
     );
   }
 
-  void _onQuantityChange(
+  void _onQuantityChanged(
     ItemFormQuantityChanged event,
-    Emitter<ItemFormState> emit,
+    Emitter<ShoppingListItemFormState> emit,
   ) {
     emit(
       state.copyWith(
@@ -64,9 +65,9 @@ class ItemFormViewModel extends Bloc<ItemFormEvent, ItemFormState> {
     );
   }
 
-  void _onLabelErrorChange(
+  void _onLabelErrorChanged(
     ItemFormLabelErrorChanged event,
-    Emitter<ItemFormState> emit,
+    Emitter<ShoppingListItemFormState> emit,
   ) {
     emit(
       state.copyWith(
@@ -75,9 +76,9 @@ class ItemFormViewModel extends Bloc<ItemFormEvent, ItemFormState> {
     );
   }
 
-  void _onQuantityErrorChange(
+  void _onQuantityErrorChanged(
     ItemFormQuantityErrorChanged event,
-    Emitter<ItemFormState> emit,
+    Emitter<ShoppingListItemFormState> emit,
   ) {
     emit(
       state.copyWith(
@@ -86,9 +87,9 @@ class ItemFormViewModel extends Bloc<ItemFormEvent, ItemFormState> {
     );
   }
 
-  void _onProductIdErrorChange(
+  void _onProductIdErrorChanged(
     ItemFormProductIdErrorChanged event,
-    Emitter<ItemFormState> emit,
+    Emitter<ShoppingListItemFormState> emit,
   ) {
     emit(
       state.copyWith(
