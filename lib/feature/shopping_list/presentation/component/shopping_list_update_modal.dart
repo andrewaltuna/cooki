@@ -8,6 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+const _btnDefaultWidth = 120.0;
+const _btnDefaultHeight = 35.0;
+
 class ShoppingListUpdateModalContent extends HookWidget {
   const ShoppingListUpdateModalContent({
     super.key,
@@ -127,7 +130,6 @@ class _CreateForm extends StatelessWidget {
   }
 }
 
-// TODO: Make UI match dialog helper buttons
 class _ModalActions extends StatelessWidget {
   const _ModalActions({
     required this.onClose,
@@ -145,8 +147,8 @@ class _ModalActions extends StatelessWidget {
         PrimaryButton(
           label: 'Close',
           onPress: onClose,
-          width: 100.0,
-          height: 50.0,
+          height: _btnDefaultHeight,
+          width: _btnDefaultWidth,
           style: const TextStyle(
             color: AppColors.primary,
           ),
@@ -156,8 +158,8 @@ class _ModalActions extends StatelessWidget {
         PrimaryButton(
           label: 'Update',
           onPress: onUpdate,
-          width: 100.0,
-          height: 50.0,
+          height: _btnDefaultHeight,
+          width: _btnDefaultWidth,
         ),
       ],
     );
