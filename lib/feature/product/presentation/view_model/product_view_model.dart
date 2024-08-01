@@ -43,7 +43,9 @@ class ProductViewModel extends Bloc<ProductEvent, ProductState> {
   ) async {
     try {
       emit(state.copyWith(status: ViewModelStatus.loading));
+
       final result = await _repository.getProduct(event.id);
+
       emit(
         state.copyWith(
           status: ViewModelStatus.success,

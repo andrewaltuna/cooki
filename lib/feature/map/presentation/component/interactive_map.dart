@@ -1,3 +1,4 @@
+import 'package:cooki/common/component/app_icons.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/map/presentation/component/map_painter.dart';
 import 'package:cooki/feature/map/presentation/component/map_user_indicator.dart';
@@ -39,15 +40,20 @@ class InteractiveMap extends HookWidget {
       child: SizedBox(
         width: mapSize.width,
         height: mapSize.height,
-        child: CustomPaint(
-          painter: MapPainter(
-            directions: state.directions,
-          ),
-          child: _MapIndicators(
-            isUserPositionInitialLoading: state.isUserPositionLoading,
-            userOffset: state.userOffsetFromCenter,
-            inverseScale: state.inverseScale,
-          ),
+        child: Stack(
+          children: [
+            AppIcons.map,
+            CustomPaint(
+              painter: MapPainter(
+                directions: state.directions,
+              ),
+              child: _MapIndicators(
+                isUserPositionInitialLoading: state.isUserPositionLoading,
+                userOffset: state.userOffsetFromCenter,
+                inverseScale: state.inverseScale,
+              ),
+            ),
+          ],
         ),
       ),
     );

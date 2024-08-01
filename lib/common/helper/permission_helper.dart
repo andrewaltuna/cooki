@@ -35,8 +35,8 @@ class PermissionHelper {
   }
 
   Future<void> requestBeaconPermissionsWithModal() async {
-    await DialogHelper.of(_context).show(
-      DialogArguments(
+    await DialogHelper.of(_context).showDefaultDialog(
+      DefaultDialogArgs(
         title: 'Permissions required',
         message:
             'Cooki uses Bluetooth and Location services to track and suggest products within your vicinity.\n\nAllow access to these permissions for a smoother experience.',

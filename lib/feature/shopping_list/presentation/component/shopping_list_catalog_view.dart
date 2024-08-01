@@ -1,4 +1,6 @@
-import 'package:cooki/common/component/button/primary_button.dart';
+import 'package:collection/collection.dart';
+import 'package:cooki/common/component/button/custom_icon_button.dart';
+import 'package:cooki/common/component/button/ink_well_button.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/common/screen/error_screen.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
@@ -20,47 +22,52 @@ class ShoppingListCatalogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ShoppingListCatalogViewModel, ShoppingListCatalogState>(
-      builder: (context, state) {
-        final status = state.status;
-        final shoppingLists = state.shoppingLists;
+    final state = context.watch<ShoppingListCatalogViewModel>().state;
 
-        if (status.isLoading) {
-          return const LoadingScreen();
-        }
+    final status = state.status;
+    final shoppingLists = state.shoppingLists;
 
-        if (status.isError) {
-          return const ErrorScreen(
-            errorMessage: 'Something went wrong.',
-          );
-        }
+    if (status.isLoading) {
+      return const LoadingScreen();
+    }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(height: 16),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      for (var list in shoppingLists)
-                        _ShoppingListCard(
-                          shoppingList: list,
-                        ),
-                    ],
+    if (status.isError) {
+      return const ErrorScreen(
+        errorMessage: 'Something went wrong.',
+      );
+    }
+
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ListView(
+            children: shoppingLists.mapIndexed(
+              (index, shoppingList) {
+                final isLast = index == shoppingLists.length - 1;
+
+                return Padding(
+                  padding: EdgeInsets.only(
+                    top: 16,
+                    bottom: isLast ? 16 : 0,
                   ),
-                ),
-              ),
-              PrimaryButton(
-                label: 'Create List',
-                onPress: () => _onSubmitted(context),
-              ),
-            ],
+                  child: _ShoppingListCard(
+                    shoppingList: shoppingList,
+                  ),
+                );
+              },
+            ).toList(),
           ),
-        );
-      },
+        ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: CustomIconButton(
+            icon: Icons.add,
+            onPressed: () => _onSubmitted(context),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -74,38 +81,20 @@ class _ShoppingListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: ButtonStyle(
-        overlayColor: WidgetStateProperty.all(
-          Colors.transparent,
-        ),
-        padding: WidgetStateProperty.all(
-          EdgeInsets.zero,
-        ),
-      ),
+    return InkWellButton(
       onPressed: () => context.go(
         '${AppRoutes.shoppingLists}/${shoppingList.id}',
       ),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              color: AppColors.accent,
-            ),
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 24.0,
-                horizontal: 16.0,
-              ),
-              child: _ShoppingListInformation(shoppingList: shoppingList),
-            ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-        ],
+      backgroundColor: AppColors.backgroundSecondary,
+      circularBorderRadius: 8,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 24.0,
+          horizontal: 16.0,
+        ),
+        child: _ShoppingListInformation(
+          shoppingList: shoppingList,
+        ),
       ),
     );
   }
@@ -121,19 +110,18 @@ class _ShoppingListInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          shoppingList.name,
-          style: AppTextStyles.titleMedium.copyWith(
-            color: Colors.white,
+        Expanded(
+          child: Text(
+            shoppingList.name,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.titleSmall,
           ),
         ),
+        const SizedBox(width: 8),
         Text(
           '${shoppingList.items.length} items',
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: Colors.white,
-          ),
+          style: AppTextStyles.bodySmall,
         ),
       ],
     );

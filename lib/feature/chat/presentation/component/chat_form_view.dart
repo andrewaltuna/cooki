@@ -1,5 +1,5 @@
+import 'package:cooki/common/component/button/custom_icon_button.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
-import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/feature/chat/presentation/view_model/chat_view_model.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class ChatFormView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<ChatViewModel, ChatState, bool>(
-      selector: (state) => state.messagingStatus.isLoading,
+      selector: (state) => state.status.isLoading,
       builder: (context, isLoading) {
         return Row(
           children: [
@@ -50,21 +50,14 @@ class ChatFormView extends StatelessWidget {
                 fillColor: null,
               ),
             ),
-            IconButton(
-              icon: isLoading
-                  ? const LoadingIndicator(
-                      color: AppColors.fontSecondary,
-                    )
-                  : const Icon(
-                      Icons.send_rounded,
-                      color: AppColors.fontSecondary,
-                      size: 20,
-                    ),
-              style: IconButton.styleFrom(
-                backgroundColor: AppColors.accent,
-                disabledBackgroundColor: AppColors.backgroundTextField,
-              ),
-              onPressed: () => isLoading ? null : _onMessageSent(context),
+            CustomIconButton(
+              icon: Icons.send_rounded,
+              iconSize: 20,
+              padding: 0,
+              color: AppColors.fontSecondary,
+              backgroundColor: AppColors.accent,
+              isLoading: isLoading,
+              onPressed: () => _onMessageSent(context),
             ),
           ],
         );

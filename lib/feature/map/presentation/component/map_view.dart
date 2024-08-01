@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cooki/common/component/button/custom_icon_button.dart';
 import 'package:cooki/common/component/dropdown/custom_dropdown_menu.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/map/presentation/component/interactive_map.dart';
@@ -105,6 +106,7 @@ class MapView extends HookWidget {
             entries: [],
           ),
         ),
+        // TODO: for debug only
         const Align(
           alignment: Alignment.bottomCenter,
           child: BeaconProximityIndicator(),
@@ -123,14 +125,8 @@ class _RecenterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.white),
-      ),
-      icon: const Icon(
-        Icons.center_focus_strong_rounded,
-        size: 30,
-      ),
+    return CustomIconButton(
+      icon: Icons.filter_center_focus,
       onPressed: onRecenter,
     );
   }

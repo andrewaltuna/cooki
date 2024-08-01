@@ -1,5 +1,4 @@
 import 'package:cooki/common/component/button/primary_button.dart';
-import 'package:cooki/common/enum/button_state.dart';
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
@@ -76,9 +75,7 @@ class PreferencesModalContent extends HookWidget {
                     label: isLastPage ? 'Finish' : 'Next',
                     height: 30,
                     width: 100,
-                    state: status.isLoading
-                        ? ButtonState.loading
-                        : ButtonState.idle,
+                    isLoading: status.isLoading,
                     onPress: () => isLastPage
                         ? _onInitialPreferencesSet(context)
                         : _onNextPressed(pageController),

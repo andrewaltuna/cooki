@@ -19,9 +19,11 @@ class ChatViewModel extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     try {
+      final isFirstMessage = state.history.isEmpty;
+
       emit(
         state.copyWith(
-          messagingStatus: ViewModelStatus.loading,
+          status: ViewModelStatus.loading,
           history: [
             ...state.history,
             ChatMessage.user(event.message),
@@ -29,19 +31,31 @@ class ChatViewModel extends Bloc<ChatEvent, ChatState> {
         ),
       );
 
-      final result = await _chatRepository.sendMessage(event.message);
+      final result = await _chatRepository.sendMessage(
+        event.message,
+        isFirstMessage: isFirstMessage,
+      );
 
       emit(
         state.copyWith(
-          messagingStatus: ViewModelStatus.success,
+          status: ViewModelStatus.success,
           history: [
             ...state.history,
             result,
           ],
         ),
       );
-    } catch (e) {
-      emit(state.copyWith(messagingStatus: ViewModelStatus.error));
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          status: ViewModelStatus.error,
+          history: [
+            ...state.history,
+            ChatMessage.error(),
+          ],
+          error: error,
+        ),
+      );
     }
   }
 }
