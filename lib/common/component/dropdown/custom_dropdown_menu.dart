@@ -11,6 +11,7 @@ class CustomDropdownMenu<T> extends StatelessWidget {
     this.height = 50,
     this.fillColor,
     this.hasBorder = true,
+    this.initialSelection,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class CustomDropdownMenu<T> extends StatelessWidget {
   final Widget? icon;
   final void Function(T? value)? onSelected;
   final List<CustomDropdownMenuEntry<T>> entries;
+  final T? initialSelection;
   final String hintText;
   final double height;
   final Color? fillColor;
@@ -43,6 +45,7 @@ class CustomDropdownMenu<T> extends StatelessWidget {
         textStyle: AppTextStyles.bodyMedium,
         hintText: hintText,
         onSelected: onSelected,
+        initialSelection: initialSelection,
         inputDecorationTheme: inputDecorationTheme?.copyWith(
           filled: fillColor != null,
           fillColor: fillColor,

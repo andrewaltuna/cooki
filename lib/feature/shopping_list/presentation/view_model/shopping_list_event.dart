@@ -48,27 +48,49 @@ class ShoppingListDeleted extends ShoppingListEvent {
 // Item methods
 class ShoppingListItemCreated extends ShoppingListEvent {
   const ShoppingListItemCreated({
-    required this.input,
+    required this.shoppingListId,
+    required this.formOutput,
   });
 
-  final CreateShoppingListItemInput input;
+  final String shoppingListId;
+  final ShoppingListItemFormOutput formOutput;
 
   @override
   List<Object?> get props => [
-        input,
+        shoppingListId,
+        formOutput,
       ];
 }
 
 class ShoppingListItemUpdated extends ShoppingListEvent {
   const ShoppingListItemUpdated({
-    required this.input,
+    required this.itemId,
+    required this.formOutput,
   });
 
-  final UpdateShoppingListItemInput input;
+  final String itemId;
+  final ShoppingListItemFormOutput formOutput;
 
   @override
   List<Object?> get props => [
-        input,
+        formOutput,
+        itemId,
+      ];
+}
+
+class ShoppingListItemToggled extends ShoppingListEvent {
+  const ShoppingListItemToggled({
+    required this.itemId,
+    required this.checked,
+  });
+
+  final String itemId;
+  final bool checked;
+
+  @override
+  List<Object?> get props => [
+        itemId,
+        checked,
       ];
 }
 

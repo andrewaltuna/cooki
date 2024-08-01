@@ -1,6 +1,6 @@
-import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list_item_form_output.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_form.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_item_form_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -17,19 +17,13 @@ class ShoppingListItemCreateView extends StatelessWidget {
 
   void _onItemCreate(
     BuildContext context,
-    ShoppingListItemInput formInput,
+    ShoppingListItemFormOutput formOutput,
     String shoppingListId,
   ) {
-    final input = CreateShoppingListItemInput(
-      shoppingListId: shoppingListId,
-      label: formInput.label,
-      productId: formInput.productId,
-      quantity: formInput.quantity,
-    );
-
     context.read<ShoppingListViewModel>().add(
           ShoppingListItemCreated(
-            input: input,
+            shoppingListId: shoppingListId,
+            formOutput: formOutput,
           ),
         );
   }
@@ -51,22 +45,19 @@ class ShoppingListItemCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const formInput = ShoppingListItemInput(
-      label: '',
-      productId: '',
-      quantity: 0,
-    );
-
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
       listenWhen: (previous, current) =>
           previous.itemStatus != current.itemStatus,
       listener: _listener,
-      child: ShoppingListItemForm(
-        initialValue: formInput,
-        onSubmit: (formValues) => _onItemCreate(
-          context,
-          formValues,
-          shoppingListId,
+      child: BlocProvider(
+        create: (_) =>
+            ShoppingListItemFormViewModel()..add(const ItemFormInitialized()),
+        child: ShoppingListItemForm(
+          onSubmit: (formOutput) => _onItemCreate(
+            context,
+            formOutput,
+            shoppingListId,
+          ),
         ),
       ),
     );

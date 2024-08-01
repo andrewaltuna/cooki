@@ -56,13 +56,11 @@ class ShoppingListCatalogViewModel
         state.copyWith(status: ViewModelStatus.loading),
       );
 
-      final input = CreateShoppingListInput(
-        name: event.name,
-        budget: double.parse(event.budget),
-      );
-
       final result = await _repository.createShoppingList(
-        input,
+        CreateShoppingListInput(
+          name: event.name,
+          budget: double.parse(event.budget),
+        ),
       );
 
       emit(
