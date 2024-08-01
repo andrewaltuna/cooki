@@ -39,8 +39,8 @@ class ShoppingListItemFormState extends Equatable {
     );
   }
 
-  ShoppingListFormOutput toFormOutput() {
-    return ShoppingListFormOutput(
+  ShoppingListItemFormOutput toFormOutput() {
+    return ShoppingListItemFormOutput(
       label: label,
       productId: productId,
       quantity: quantity,

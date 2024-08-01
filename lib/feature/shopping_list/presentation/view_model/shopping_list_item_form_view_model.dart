@@ -1,5 +1,5 @@
 import 'package:cooki/common/enum/view_model_status.dart';
-import 'package:cooki/feature/shopping_list/data/model/input/shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list_item_form_output.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

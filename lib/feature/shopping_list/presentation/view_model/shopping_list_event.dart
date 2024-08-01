@@ -53,7 +53,7 @@ class ShoppingListItemCreated extends ShoppingListEvent {
   });
 
   final String shoppingListId;
-  final ShoppingListFormOutput formOutput;
+  final ShoppingListItemFormOutput formOutput;
 
   @override
   List<Object?> get props => [
@@ -69,7 +69,7 @@ class ShoppingListItemUpdated extends ShoppingListEvent {
   });
 
   final String itemId;
-  final ShoppingListFormOutput formOutput;
+  final ShoppingListItemFormOutput formOutput;
 
   @override
   List<Object?> get props => [
