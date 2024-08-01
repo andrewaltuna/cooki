@@ -23,7 +23,8 @@ class ShoppingListRemoteSource {
 
     return response.result(
       onSuccess: (data) {
-        final result = List<Map<String, dynamic>>.from(data['shoppingLists']);
+        final result =
+            List<Map<String, dynamic>>.from(data['getAllShoppingListOfUser']);
 
         return result.map(ShoppingList.fromJson).toList();
       },
@@ -192,8 +193,8 @@ class ShoppingListRemoteSource {
 }
 
 const _getShoppingListsQuery = r'''
-query GetShoppingLists {
-  shoppingLists {
+query GetShoppingListsByUser {
+  getAllShoppingListOfUser {
     _id
     name
     userId
