@@ -28,7 +28,6 @@ class ShoppingListUpdateModalContent extends HookWidget {
     FocusScope.of(context).unfocus();
     // TODO: Form validation
     if (_formKey.currentState!.validate()) {
-      print('UPDATING');
       context.read<ShoppingListViewModel>().add(
             ShoppingListUpdated(
               shoppingListId: shoppingListId,
