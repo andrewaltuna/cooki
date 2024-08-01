@@ -111,15 +111,13 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      final input = CreateShoppingListItemInput(
-        shoppingListId: event.shoppingListId,
-        label: event.formOutput.label,
-        productId: event.formOutput.productId,
-        quantity: event.formOutput.quantity,
-      );
-
       final response = await _repository.createShoppingListItem(
-        input,
+        CreateShoppingListItemInput(
+          shoppingListId: event.shoppingListId,
+          label: event.formOutput.label,
+          productId: event.formOutput.productId,
+          quantity: event.formOutput.quantity,
+        ),
       );
       final shoppingList = state.shoppingList;
 
@@ -152,14 +150,15 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      final input = UpdateShoppingListItemInput(
-        id: event.itemId,
-        label: event.formOutput.label,
-        productId: event.formOutput.productId,
-        quantity: event.formOutput.quantity,
+      final response = await _repository.updateShoppingListItem(
+        UpdateShoppingListItemInput(
+          id: event.itemId,
+          label: event.formOutput.label,
+          productId: event.formOutput.productId,
+          quantity: event.formOutput.quantity,
+        ),
       );
 
-      final response = await _repository.updateShoppingListItem(input);
       final shoppingList = state.shoppingList;
 
       emit(
@@ -193,12 +192,12 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      final input = UpdateShoppingListItemInput(
-        id: event.itemId,
-        isChecked: event.checked,
+      final response = await _repository.updateShoppingListItem(
+        UpdateShoppingListItemInput(
+          id: event.itemId,
+          isChecked: event.checked,
+        ),
       );
-
-      final response = await _repository.updateShoppingListItem(input);
       final shoppingList = state.shoppingList;
 
       emit(
