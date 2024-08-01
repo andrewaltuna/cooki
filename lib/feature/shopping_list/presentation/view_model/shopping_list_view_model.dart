@@ -1,5 +1,6 @@
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list_item_form_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
@@ -17,6 +18,7 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ShoppingListDeleted>(_onDeleted);
     on<ShoppingListItemCreated>(_onItemCreated);
     on<ShoppingListItemUpdated>(_onItemUpdated);
+    on<ShoppingListItemToggled>(_onItemToggled);
     on<ShoppingListItemDeleted>(_onItemDeleted);
   }
 
@@ -117,7 +119,12 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       );
 
       final response = await _repository.createShoppingListItem(
-        event.input,
+        CreateShoppingListItemInput(
+          shoppingListId: event.shoppingListId,
+          label: event.formOutput.label,
+          productId: event.formOutput.productId,
+          quantity: event.formOutput.quantity,
+        ),
       );
       final shoppingList = state.shoppingList;
 
@@ -150,7 +157,54 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      final response = await _repository.updateShoppingListItem(event.input);
+      final response = await _repository.updateShoppingListItem(
+        UpdateShoppingListItemInput(
+          id: event.itemId,
+          label: event.formOutput.label,
+          productId: event.formOutput.productId,
+          quantity: event.formOutput.quantity,
+        ),
+      );
+
+      final shoppingList = state.shoppingList;
+
+      emit(
+        state.copyWith(
+          itemStatus: ViewModelStatus.success,
+          shoppingList: shoppingList.copyWith(
+            items: shoppingList.items
+                .map((item) => item.id == response.id ? response : item)
+                .toList(),
+          ),
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          itemStatus: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onItemToggled(
+    ShoppingListItemToggled event,
+    Emitter<ShoppingListState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          itemStatus: ViewModelStatus.loading,
+        ),
+      );
+
+      final response = await _repository.updateShoppingListItem(
+        UpdateShoppingListItemInput(
+          id: event.itemId,
+          isChecked: event.checked,
+        ),
+      );
       final shoppingList = state.shoppingList;
 
       emit(

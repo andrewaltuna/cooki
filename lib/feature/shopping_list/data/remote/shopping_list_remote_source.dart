@@ -381,8 +381,12 @@ const _createShoppingListItemMutation = r'''
         unitSize
       }
       interferedRestrictions {
-        dietaryRestrictions
-        medications
+        dietaryRestrictions {
+          restrictionName
+        }
+        medications {
+          genericName
+        }
       }
     }
   }
