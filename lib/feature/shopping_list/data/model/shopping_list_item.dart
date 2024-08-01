@@ -26,33 +26,40 @@ class ShoppingListItem extends Equatable {
   );
 
   factory ShoppingListItem.fromJson(Map<String, dynamic> json) {
-    final medications = json['interferedRestrictions']['medications'] as List;
-    final dietaryRestrictions =
-        json['interferedRestrictions']['dietaryRestrictions'] as List;
-
-    return empty.copyWith(
+    final output = empty.copyWith(
       id: json['_id'],
       label: json['label'],
       product: Product.fromJson(json['product']),
       quantity: json['quantity'],
       isChecked: json['isInCart'],
-      dietaryRestrictions: dietaryRestrictions
-          .map(
-            (restriction) => DietaryRestriction.values.firstWhere(
-              (element) => element.apiValue == restriction['restrictionName'],
-              orElse: () => DietaryRestriction.values.first,
-            ),
-          )
-          .toList(),
-      medications: medications
-          .map(
-            (medication) => Medication.values.firstWhere(
-              (element) => element.apiValue == medication['genericName'],
-              orElse: () => Medication.values.first,
-            ),
-          )
-          .toList(),
     );
+
+    if (json['interferedRestrictions'] != null) {
+      final medications = json['interferedRestrictions']['medications'] as List;
+      final dietaryRestrictions =
+          json['interferedRestrictions']['dietaryRestrictions'] as List;
+
+      return output.copyWith(
+        medications: medications
+            .map(
+              (medication) => Medication.values.firstWhere(
+                (element) => element.apiValue == medication['genericName'],
+                orElse: () => Medication.values.first,
+              ),
+            )
+            .toList(),
+        dietaryRestrictions: dietaryRestrictions
+            .map(
+              (restriction) => DietaryRestriction.values.firstWhere(
+                (element) => element.apiValue == restriction['restrictionName'],
+                orElse: () => DietaryRestriction.values.first,
+              ),
+            )
+            .toList(),
+      );
+    }
+
+    return output;
   }
 
   final String id;

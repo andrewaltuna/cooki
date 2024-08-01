@@ -270,7 +270,6 @@ const _createShoppingListMutation = r'''
   }
 ''';
 
-// TODO: Allow interferedRestrictions field to be null on parse (so no unnecessary fetching)
 const _updateShoppingListMutation = r'''
   mutation UpdateShoppingList($input: UpdateShoppingListInput!) {
     updateShoppingList(updateShoppingListInput: $input) {
@@ -289,14 +288,6 @@ const _updateShoppingListMutation = r'''
           price
           section
           unitSize
-        }
-        interferedRestrictions {
-          dietaryRestrictions {
-            restrictionName
-          }
-          medications {
-            genericName
-          }
         }
       }
     }

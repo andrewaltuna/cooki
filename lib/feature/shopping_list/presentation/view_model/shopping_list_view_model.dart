@@ -47,17 +47,15 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      final input = UpdateShoppingListInput(
-        id: state.shoppingList.id,
-        name: event.name,
-        budget: event.budget,
-      );
       final result = await _repository.updateShoppingList(
-        input,
+        UpdateShoppingListInput(
+          id: state.shoppingList.id,
+          name: event.name,
+          budget: event.budget,
+        ),
       );
 
       final shoppingList = state.shoppingList;
-      print('RESULT: $result');
 
       emit(
         state.copyWith(
@@ -69,7 +67,6 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
     } on Exception catch (error) {
-      print(error);
       emit(
         state.copyWith(
           updateStatus: ViewModelStatus.error,

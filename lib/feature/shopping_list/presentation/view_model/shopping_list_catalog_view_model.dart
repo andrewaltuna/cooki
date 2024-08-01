@@ -38,7 +38,6 @@ class ShoppingListCatalogViewModel
         ),
       );
     } on Exception catch (error) {
-      print(error);
       emit(
         state.copyWith(
           status: ViewModelStatus.error,
