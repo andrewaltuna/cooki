@@ -21,14 +21,20 @@ class ShoppingListRequested extends ShoppingListEvent {
 
 class ShoppingListUpdated extends ShoppingListEvent {
   const ShoppingListUpdated({
-    required this.input,
+    required this.shoppingListId,
+    required this.name,
+    required this.budget,
   });
 
-  final UpdateShoppingListInput input;
+  final String shoppingListId;
+  final String name;
+  final double budget;
 
   @override
   List<Object?> get props => [
-        input,
+        shoppingListId,
+        name,
+        budget,
       ];
 }
 
