@@ -70,6 +70,9 @@ class ShoppingList extends Equatable {
         (ShoppingListItem item) => item.product.category,
       );
 
+  int get itemsCheckedCount =>
+      items.where((item) => item.isChecked).toList().length;
+
   num get totalPrice =>
       items.map((item) => item.product.price * item.quantity).sum;
 
