@@ -95,33 +95,34 @@ class ShoppingListHelper {
         );
       },
     );
-    void showGeminiCreateModal(
-      List<ChatShoppingListItem> items,
-    ) {
-      DialogHelper.of(_context).showCustomDialog(
-        CustomDialogArgs(
-          barrierDismissable: true,
-          builder: (context) => BlocProvider.value(
-            value: BlocProvider.of<ShoppingListCatalogViewModel>(_context),
-            child: ShoppingListCreateForm(
-              title: 'Convert to Shopping List',
-              hasBudgetField: false,
-              onSubmit: (name, _) =>
-                  _context.read<ShoppingListCatalogViewModel>().add(
-                        ShoppingListByGeminiCreated(
-                          name: name,
-                          items: items,
-                        ),
-                      ),
-              onSuccess: () {
-                Navigator.pop(context);
+  }
 
-                context.go(AppRoutes.shoppingLists);
-              },
-            ),
+  void showGeminiCreateModal(
+    List<ChatShoppingListItem> items,
+  ) {
+    DialogHelper.of(_context).showCustomDialog(
+      CustomDialogArgs(
+        barrierDismissable: true,
+        builder: (context) => BlocProvider.value(
+          value: BlocProvider.of<ShoppingListCatalogViewModel>(_context),
+          child: ShoppingListCreateForm(
+            title: 'Convert to Shopping List',
+            hasBudgetField: false,
+            onSubmit: (name, _) =>
+                _context.read<ShoppingListCatalogViewModel>().add(
+                      ShoppingListByGeminiCreated(
+                        name: name,
+                        items: items,
+                      ),
+                    ),
+            onSuccess: () {
+              Navigator.pop(context);
+
+              context.go(AppRoutes.shoppingLists);
+            },
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 }
