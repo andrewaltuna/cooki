@@ -30,9 +30,9 @@ class AuthScreenWrapper extends StatelessWidget {
           Container(
             height: 200,
             alignment: Alignment.center,
-            child: Text(
-              'LOGO GOES HERE',
-              style: AppTextStyles.titleLarge,
+            child: Image.asset(
+              'assets/imgs/logo_alt.png',
+              height: 150,
             ),
           ),
           Expanded(

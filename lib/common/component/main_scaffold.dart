@@ -9,6 +9,7 @@ class MainScaffold extends StatelessWidget {
   const MainScaffold({
     required this.body,
     this.title,
+    this.subtitle,
     this.alignment = Alignment.topCenter,
     this.hasNavBar = true,
     this.isScrollable = false,
@@ -20,6 +21,7 @@ class MainScaffold extends StatelessWidget {
   });
 
   final String? title;
+  final String? subtitle;
   final Widget body;
   final Alignment alignment;
   final bool hasNavBar;
@@ -40,9 +42,20 @@ class MainScaffold extends StatelessWidget {
       child: Scaffold(
         appBar: title != null
             ? AppBar(
-                title: Text(
-                  title ?? '',
-                  style: AppTextStyles.titleMedium,
+                title: Column(
+                  children: [
+                    Text(
+                      title ?? '',
+                      style: AppTextStyles.titleMedium,
+                    ),
+                    if (subtitle != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle ?? '',
+                        style: AppTextStyles.bodySmall,
+                      ),
+                    ]
+                  ],
                 ),
                 centerTitle: true,
                 elevation: 5,

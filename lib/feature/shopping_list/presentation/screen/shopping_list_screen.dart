@@ -18,6 +18,8 @@ class ShoppingListScreen extends StatelessWidget {
 
     return MainScaffold(
       title: shoppingList.name,
+      subtitle:
+          '${shoppingList.itemsCheckedCount} of ${shoppingList.items.length} items',
       hasBackButton: true,
       actions: [
         _DeleteActionButton(

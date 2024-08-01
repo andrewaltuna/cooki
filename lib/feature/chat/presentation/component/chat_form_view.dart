@@ -52,7 +52,9 @@ class ChatFormView extends StatelessWidget {
             ),
             IconButton(
               icon: isLoading
-                  ? const LoadingIndicator()
+                  ? const LoadingIndicator(
+                      color: AppColors.fontSecondary,
+                    )
                   : const Icon(
                       Icons.send_rounded,
                       color: AppColors.fontSecondary,

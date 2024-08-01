@@ -40,7 +40,9 @@ class PrimaryButton extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         child: state.isLoading
-            ? const LoadingIndicator()
+            ? LoadingIndicator(
+                color: style?.color ?? AppColors.fontSecondary,
+              )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
