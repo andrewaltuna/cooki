@@ -17,38 +17,32 @@ class ShoppingListPopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) => [
-        // popupmenu item 1
-        PopupMenuItem(
+        const PopupMenuItem(
           value: 1,
-          // row has two child icon and text.
           child: Row(
             children: [
               Icon(Icons.edit),
               SizedBox(
-                // sized box with width 10
                 width: 10,
               ),
-              Text("Edit list information")
+              Text('Edit information'),
             ],
           ),
         ),
-        // popupmenu item 2
-        PopupMenuItem(
+        const PopupMenuItem(
           value: 2,
-          // row has two child icon and text
           child: Row(
             children: [
               Icon(Icons.delete),
               SizedBox(
-                // sized box with width 10
                 width: 10,
               ),
-              Text("Delete list")
+              Text('Delete list'),
             ],
           ),
         ),
       ],
-      offset: Offset(0, 50),
+      offset: const Offset(0, 50),
       color: AppColors.backgroundPrimary,
       elevation: 2,
       onSelected: (value) {
