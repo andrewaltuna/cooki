@@ -333,6 +333,17 @@ const _updateShoppingListMutation = r'''
       budget
       items {
         _id
+        label
+        quantity
+        isInCart
+        product {
+          _id
+          brand
+          productCategory
+          price
+          section
+          unitSize
+        }
       }
     }
   }

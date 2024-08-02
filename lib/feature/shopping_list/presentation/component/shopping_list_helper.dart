@@ -1,4 +1,6 @@
 import 'package:cooki/common/helper/dialog_helper.dart';
+import 'package:cooki/common/theme/app_colors.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_update_modal.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/shopping_list/data/model/chat_shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_create_form.dart';
@@ -64,6 +66,34 @@ class ShoppingListHelper {
               ),
             ),
       ),
+    );
+  }
+
+  void showUpdateModal() async {
+    await showDialog(
+      context: _context,
+      barrierDismissible: false,
+      builder: (_) {
+        return PopScope(
+          canPop: false,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: BlocProvider.of<ShoppingListViewModel>(_context),
+              ),
+            ],
+            child: const Dialog(
+              backgroundColor: AppColors.backgroundPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
+                ),
+              ),
+              child: ShoppingListUpdateModalContent(),
+            ),
+          ),
+        );
+      },
     );
   }
 

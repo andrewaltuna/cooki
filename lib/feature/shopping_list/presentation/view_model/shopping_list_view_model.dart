@@ -48,7 +48,11 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       );
 
       final result = await _repository.updateShoppingList(
-        event.input,
+        UpdateShoppingListInput(
+          id: state.shoppingList.id,
+          name: event.name,
+          budget: event.budget,
+        ),
       );
 
       final shoppingList = state.shoppingList;
