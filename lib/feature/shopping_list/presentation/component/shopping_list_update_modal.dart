@@ -2,7 +2,7 @@ import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
-import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
