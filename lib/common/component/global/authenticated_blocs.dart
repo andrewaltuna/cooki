@@ -10,7 +10,7 @@ import 'package:cooki/feature/product/data/di/product_service_locator.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_event.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
 import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
-import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog/shopping_list_catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,15 +47,16 @@ class AuthenticatedBlocs extends StatelessWidget {
             ..add(const PreferencesRequested()),
         ),
         BlocProvider(
+          lazy: false,
           create: (_) => ShoppingListCatalogViewModel(shoppingListRepository)
             ..add(const ShoppingListCatalogRequested()),
         ),
         BlocProvider(
-          create: (_) => ProductViewModel(productRepository)
-            ..add(const ProductsRequested()),
           // Fetch early since we don't have any write operations
           // and its needed on multiple screens
           lazy: false,
+          create: (_) => ProductViewModel(productRepository)
+            ..add(const ProductsRequested()),
         ),
       ],
       child: child,
