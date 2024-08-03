@@ -234,14 +234,6 @@ query GetShoppingListsByUser {
         section
         unitSize
       }
-      interferedRestrictions {
-        dietaryRestrictions {
-          restrictionName
-        }
-        medications {
-          genericName
-        }
-      }
     }
   }
 }
@@ -265,14 +257,6 @@ const _getShoppingListQuery = r'''
           price
           section
           unitSize
-        }
-        interferedRestrictions {
-          dietaryRestrictions {
-            restrictionName
-          }
-          medications {
-            genericName
-          }
         }
       }
     }
@@ -298,14 +282,6 @@ const _createGeminiShoppingListMutation = r'''
           price
           section
           unitSize
-        }
-        interferedRestrictions {
-          dietaryRestrictions {
-            restrictionName
-          }
-          medications {
-            genericName
-          }
         }
       }
     }

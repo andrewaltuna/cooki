@@ -1,8 +1,7 @@
 import 'package:cooki/common/helper/dialog_helper.dart';
-import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_update_form.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_form.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/shopping_list/data/model/chat_shopping_list_item.dart';
-import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_create_form.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +22,9 @@ class ShoppingListHelper {
         barrierDismissable: true,
         builder: (context) => BlocProvider.value(
           value: BlocProvider.of<ShoppingListCatalogViewModel>(_context),
-          child: ShoppingListCreateForm(
-            onSubmit: (name, budget) =>
+          child: ShoppingListForm(
+            title: 'Create Shopping List',
+            onSubmit: (name, budget, _) =>
                 _context.read<ShoppingListCatalogViewModel>().add(
                       ShoppingListCreated(
                         name: name,
@@ -74,7 +74,10 @@ class ShoppingListHelper {
         barrierDismissable: true,
         builder: (context) => BlocProvider.value(
           value: BlocProvider.of<ShoppingListViewModel>(_context),
-          child: ShoppingListUpdateForm(
+          child: ShoppingListForm(
+            shoppingListId:
+                _context.read<ShoppingListViewModel>().state.shoppingList.id,
+            title: 'Update Shopping List',
             initialName:
                 _context.read<ShoppingListViewModel>().state.shoppingList.name,
             initialBudget: double.tryParse(
@@ -86,7 +89,7 @@ class ShoppingListHelper {
                       .toString(),
                 ) ??
                 0,
-            onSubmit: (shoppingListId, name, budget) =>
+            onSubmit: (name, budget, shoppingListId) =>
                 _context.read<ShoppingListViewModel>().add(
                       ShoppingListUpdated(
                         shoppingListId: shoppingListId,
@@ -111,10 +114,10 @@ class ShoppingListHelper {
         barrierDismissable: true,
         builder: (context) => BlocProvider.value(
           value: BlocProvider.of<ShoppingListCatalogViewModel>(_context),
-          child: ShoppingListCreateForm(
+          child: ShoppingListForm(
             title: 'Convert to Shopping List',
             hasBudgetField: false,
-            onSubmit: (name, _) =>
+            onSubmit: (name, _, __) =>
                 _context.read<ShoppingListCatalogViewModel>().add(
                       ShoppingListByGeminiCreated(
                         name: name,
