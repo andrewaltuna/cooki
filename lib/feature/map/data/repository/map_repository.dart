@@ -1,4 +1,5 @@
 import 'package:cooki/feature/map/data/model/coordinates.dart';
+import 'package:cooki/feature/map/data/model/input/product_directions_input.dart';
 import 'package:cooki/feature/map/data/model/map_details.dart';
 import 'package:cooki/feature/map/data/remote/map_remote_source.dart';
 import 'package:cooki/feature/map/data/repository/map_repository_interface.dart';
@@ -11,11 +12,18 @@ class MapRepository implements MapRepositoryInterface {
 
   @override
   Future<MapDetails> getMapDetails() async {
-    return await _remoteSource.getMapDetails();
+    return _remoteSource.getMapDetails();
   }
 
   @override
   Future<Coordinates> getUserPosition(List<BeaconDetails> input) async {
-    return await _remoteSource.getUserPosition(input);
+    return _remoteSource.getUserPosition(input);
+  }
+
+  @override
+  Future<Directions> getProductDirections(
+    ProductDirectionsInput input,
+  ) async {
+    return _remoteSource.getProductDirections(input);
   }
 }

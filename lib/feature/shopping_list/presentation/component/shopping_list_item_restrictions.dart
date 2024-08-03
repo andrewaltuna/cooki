@@ -1,4 +1,5 @@
 import 'package:cooki/common/component/button/primary_button.dart';
+import 'package:cooki/common/component/indicator/error_indicator.dart';
 import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/helper/toast_helper.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
@@ -19,16 +20,20 @@ class ShoppingListItemRestrictions extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => InterferedRestrictionsViewModel(shoppingListRepository)
-        ..add(
-          InterferedRestrictionsRequested(productId),
-        ),
-      child: const _RestrictionsView(),
+        ..add(InterferedRestrictionsRequested(productId)),
+      child: _RestrictionsView(
+        productId: productId,
+      ),
     );
   }
 }
 
 class _RestrictionsView extends StatelessWidget {
-  const _RestrictionsView();
+  const _RestrictionsView({
+    required this.productId,
+  });
+
+  final String productId;
 
   void _errorListener(
     BuildContext context,
@@ -50,6 +55,18 @@ class _RestrictionsView extends StatelessWidget {
           return const LoadingIndicator();
         }
 
+        if (state.status.isError) {
+          return ErrorIndicator(
+            onRetry: () => context
+                .read<InterferedRestrictionsViewModel>()
+                .add(InterferedRestrictionsRequested(productId)),
+          );
+        }
+
+        if (state.medications.isEmpty && state.dietaryRestrictions.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
         return Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,20 +75,24 @@ class _RestrictionsView extends StatelessWidget {
                 'Restrictions',
                 style: AppTextStyles.titleMedium,
               ),
-              const SizedBox(height: 4),
-              _RestrictionInformation(
-                label: 'Dietary restrictions',
-                items: state.dietaryRestrictions
-                    .map((restriction) => restriction.displayLabel)
-                    .toList(),
-              ),
-              const SizedBox(height: 4),
-              _RestrictionInformation(
-                label: 'Medications',
-                items: state.medications
-                    .map((medication) => medication.displayLabel)
-                    .toList(),
-              ),
+              if (state.dietaryRestrictions.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                _RestrictionInformation(
+                  label: 'Dietary restrictions',
+                  items: state.dietaryRestrictions
+                      .map((restriction) => restriction.displayLabel)
+                      .toList(),
+                ),
+              ],
+              if (state.medications.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                _RestrictionInformation(
+                  label: 'Medications',
+                  items: state.medications
+                      .map((medication) => medication.displayLabel)
+                      .toList(),
+                ),
+              ],
               const SizedBox(height: 16),
               PrimaryButton(
                 label: 'View Alternative Products',

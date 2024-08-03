@@ -11,8 +11,7 @@ class MainNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
+    return DecoratedBox(
       decoration: const BoxDecoration(
         color: AppColors.backgroundPrimary,
         boxShadow: [
@@ -24,37 +23,42 @@ class MainNavigationBar extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          _MainNavBarItem(
-            label: 'Home',
-            location: AppRoutes.home,
-            icon: Ionicons.home_outline,
-            selectedIcon: Ionicons.home,
-            isSelected: context.isHomeRoute,
+      child: SafeArea(
+        child: SizedBox(
+          height: 60,
+          child: Row(
+            children: [
+              _MainNavBarItem(
+                label: 'Home',
+                location: AppRoutes.home,
+                icon: Ionicons.home_outline,
+                selectedIcon: Ionicons.home,
+                isSelected: context.isHomeRoute,
+              ),
+              _MainNavBarItem(
+                label: 'List',
+                location: AppRoutes.shoppingLists,
+                icon: Ionicons.cart_outline,
+                selectedIcon: Ionicons.cart,
+                isSelected: context.isShoppingListRoute,
+              ),
+              _MainNavBarItem(
+                label: 'Explore',
+                location: AppRoutes.map,
+                icon: Ionicons.compass_outline,
+                selectedIcon: Ionicons.compass,
+                isSelected: context.isMapRoute,
+              ),
+              _MainNavBarItem(
+                label: 'Account',
+                location: AppRoutes.settings,
+                icon: Ionicons.person_circle_outline,
+                selectedIcon: Ionicons.person_circle,
+                isSelected: context.isSettingsRoute,
+              ),
+            ],
           ),
-          _MainNavBarItem(
-            label: 'List',
-            location: AppRoutes.shoppingLists,
-            icon: Ionicons.cart_outline,
-            selectedIcon: Ionicons.cart,
-            isSelected: context.isShoppingListRoute,
-          ),
-          _MainNavBarItem(
-            label: 'Explore',
-            location: AppRoutes.map,
-            icon: Ionicons.compass_outline,
-            selectedIcon: Ionicons.compass,
-            isSelected: context.isMapRoute,
-          ),
-          _MainNavBarItem(
-            label: 'Account',
-            location: AppRoutes.settings,
-            icon: Ionicons.person_circle_outline,
-            selectedIcon: Ionicons.person_circle,
-            isSelected: context.isSettingsRoute,
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -1,10 +1,12 @@
+import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/chat/presentation/component/chat_history_list_view.dart';
 import 'package:cooki/feature/chat/presentation/component/chat_history_preset_view.dart';
 import 'package:cooki/feature/chat/presentation/view_model/chat_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ChatHistoryView extends StatelessWidget {
+class ChatHistoryView extends HookWidget {
   const ChatHistoryView({
     required this.chatFocusNode,
     required this.chatController,
@@ -16,11 +18,10 @@ class ChatHistoryView extends StatelessWidget {
   final TextEditingController chatController;
   final ScrollController scrollController;
 
-  // Scroll to the bottom of the history when new messages are added
-  void _historyListener(BuildContext context, ChatState state) {
-    if (!scrollController.hasClients) return;
-
+  void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((callback) {
+      if (!scrollController.hasClients) return;
+
       scrollController.animateTo(
         scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 800),
@@ -31,9 +32,13 @@ class ChatHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    useOnWidgetLoad(
+      _scrollToBottom,
+    );
+
     return BlocConsumer<ChatViewModel, ChatState>(
       listenWhen: (previous, current) => previous.history != current.history,
-      listener: _historyListener,
+      listener: (_, __) => _scrollToBottom(),
       builder: (context, state) {
         return _AnimatedSwitcherWrapper(
           child: state.history.isEmpty

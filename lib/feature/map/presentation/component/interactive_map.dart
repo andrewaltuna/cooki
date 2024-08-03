@@ -1,5 +1,6 @@
 import 'package:cooki/common/component/app_icons.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
+import 'package:cooki/feature/map/data/model/coordinates.dart';
 import 'package:cooki/feature/map/presentation/component/map_painter.dart';
 import 'package:cooki/feature/map/presentation/component/map_user_indicator.dart';
 import 'package:cooki/feature/map/presentation/view_model/map_view_model.dart';
@@ -36,7 +37,7 @@ class InteractiveMap extends HookWidget {
       constrained: false,
       maxScale: 4,
       minScale: 0.1,
-      boundaryMargin: EdgeInsets.all(mapSize.longestSide / 8),
+      boundaryMargin: EdgeInsets.all(mapSize.longestSide / 3),
       child: SizedBox(
         width: mapSize.width,
         height: mapSize.height,
@@ -44,12 +45,13 @@ class InteractiveMap extends HookWidget {
           children: [
             AppIcons.map,
             CustomPaint(
-              painter: MapPainter(
+              painter: MapDirectionsPainter(
                 directions: state.directions,
               ),
               child: _MapIndicators(
-                isUserPositionInitialLoading: state.isUserPositionLoading,
-                userOffset: state.userOffsetFromCenter,
+                showUserPosition: !state.isUserPositionLoading,
+                userOffset: state.userRelativeCoordinates,
+                destination: state.destination,
                 inverseScale: state.inverseScale,
               ),
             ),
@@ -62,30 +64,47 @@ class InteractiveMap extends HookWidget {
 
 class _MapIndicators extends StatelessWidget {
   const _MapIndicators({
-    required this.isUserPositionInitialLoading,
+    required this.showUserPosition,
+    required this.destination,
     required this.userOffset,
     required this.inverseScale,
   });
 
-  static const _fractionalTranslation = Offset(-0.5, -0.5);
-
-  final bool isUserPositionInitialLoading;
+  final bool showUserPosition;
+  final Coordinates? destination;
   final Offset userOffset;
   final double inverseScale;
 
   @override
   Widget build(BuildContext context) {
+    final destination = this.destination;
+
     return Stack(
       children: [
-        // POIs go before the user indicator
-        if (!isUserPositionInitialLoading)
+        if (destination != null)
+          Positioned(
+            top: destination.dy,
+            left: destination.dx,
+            child: FractionalTranslation(
+              translation: const Offset(-0.5, -1),
+              child: Transform.scale(
+                scale: inverseScale,
+                child: const Icon(
+                  Icons.location_on,
+                  size: 40,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ),
+        if (showUserPosition)
           AnimatedPositioned(
+            top: userOffset.dy,
+            left: userOffset.dx,
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut,
-            left: userOffset.dx,
-            top: userOffset.dy,
             child: FractionalTranslation(
-              translation: _fractionalTranslation,
+              translation: const Offset(-0.5, -0.5),
               child: MapUserIndicator(
                 size: 20,
                 inverseScale: inverseScale,

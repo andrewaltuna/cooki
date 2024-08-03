@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/map/data/model/coordinates.dart';
+import 'package:cooki/feature/map/data/model/input/product_directions_input.dart';
 import 'package:cooki/feature/map/data/model/map_details.dart';
 import 'package:cooki/feature/map/data/repository/map_repository_interface.dart';
 import 'package:cooki/feature/beacon/data/model/entity/beacon_details.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'map_event.dart';
@@ -19,6 +18,9 @@ class MapViewModel extends Bloc<MapEvent, MapState> {
     on<MapScaleUpdated>(_onScaleUpdated);
     on<MapUserCoordinatesRequested>(_onUserCoordinatesRequested);
     on<MapUserCoordinatesRequestFlagged>(_onUserCoordinatesRequestFlagged);
+    on<MapShoppingListSet>(_onShoppingListSet);
+    on<MapProductSet>(_onProductSet);
+    on<MapProductDirectionsRequested>(_onProductDirectionsRequested);
   }
 
   final MapRepositoryInterface _repository;
@@ -82,15 +84,20 @@ class MapViewModel extends Bloc<MapEvent, MapState> {
       );
 
       final coordinates = await _repository.getUserPosition(event.beacons);
+      final scaledCoordinates = coordinates.scaleTo(
+        state.mapDetails.scaledBy,
+      );
 
-      print('Coordinates: $coordinates');
-      final scaledCoordinates = coordinates * state.mapDetails.scaledBy;
-      print('Scaled Coordinates: $scaledCoordinates');
+      final directions = await _fetchProductDirections(
+        scaledCoordinates,
+      );
+
       emit(
         state.copyWith(
           userPositionStatus: ViewModelStatus.success,
-          userOffset: scaledCoordinates,
+          userCoordinates: scaledCoordinates,
           requestUserPosition: false,
+          directions: directions,
         ),
       );
     } on Exception catch (error) {
@@ -110,6 +117,80 @@ class MapViewModel extends Bloc<MapEvent, MapState> {
     if (state.status.isLoading) return;
 
     emit(state.copyWith(requestUserPosition: !state.requestUserPosition));
+  }
+
+  void _onShoppingListSet(
+    MapShoppingListSet event,
+    Emitter<MapState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        selectedShoppingListId: event.shoppingListId,
+      ),
+    );
+  }
+
+  void _onProductSet(
+    MapProductSet event,
+    Emitter<MapState> emit,
+  ) {
+    final wasProductChanged = state.selectedProductId != event.productId;
+
+    if (!wasProductChanged) return;
+
+    emit(
+      state.copyWith(
+        selectedProductId: event.productId,
+        directions: [],
+      ),
+    );
+
+    add(const MapProductDirectionsRequested());
+  }
+
+  Future<void> _onProductDirectionsRequested(
+    MapProductDirectionsRequested _,
+    Emitter<MapState> emit,
+  ) async {
+    final directions = await _fetchProductDirections();
+
+    emit(
+      state.copyWith(
+        directions: directions,
+      ),
+    );
+  }
+
+  Future<Directions> _fetchProductDirections([
+    Coordinates? coordinates,
+  ]) async {
+    if (state.selectedProductId.isEmpty) return [];
+
+    try {
+      final userCoordinates = coordinates ?? state.userCoordinates;
+
+      final directions = await _repository.getProductDirections(
+        ProductDirectionsInput(
+          productId: state.selectedProductId,
+          coordinates: userCoordinates.scaleFrom(
+            state.mapDetails.scaledBy,
+          ),
+        ),
+      );
+
+      final scaledDirections = directions
+          .map(
+            (coordinates) => coordinates.scaleTo(
+              state.mapDetails.scaledBy,
+            ),
+          )
+          .toList();
+
+      // Connect start of the path with the user's position
+      return [userCoordinates, ...scaledDirections];
+    } on Exception catch (_) {
+      return state.directions;
+    }
   }
 
   @override
