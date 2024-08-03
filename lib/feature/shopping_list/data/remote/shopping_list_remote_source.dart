@@ -4,6 +4,7 @@ import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_lis
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/update_shopping_list_item_input.dart';
+import 'package:cooki/feature/shopping_list/data/model/output/interfered_restrictions_output.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -212,81 +213,92 @@ class ShoppingListRemoteSource {
       },
     );
   }
+
+  Future<InterferedRestrictionsOutput> getInterferedRestrictions(
+    String productId,
+  ) async {
+    final response = await _graphQLClient.query(
+      QueryOptions(
+        document: gql(_getInterferedRestrictionsQuery),
+        variables: {
+          'productId': productId,
+        },
+      ),
+    );
+    return response.result(
+      onSuccess: (data) {
+        final result =
+            data['getInterferedRestrictions'] as Map<String, dynamic>;
+
+        return InterferedRestrictionsOutput.fromJson(result);
+      },
+    );
+  }
 }
 
-const _getShoppingListsQuery = r'''
-query GetShoppingListsByUser {
-  getAllShoppingListOfUser {
+const String _productsOutputFragment = r'''
+  fragment ProductsOutputFragment on ProductsOutput {
     _id
-    name
-    userId
-    budget
-    items {
-      _id
-      label
-      quantity
-      isInCart
-      product {
-        _id
-        brand
-        productCategory
-        price
-        section
-        unitSize
-      }
-    }
+    brand
+    productCategory
+    price
+    section
+    unitSize
   }
-}
 ''';
 
-const _getShoppingListQuery = r'''
-  query GetShoppingList($id: String!) {
-    shoppingList(_id: $id) {
-      _id
-      name
-      budget
-      items {
+const _shoppingListItemOutputFragment = _productsOutputFragment +
+    r'''
+      fragment ShoppingListItemOutputFragment on ItemsOutput {
         _id
         label
         quantity
         isInCart
         product {
-          _id
-          brand
-          productCategory
-          price
-          section
-          unitSize
+          ...ProductsOutputFragment
         }
       }
-    }
-  }
-''';
+    ''';
 
-const _createGeminiShoppingListMutation = r'''
-  mutation createGeminiShoppingList($input: CreateGeminiShoppingListInput!) {
-    createGeminiShoppingList(createGeminiShoppingListInput: $input) {
-      _id
-      name
-      userId
-      budget
-      items {
+const _shoppingListOutputFragment = _shoppingListItemOutputFragment +
+    r'''
+      fragment ShoppingListOutputFragment on ShoppingListOutput {
         _id
-        label
-        quantity
-        isInCart
-        product {
-          _id
-          brand
-          productCategory
-          price
-          section
-          unitSize
+        name
+        userId
+        budget
+        items {
+          ...ShoppingListItemOutputFragment
         }
       }
-    }
-  }
-''';
+    ''';
+
+const _getShoppingListsQuery = _shoppingListOutputFragment +
+    r'''
+      query GetShoppingListsByUser {
+        getAllShoppingListOfUser {
+          ...ShoppingListOutputFragment
+        }
+      }
+    ''';
+
+const _getShoppingListQuery = _shoppingListOutputFragment +
+    r'''
+      query GetShoppingList($id: String!) {
+        shoppingList(_id: $id) {
+          ...ShoppingListOutputFragment
+        }
+      }
+    ''';
+
+const _createGeminiShoppingListMutation = _shoppingListOutputFragment +
+    r'''
+      mutation createGeminiShoppingList($input: CreateGeminiShoppingListInput!) {
+        createGeminiShoppingList(createGeminiShoppingListInput: $input) {
+          ...ShoppingListOutputFragment
+        }
+      }
+    ''';
 
 const _createShoppingListMutation = r'''
   mutation CreateShoppingList($input: CreateShoppingListInput!) {
@@ -333,86 +345,32 @@ const _deleteShoppingListMutation = r'''
   }
 ''';
 
-const _getShoppingListItemQuery = r'''
-  query GetShoppingListItem($id: String!) {
-    getShoppingListItem(_id: $id) {
-      _id
-      label
-      quantity
-      isInCart
-      product {
-        _id
-        brand
-        productCategory
-        price
-        section
-        unitSize
-      }
-      interferedRestrictions {
-        dietaryRestrictions {
-          restrictionName
-        }
-        medications {
-          genericName
+const _getShoppingListItemQuery = _shoppingListItemOutputFragment +
+    r'''
+      query GetShoppingListItem($id: String!) {
+        getShoppingListItem(_id: $id) {
+          ...ShoppingListItemOutputFragment
         }
       }
-    }
-  }
-''';
+    ''';
 
-const _updateShoppingListItemMutation = r'''
-  mutation UpdateShoppingListItem($input: UpdateShoppingListItemInput!) {
-    updateShoppingListItem(updateShoppingListItemInput: $input) {
-      _id
-      label
-      quantity
-      isInCart
-      product {
-        _id
-        brand
-        productCategory
-        price
-        section
-        unitSize
-      }
-      interferedRestrictions {
-        dietaryRestrictions {
-          restrictionName
-        }
-        medications {
-          genericName
+const _updateShoppingListItemMutation = _shoppingListItemOutputFragment +
+    r'''
+      mutation UpdateShoppingListItem($input: UpdateShoppingListItemInput!) {
+        updateShoppingListItem(updateShoppingListItemInput: $input) {
+          ...ShoppingListItemOutputFragment
         }
       }
-    }
-  }
-''';
+    ''';
 
-const _createShoppingListItemMutation = r'''
-  mutation CreateShoppingListItem($input: CreateShoppingListItemInput!) {
-    createShoppingListItem(createShoppingListItemInput: $input) {
-      _id
-      label
-      quantity
-      isInCart
-      product {
-        _id
-        brand
-        productCategory
-        price
-        section
-        unitSize
-      }
-      interferedRestrictions {
-        dietaryRestrictions {
-          restrictionName
-        }
-        medications {
-          genericName
+const _createShoppingListItemMutation = _shoppingListItemOutputFragment +
+    r'''
+      mutation CreateShoppingListItem($input: CreateShoppingListItemInput!) {
+        createShoppingListItem(createShoppingListItemInput: $input) {
+          ...ShoppingListItemOutputFragment
         }
       }
-    }
-  }
-''';
+    ''';
 
 const _deleteShoppingListItemMutation = r'''
   mutation DeleteShoppingListItem($id: String!) {
@@ -421,3 +379,20 @@ const _deleteShoppingListItemMutation = r'''
     }
   }
 ''';
+
+const _getInterferedRestrictionsQuery = _productsOutputFragment +
+    r'''
+      query GetInterferedRestrictions($productId: String!) {
+        getInterferedRestrictions(productId: $productId) {
+          dietaryRestrictions {
+            restrictionName
+          }
+          medications {
+            genericName
+          }
+          alternatives {
+            ...ProductsOutputFragment
+          }
+        }
+      }
+    ''';

@@ -1,8 +1,8 @@
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item_form_output.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_form.dart';
-import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_item_form_view_model.dart';
-import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog_view_model.dart';
-import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_item_form/shopping_list_item_form_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog/shopping_list_catalog_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

@@ -4,7 +4,7 @@ import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_helper.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_view.dart';
-import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_view_model.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
