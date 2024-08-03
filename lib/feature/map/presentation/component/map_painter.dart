@@ -1,17 +1,15 @@
 import 'package:cooki/feature/map/data/model/coordinates.dart';
 import 'package:flutter/material.dart';
 
-class MapPainter extends CustomPainter {
-  const MapPainter({
+class MapDirectionsPainter extends CustomPainter {
+  const MapDirectionsPainter({
     required this.directions,
   });
 
-  final List<Coordinates> directions;
+  final Directions directions;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    _drawDirections(canvas, size);
-  }
+  void paint(Canvas canvas, Size size) => _drawDirections(canvas, size);
 
   void _drawDirections(Canvas canvas, Size size) {
     if (directions.isEmpty) return;
@@ -22,7 +20,8 @@ class MapPainter extends CustomPainter {
     final directionPaint = Paint()
       ..color = Colors.blue // Color for the direction lines
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+      ..strokeWidth = 12
+      ..strokeCap = StrokeCap.round;
 
     for (int i = 0; i < directions.length - 1; i++) {
       // Flip the y-coordinate and translate to center
@@ -40,7 +39,5 @@ class MapPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

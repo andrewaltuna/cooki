@@ -42,7 +42,7 @@ class DialogHelper {
             Text(
               args.title,
               textAlign: TextAlign.center,
-              style: AppTextStyles.titleSmall,
+              style: AppTextStyles.titleMedium,
             ),
             const SizedBox(height: 16),
             Flexible(

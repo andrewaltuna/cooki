@@ -6,38 +6,50 @@ class MapState extends Equatable {
     this.userPositionStatus = ViewModelStatus.initial,
     this.currentScale = 1.0,
     this.mapDetails = MapDetails.empty,
-    this.userOffset = const Offset(0, 0),
+    this.userCoordinates = const Coordinates(0, 0),
     this.requestUserPosition = false,
     this.directions = const [],
+    this.selectedShoppingListId = '',
+    this.selectedProductId = '',
   });
 
   final ViewModelStatus status;
   final ViewModelStatus userPositionStatus;
+
   final MapDetails mapDetails;
   final double currentScale;
-  final Offset userOffset;
+  final Coordinates userCoordinates;
 
   /// Periodically updated to flag the need to fetch user coordinates.
   final bool requestUserPosition;
-  final List<Coordinates> directions;
+  final Directions directions;
+
+  // Map directions
+  final String selectedShoppingListId;
+  final String selectedProductId;
 
   MapState copyWith({
     ViewModelStatus? status,
     ViewModelStatus? userPositionStatus,
     MapDetails? mapDetails,
     double? currentScale,
-    Offset? userOffset,
+    Coordinates? userCoordinates,
     bool? requestUserPosition,
-    List<Coordinates>? directions,
+    Directions? directions,
+    String? selectedShoppingListId,
+    String? selectedProductId,
   }) {
     return MapState(
       status: status ?? this.status,
       userPositionStatus: userPositionStatus ?? this.userPositionStatus,
       mapDetails: mapDetails ?? this.mapDetails,
       currentScale: currentScale ?? this.currentScale,
-      userOffset: userOffset ?? this.userOffset,
+      userCoordinates: userCoordinates ?? this.userCoordinates,
       requestUserPosition: requestUserPosition ?? this.requestUserPosition,
       directions: directions ?? this.directions,
+      selectedShoppingListId:
+          selectedShoppingListId ?? this.selectedShoppingListId,
+      selectedProductId: selectedProductId ?? this.selectedProductId,
     );
   }
 
@@ -48,21 +60,33 @@ class MapState extends Equatable {
   double get inverseScale => 1 / currentScale;
 
   /// Offset signifying the center of the map.
-  Offset get centerOffset =>
-      Offset(mapDetails.size.width / 2, mapDetails.size.height / 2);
+  Coordinates get centerCoordinates => Coordinates(
+        mapDetails.size.width / 2,
+        mapDetails.size.height / 2,
+      );
 
   /// User coordinates relative to the center of the map.
-  Offset get userOffsetFromCenter => toRelativeOffset(userOffset);
+  Coordinates get userRelativeCoordinates => toRelativeCoordinates(
+        userCoordinates,
+      );
+
+  Coordinates? get destination {
+    final destination = directions.lastOrNull;
+
+    if (destination == null) return null;
+
+    return toRelativeCoordinates(destination);
+  }
 
   /// Obtain offset relative to the center of the map.
   /// Useful for getting coordinates to plot starting from the top-left corner.
-  Offset toRelativeOffset(Offset value) {
-    final offset = Offset(
+  Coordinates toRelativeCoordinates(Coordinates value) {
+    final coordinates = Coordinates(
       value.dx,
       -value.dy,
     );
 
-    return centerOffset + offset;
+    return (centerCoordinates + coordinates).toCoordinates();
   }
 
   @override
@@ -71,8 +95,10 @@ class MapState extends Equatable {
         userPositionStatus,
         mapDetails,
         currentScale,
-        userOffset,
+        userCoordinates,
         requestUserPosition,
         directions,
+        selectedShoppingListId,
+        selectedProductId,
       ];
 }

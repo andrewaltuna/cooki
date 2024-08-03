@@ -1,12 +1,13 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:cooki/common/component/button/custom_icon_button.dart';
 import 'package:cooki/common/component/dropdown/custom_dropdown_menu.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/map/presentation/component/interactive_map.dart';
 import 'package:cooki/feature/map/presentation/view_model/map_view_model.dart';
 import 'package:cooki/common/theme/app_colors.dart';
-import 'package:cooki/feature/chat/presentation/component/proximity_indicator.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog/shopping_list_catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -43,7 +44,8 @@ class MapView extends HookWidget {
 
     // Get difference between user coords and coords at screen
     // center to find offset needed to center the map
-    final offset = centerScreenRelativeOffset - mapState.userOffsetFromCenter;
+    final offset =
+        centerScreenRelativeOffset - mapState.userRelativeCoordinates;
 
     controller.value.translate(offset.dx, offset.dy);
   }
@@ -96,22 +98,109 @@ class MapView extends HookWidget {
             onRecenter: () => _onRecenter(context),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: CustomDropdownMenu(
-            icon: Icon(Icons.shopping_cart),
+        const _ShoppingListSelector(),
+      ],
+    );
+  }
+}
+
+class _ShoppingListSelector extends HookWidget {
+  const _ShoppingListSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<MapViewModel>().state;
+
+    final shoppingListController = useTextEditingController(
+      text: state.selectedShoppingListId,
+    );
+    final productController = useTextEditingController(
+      text: state.selectedProductId,
+    );
+
+    final shoppingLists = context.select(
+      (ShoppingListCatalogViewModel viewModel) => viewModel.state.shoppingLists,
+    );
+    final selectedShoppingList = shoppingLists.firstWhereOrNull(
+      (shoppingList) => state.selectedShoppingListId == shoppingList.id,
+    );
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      color: AppColors.accent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomDropdownMenu(
+            controller: shoppingListController,
+            icon: const Icon(Icons.shopping_cart),
             hintText: 'Select shopping list',
             fillColor: AppColors.backgroundTextField,
             hasBorder: false,
-            entries: [],
+            onSelected: (value) {
+              context.read<MapViewModel>().add(MapShoppingListSet(value ?? ''));
+
+              FocusScope.of(context).unfocus();
+            },
+            entries: shoppingLists
+                .map(
+                  (shoppingList) => CustomDropdownMenuEntry(
+                    value: shoppingList.id,
+                    label: shoppingList.name,
+                  ),
+                )
+                .toList(),
           ),
-        ),
-        // TODO: for debug only
-        const Align(
-          alignment: Alignment.bottomCenter,
-          child: BeaconProximityIndicator(),
-        ),
-      ],
+          if (selectedShoppingList != null) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomDropdownMenu(
+                    controller: productController,
+                    icon: const Icon(Icons.label),
+                    hintText: 'Select product',
+                    fillColor: AppColors.backgroundTextField,
+                    hasBorder: false,
+                    onSelected: (value) {
+                      context
+                          .read<MapViewModel>()
+                          .add(MapProductSet(value ?? ''));
+
+                      FocusScope.of(context).unfocus();
+                    },
+                    entries: selectedShoppingList.items
+                        .map(
+                          (items) => CustomDropdownMenuEntry(
+                            value: items.product.id,
+                            label: items.product.brand,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                CustomIconButton(
+                  size: 40,
+                  iconSize: 20,
+                  padding: 0,
+                  icon: Icons.clear,
+                  color: AppColors.fontPrimary,
+                  backgroundColor: AppColors.backgroundSecondary,
+                  onPressed: () {
+                    context.read<MapViewModel>()
+                      ..add(const MapShoppingListSet())
+                      ..add(const MapProductSet());
+
+                    shoppingListController.clear();
+                    productController.clear();
+                  },
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
