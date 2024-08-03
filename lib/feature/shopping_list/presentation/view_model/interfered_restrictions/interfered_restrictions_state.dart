@@ -6,6 +6,7 @@ class InterferedRestrictionsState extends Equatable {
     this.productId = '',
     this.medications = const [],
     this.dietaryRestrictions = const [],
+    this.alternativeProducts = const [],
     this.error,
   });
 
@@ -13,6 +14,7 @@ class InterferedRestrictionsState extends Equatable {
   final String productId;
   final List<Medication> medications;
   final List<DietaryRestriction> dietaryRestrictions;
+  final List<Product> alternativeProducts;
   final Exception? error;
 
   InterferedRestrictionsState copyWith({
@@ -20,6 +22,7 @@ class InterferedRestrictionsState extends Equatable {
     String? productId,
     List<Medication>? medications,
     List<DietaryRestriction>? dietaryRestrictions,
+    List<Product>? alternativeProducts,
     Exception? error,
   }) {
     return InterferedRestrictionsState(
@@ -27,6 +30,7 @@ class InterferedRestrictionsState extends Equatable {
       productId: productId ?? this.productId,
       medications: medications ?? this.medications,
       dietaryRestrictions: dietaryRestrictions ?? this.dietaryRestrictions,
+      alternativeProducts: alternativeProducts ?? this.alternativeProducts,
       error: error ?? this.error,
     );
   }
@@ -39,5 +43,6 @@ class InterferedRestrictionsState extends Equatable {
         productId,
         medications,
         dietaryRestrictions,
+        alternativeProducts,
       ];
 }

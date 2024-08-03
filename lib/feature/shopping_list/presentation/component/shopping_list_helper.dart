@@ -1,5 +1,8 @@
 import 'package:cooki/common/helper/dialog_helper.dart';
 import 'package:cooki/common/theme/app_colors.dart';
+import 'package:cooki/feature/product/data/model/product.dart';
+import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_alternative_products.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_update_modal.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/shopping_list/data/model/chat_shopping_list_item.dart';
@@ -120,6 +123,23 @@ class ShoppingListHelper {
 
               context.go(AppRoutes.shoppingLists);
             },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showAlternativeProductsModal(
+      ShoppingListItem item, List<Product> products) async {
+    DialogHelper.of(_context).showCustomDialog(
+      CustomDialogArgs(
+        barrierDismissable: true,
+        contentPadding: const EdgeInsets.all(0),
+        builder: (context) => BlocProvider.value(
+          value: BlocProvider.of<ShoppingListViewModel>(_context),
+          child: ShoppingListItemAlternativeProducts(
+            shoppingListItem: item,
+            products: products,
           ),
         ),
       ),

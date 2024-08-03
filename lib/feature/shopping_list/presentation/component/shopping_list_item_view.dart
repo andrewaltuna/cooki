@@ -42,7 +42,7 @@ class ShoppingListItemView extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ShoppingListItemRestrictions(
-            productId: item.product.id,
+            item: item,
           ),
         ],
       ),

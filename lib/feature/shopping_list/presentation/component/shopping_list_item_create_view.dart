@@ -32,7 +32,7 @@ class ShoppingListItemCreateView extends StatelessWidget {
     BuildContext context,
     ShoppingListState state,
   ) {
-    if (state.itemStatus.isSuccess) {
+    if (state.updateItemStatus.isSuccess) {
       context.read<ShoppingListCatalogViewModel>().add(
             ShoppingListEntryUpdated(
               updatedShoppingList: state.shoppingList,
@@ -47,7 +47,7 @@ class ShoppingListItemCreateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
       listenWhen: (previous, current) =>
-          previous.itemStatus != current.itemStatus,
+          previous.updateItemStatus != current.updateItemStatus,
       listener: _listener,
       child: BlocProvider(
         create: (_) =>

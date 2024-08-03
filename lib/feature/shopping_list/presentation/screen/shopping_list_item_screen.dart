@@ -17,11 +17,11 @@ class ShoppingListItemScreen extends StatelessWidget {
 
   final String shoppingListItemId;
 
-  void _deleteListener(
+  void _listener(
     BuildContext context,
     ShoppingListState state,
   ) {
-    if (state.itemStatus.isSuccess) {
+    if (state.deleteItemStatus.isSuccess || state.updateItemStatus.isSuccess) {
       context.pop();
     }
   }
@@ -34,8 +34,9 @@ class ShoppingListItemScreen extends StatelessWidget {
 
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
       listenWhen: (previous, current) =>
-          previous.itemStatus != current.itemStatus,
-      listener: _deleteListener,
+          previous.deleteItemStatus != current.deleteItemStatus ||
+          previous.updateItemStatus != current.updateItemStatus,
+      listener: _listener,
       child: MainScaffold(
         title: 'Item Details',
         hasBackButton: true,

@@ -1,6 +1,7 @@
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/preferences/data/enum/dietary_restriction.dart';
 import 'package:cooki/feature/preferences/data/enum/medication.dart';
+import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/shopping_list/data/repository/shopping_list_repository_interface.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,6 +34,7 @@ class InterferedRestrictionsViewModel
           status: ViewModelStatus.success,
           productId: event.productId,
           dietaryRestrictions: result.dietaryRestrictions,
+          alternativeProducts: result.alternativeProducts,
           medications: result.medications,
         ),
       );
