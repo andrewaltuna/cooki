@@ -7,6 +7,7 @@ import 'package:cooki/feature/shopping_list/presentation/component/shopping_list
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/shopping_list/data/model/chat_shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_create_form.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/interfered_restrictions/interfered_restrictions_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog/shopping_list_catalog_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -135,8 +136,15 @@ class ShoppingListHelper {
       CustomDialogArgs(
         barrierDismissable: true,
         contentPadding: const EdgeInsets.all(0),
-        builder: (context) => BlocProvider.value(
-          value: BlocProvider.of<ShoppingListViewModel>(_context),
+        builder: (context) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: BlocProvider.of<ShoppingListViewModel>(_context),
+            ),
+            BlocProvider.value(
+              value: BlocProvider.of<InterferedRestrictionsViewModel>(_context),
+            ),
+          ],
           child: ShoppingListItemAlternativeProducts(
             shoppingListItem: item,
             products: products,

@@ -2,6 +2,7 @@ import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/interfered_restrictions/interfered_restrictions_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,16 +17,26 @@ class ShoppingListItemAlternativeProducts extends StatelessWidget {
   final ShoppingListItem shoppingListItem;
   final List<Product> products;
 
+  void _listener(BuildContext context, ShoppingListState state) {
+    if (state.switchItemStatus.isSuccess) {
+      final updatedItem = state.shoppingList.items
+          .firstWhere((item) => item.id == shoppingListItem.id);
+
+      context.read<InterferedRestrictionsViewModel>().add(
+            InterferedRestrictionsRequested(
+              updatedItem.product.id,
+            ),
+          );
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
       listenWhen: (previous, current) =>
           previous.switchItemStatus != current.switchItemStatus,
-      listener: (context, state) {
-        if (state.switchItemStatus.isSuccess) {
-          Navigator.pop(context);
-        }
-      },
+      listener: _listener,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
