@@ -112,3 +112,19 @@ class ShoppingListItemDeleted extends ShoppingListEvent {
         id,
       ];
 }
+
+class ShoppingListItemSwitched extends ShoppingListEvent {
+  const ShoppingListItemSwitched({
+    required this.itemId,
+    required this.productId,
+  });
+
+  final String itemId;
+  final String productId;
+
+  @override
+  List<Object?> get props => [
+        itemId,
+        productId,
+      ];
+}

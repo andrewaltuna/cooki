@@ -7,6 +7,7 @@ class ShoppingListState extends Equatable {
     this.deleteStatus = ViewModelStatus.initial,
     this.updateItemStatus = ViewModelStatus.initial,
     this.deleteItemStatus = ViewModelStatus.initial,
+    this.switchItemStatus = ViewModelStatus.initial,
     this.shoppingList = ShoppingList.empty,
     this.error,
   });
@@ -16,6 +17,7 @@ class ShoppingListState extends Equatable {
   final ViewModelStatus deleteStatus;
   final ViewModelStatus updateItemStatus;
   final ViewModelStatus deleteItemStatus;
+  final ViewModelStatus switchItemStatus;
 
   final ShoppingList shoppingList;
   final Exception? error;
@@ -26,6 +28,7 @@ class ShoppingListState extends Equatable {
     ViewModelStatus? deleteStatus,
     ViewModelStatus? updateItemStatus,
     ViewModelStatus? deleteItemStatus,
+    ViewModelStatus? switchItemStatus,
     ShoppingList? shoppingList,
     Exception? error,
   }) {
@@ -34,8 +37,9 @@ class ShoppingListState extends Equatable {
       updateStatus: updateStatus ?? this.updateStatus,
       deleteStatus: deleteStatus ?? this.deleteStatus,
       updateItemStatus: updateItemStatus ?? this.updateItemStatus,
-      shoppingList: shoppingList ?? this.shoppingList,
       deleteItemStatus: deleteItemStatus ?? this.deleteItemStatus,
+      switchItemStatus: switchItemStatus ?? this.switchItemStatus,
+      shoppingList: shoppingList ?? this.shoppingList,
       error: error ?? this.error,
     );
   }
@@ -51,6 +55,7 @@ class ShoppingListState extends Equatable {
         deleteStatus,
         updateItemStatus,
         deleteItemStatus,
+        switchItemStatus,
         shoppingList,
         error,
       ];

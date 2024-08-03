@@ -2,7 +2,6 @@ import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
-import 'package:cooki/feature/shopping_list/data/model/shopping_list_item_form_output.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,14 +19,10 @@ class ShoppingListItemAlternativeProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ShoppingListViewModel, ShoppingListState>(
-      // TODO: Fix bug where it back navigates to shopping list view
-      // Since this listener removes the modal, but ther shopping_list_item_screen listener also
-      // triggers a backnav bc item is updated
-      // Make a separate state for alternative product selection?
       listenWhen: (previous, current) =>
-          previous.updateItemStatus != current.updateItemStatus,
+          previous.switchItemStatus != current.switchItemStatus,
       listener: (context, state) {
-        if (state.updateItemStatus.isSuccess) {
+        if (state.switchItemStatus.isSuccess) {
           Navigator.pop(context);
         }
       },
@@ -109,17 +104,13 @@ class _ProductDetails extends StatelessWidget {
 
   void _onPress(
     BuildContext context, {
-    required Product product,
-    required ShoppingListItem shoppingListItem,
+    required String productId,
+    required String itemId,
   }) {
     context.read<ShoppingListViewModel>().add(
-          ShoppingListItemUpdated(
-            itemId: shoppingListItem.id,
-            formOutput: ShoppingListItemFormOutput(
-              label: shoppingListItem.label,
-              productId: product.id,
-              quantity: shoppingListItem.quantity,
-            ),
+          ShoppingListItemSwitched(
+            itemId: itemId,
+            productId: productId,
           ),
         );
   }
@@ -147,8 +138,8 @@ class _ProductDetails extends StatelessWidget {
         IconButton(
           onPressed: () => _onPress(
             context,
-            product: product,
-            shoppingListItem: shoppingListItem,
+            productId: product.id,
+            itemId: shoppingListItem.id,
           ),
           icon: const Icon(Icons.switch_access_shortcut),
         ),

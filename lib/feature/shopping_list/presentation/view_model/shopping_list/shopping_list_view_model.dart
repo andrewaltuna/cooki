@@ -20,6 +20,7 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ShoppingListItemUpdated>(_onItemUpdated);
     on<ShoppingListItemToggled>(_onItemToggled);
     on<ShoppingListItemDeleted>(_onItemDeleted);
+    on<ShoppingListItemSwitched>(_onItemSwitched);
   }
 
   final ShoppingListRepositoryInterface _repository;
@@ -255,6 +256,45 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       emit(
         state.copyWith(
           deleteItemStatus: ViewModelStatus.error,
+          error: error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onItemSwitched(
+    ShoppingListItemSwitched event,
+    Emitter<ShoppingListState> emit,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          switchItemStatus: ViewModelStatus.loading,
+        ),
+      );
+
+      final response = await _repository.updateShoppingListItem(
+        UpdateShoppingListItemInput(
+          id: event.itemId,
+          productId: event.productId,
+        ),
+      );
+      final shoppingList = state.shoppingList;
+
+      emit(
+        state.copyWith(
+          switchItemStatus: ViewModelStatus.success,
+          shoppingList: shoppingList.copyWith(
+            items: shoppingList.items
+                .map((item) => item.id == response.id ? response : item)
+                .toList(),
+          ),
+        ),
+      );
+    } on Exception catch (error) {
+      emit(
+        state.copyWith(
+          switchItemStatus: ViewModelStatus.error,
           error: error,
         ),
       );
