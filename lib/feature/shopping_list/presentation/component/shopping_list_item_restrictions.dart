@@ -96,10 +96,6 @@ class _RestrictionsView extends StatelessWidget {
               const SizedBox(height: 16),
               PrimaryButton(
                 label: 'View Alternative Products',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
                 onPress: () {},
                 prefixIcon: const Icon(
                   Icons.switch_access_shortcut,

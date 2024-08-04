@@ -16,10 +16,6 @@ import 'package:go_router/go_router.dart';
 class ShoppingListCatalogView extends StatelessWidget {
   const ShoppingListCatalogView({super.key});
 
-  void _onSubmitted(BuildContext context) {
-    ShoppingListHelper.of(context).showCreateShoppingListModal();
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<ShoppingListCatalogViewModel>().state;
@@ -70,7 +66,7 @@ class ShoppingListCatalogView extends StatelessWidget {
           right: 16,
           child: CustomIconButton(
             icon: Icons.add,
-            onPressed: () => _onSubmitted(context),
+            onPressed: () => ShoppingListHelper.of(context).showCreateDialog(),
           ),
         ),
       ],

@@ -61,18 +61,20 @@ class DialogHelper {
               },
               height: btnDefaultSize.height,
               width: btnDefaultSize.width,
+              backgroundColor: switch (args.primaryActionType) {
+                DefaultDialogAction.confirm => AppColors.accent,
+                DefaultDialogAction.warning => AppColors.fontWarning,
+              },
             ),
             const SizedBox(height: 8),
             PrimaryButton(
               label: args.dismissText,
-              backgroundColor: AppColors.backgroundSecondary,
               onPress: () {
                 Navigator.of(context).pop();
                 args.onCancel?.call();
               },
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.fontPrimary,
-              ),
+              labelColor: AppColors.fontPrimary,
+              backgroundColor: AppColors.backgroundSecondary,
               height: btnDefaultSize.height,
               width: btnDefaultSize.width,
             ),
@@ -103,14 +105,21 @@ class DefaultDialogArgs {
     this.confirmText = 'Confirm',
     this.dismissText = 'Dismiss',
     this.onCancel,
+    this.primaryActionType = DefaultDialogAction.confirm,
     this.barrierDismissable = false,
   });
 
   final String title;
   final String message;
-  final VoidCallback onConfirm;
   final String confirmText;
   final String dismissText;
+  final VoidCallback onConfirm;
   final VoidCallback? onCancel;
+  final DefaultDialogAction primaryActionType;
   final bool barrierDismissable;
+}
+
+enum DefaultDialogAction {
+  confirm,
+  warning;
 }

@@ -14,7 +14,7 @@ enum ChatPreset {
         "I'm planning to go$selectionTarget\nCan you help me find what products I should purchase?",
   ),
   recipeGenerator(
-    displayLabel: 'Recipe Generator',
+    displayLabel: 'Generate Recipe',
     description:
         "Whip up a new recipe and I'll get the ingredients for it too!",
     textPreset:

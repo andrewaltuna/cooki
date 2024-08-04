@@ -42,7 +42,8 @@ class ShoppingListItemScreen extends StatelessWidget {
         actions: [
           AppBarActionButton(
             icon: Icons.delete_outline,
-            onPressed: () => ShoppingListHelper.of(context).showDeleteItemModal(
+            onPressed: () =>
+                ShoppingListHelper.of(context).showDeleteItemDialog(
               shoppingListItemId,
             ),
           ),
