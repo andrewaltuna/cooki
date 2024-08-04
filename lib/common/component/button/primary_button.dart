@@ -11,7 +11,7 @@ class PrimaryButton extends StatelessWidget {
     this.height = 44,
     this.prefixIcon,
     this.suffixIcon,
-    this.style,
+    this.labelColor = AppColors.fontSecondary,
     this.isLoading = false,
     this.backgroundColor = AppColors.accent,
     super.key,
@@ -23,7 +23,7 @@ class PrimaryButton extends StatelessWidget {
   final double height;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final TextStyle? style;
+  final Color labelColor;
   final bool isLoading;
   final Color? backgroundColor;
 
@@ -41,21 +41,20 @@ class PrimaryButton extends StatelessWidget {
         ),
         child: isLoading
             ? LoadingIndicator(
-                color: style?.color ?? AppColors.fontSecondary,
+                color: labelColor,
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (prefixIcon != null) ...[
-                    const SizedBox(width: 4),
                     prefixIcon!,
+                    const SizedBox(width: 4),
                   ],
                   Text(
                     label,
-                    style: style ??
-                        AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.fontSecondary,
-                        ),
+                    style: AppTextStyles.titleVerySmall.copyWith(
+                      color: labelColor,
+                    ),
                   ),
                   if (suffixIcon != null) ...[
                     const SizedBox(width: 4),

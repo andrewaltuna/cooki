@@ -24,6 +24,10 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
+  static final titleVerySmall = _baseTextStyle.copyWith(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
 
   // Subtitle
   static final subtitle = _baseTextStyle.copyWith(

@@ -3,6 +3,7 @@ import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/dropdown/custom_dropdown_menu.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
 import 'package:cooki/common/screen/loading_screen.dart';
+import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/product/presentation/view_model/product_view_model.dart';
@@ -125,7 +126,7 @@ class ShoppingListItemForm extends HookWidget {
                     CustomFormField(
                       icon: Icons.edit_outlined,
                       initialText: state.label,
-                      hintText: 'Item Name',
+                      hintText: 'Label',
                       textInputAction: TextInputAction.next,
                       onChanged: (value) => _onLabelChange(context, value),
                       errorText:
@@ -144,7 +145,7 @@ class ShoppingListItemForm extends HookWidget {
                     ),
                     const SizedBox(height: 24),
                     CustomFormField(
-                      icon: Icons.label_outline,
+                      icon: Icons.numbers,
                       initialText: state.quantity.toString(),
                       hintText: 'Quantity',
                       onChanged: (value) => _onQuantityChange(context, value),
@@ -186,7 +187,7 @@ class ShoppingListItemForm extends HookWidget {
                       Text(
                         state.productIdError,
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: Color(0xFFCE352A),
+                          color: AppColors.fontWarning,
                         ),
                       ),
                     ]
