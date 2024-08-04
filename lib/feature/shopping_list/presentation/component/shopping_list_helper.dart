@@ -138,7 +138,7 @@ class ShoppingListHelper {
     DialogHelper.of(_context).showCustomDialog(
       CustomDialogArgs(
         barrierDismissable: true,
-        contentPadding: const EdgeInsets.all(0),
+        contentPadding: EdgeInsets.zero,
         builder: (context) => MultiBlocProvider(
           providers: [
             BlocProvider.value(
