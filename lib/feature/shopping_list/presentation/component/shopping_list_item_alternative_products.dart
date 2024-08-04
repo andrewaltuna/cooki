@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
@@ -18,9 +19,7 @@ class ShoppingListItemAlternativeProducts extends StatelessWidget {
 
   void _listener(BuildContext context, ShoppingListState state) {
     if (state.switchItemStatus.isSuccess) {
-      final updatedItem = state.shoppingList.items.firstWhere(
-        (item) => item.id == itemId,
-      );
+      final updatedItem = state.shoppingList.itemById(itemId);
 
       context.read<InterferedRestrictionsViewModel>().add(
             InterferedRestrictionsRequested(
@@ -56,20 +55,25 @@ class ShoppingListItemAlternativeProducts extends StatelessWidget {
             ),
           ),
           Container(
-            height: 300,
             padding: const EdgeInsets.all(12),
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  const Divider(height: 12),
-                  for (final product in products) ...[
-                    _ProductDetails(
-                      shoppingListItemId: itemId,
-                      product: product,
-                    ),
-                    const Divider(height: 12),
-                  ],
-                ],
+                mainAxisSize: MainAxisSize.min,
+                children: products.mapIndexed(
+                  (index, product) {
+                    final isLastItem = index == products.length - 1;
+
+                    return Column(
+                      children: [
+                        _ProductDetails(
+                          shoppingListItemId: itemId,
+                          product: product,
+                        ),
+                        if (!isLastItem) const Divider(height: 12),
+                      ],
+                    );
+                  },
+                ).toList(),
               ),
             ),
           ),
