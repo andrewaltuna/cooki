@@ -19,7 +19,7 @@ class ShoppingListItem extends Equatable {
   );
 
   factory ShoppingListItem.fromJson(Map<String, dynamic> json) {
-    return ShoppingListItem(
+    return empty.copyWith(
       id: json['_id'],
       label: json['label'],
       product: Product.fromJson(json['product']),

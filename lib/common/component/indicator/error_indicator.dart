@@ -32,7 +32,7 @@ class ErrorIndicator extends StatelessWidget {
         const SizedBox(height: 16),
         PrimaryButton(
           label: 'Try again',
-          style: AppTextStyles.bodyMedium,
+          labelColor: AppColors.fontPrimary,
           backgroundColor: AppColors.backgroundSecondary,
           onPress: () => onRetry?.call(),
           width: 100,

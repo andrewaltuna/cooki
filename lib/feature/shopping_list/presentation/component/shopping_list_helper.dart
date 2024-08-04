@@ -1,8 +1,11 @@
 import 'package:cooki/common/helper/dialog_helper.dart';
+import 'package:cooki/feature/product/data/model/product.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_alternative_products.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_create_form.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
 import 'package:cooki/feature/shopping_list/data/model/chat_shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_update_form.dart';
+import 'package:cooki/feature/shopping_list/presentation/view_model/interfered_restrictions/interfered_restrictions_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list_catalog/shopping_list_catalog_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +125,32 @@ class ShoppingListHelper {
 
               context.go(AppRoutes.shoppingLists);
             },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showAlternativeProductsModal(
+    String itemId,
+    List<Product> products,
+  ) async {
+    DialogHelper.of(_context).showCustomDialog(
+      CustomDialogArgs(
+        barrierDismissable: true,
+        contentPadding: EdgeInsets.zero,
+        builder: (context) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: BlocProvider.of<ShoppingListViewModel>(_context),
+            ),
+            BlocProvider.value(
+              value: BlocProvider.of<InterferedRestrictionsViewModel>(_context),
+            ),
+          ],
+          child: ShoppingListItemAlternativeProducts(
+            itemId: itemId,
+            products: products,
           ),
         ),
       ),

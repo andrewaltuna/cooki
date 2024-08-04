@@ -5,7 +5,9 @@ class ShoppingListState extends Equatable {
     this.status = ViewModelStatus.initial,
     this.updateStatus = ViewModelStatus.initial,
     this.deleteStatus = ViewModelStatus.initial,
-    this.itemStatus = ViewModelStatus.initial,
+    this.updateItemStatus = ViewModelStatus.initial,
+    this.deleteItemStatus = ViewModelStatus.initial,
+    this.switchItemStatus = ViewModelStatus.initial,
     this.shoppingList = ShoppingList.empty,
     this.error,
   });
@@ -13,7 +15,9 @@ class ShoppingListState extends Equatable {
   final ViewModelStatus status;
   final ViewModelStatus updateStatus;
   final ViewModelStatus deleteStatus;
-  final ViewModelStatus itemStatus;
+  final ViewModelStatus updateItemStatus;
+  final ViewModelStatus deleteItemStatus;
+  final ViewModelStatus switchItemStatus;
 
   final ShoppingList shoppingList;
   final Exception? error;
@@ -22,9 +26,9 @@ class ShoppingListState extends Equatable {
     ViewModelStatus? status,
     ViewModelStatus? updateStatus,
     ViewModelStatus? deleteStatus,
-    ViewModelStatus? itemStatus,
     ViewModelStatus? updateItemStatus,
     ViewModelStatus? deleteItemStatus,
+    ViewModelStatus? switchItemStatus,
     ShoppingList? shoppingList,
     Exception? error,
   }) {
@@ -32,7 +36,9 @@ class ShoppingListState extends Equatable {
       status: status ?? this.status,
       updateStatus: updateStatus ?? this.updateStatus,
       deleteStatus: deleteStatus ?? this.deleteStatus,
-      itemStatus: itemStatus ?? this.itemStatus,
+      updateItemStatus: updateItemStatus ?? this.updateItemStatus,
+      deleteItemStatus: deleteItemStatus ?? this.deleteItemStatus,
+      switchItemStatus: switchItemStatus ?? this.switchItemStatus,
       shoppingList: shoppingList ?? this.shoppingList,
       error: error ?? this.error,
     );
@@ -47,7 +53,9 @@ class ShoppingListState extends Equatable {
         status,
         updateStatus,
         deleteStatus,
-        itemStatus,
+        updateItemStatus,
+        deleteItemStatus,
+        switchItemStatus,
         shoppingList,
         error,
       ];
