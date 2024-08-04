@@ -102,7 +102,7 @@ class _CookiHeader extends StatelessWidget {
             color: AppColors.fontSecondary,
             iconSize: 20,
             onPressed: () =>
-                ShoppingListHelper.of(context).showGeminiCreateModal(
+                ShoppingListHelper.of(context).showGeminiCreateDialog(
               convertibleItems,
             ),
           ),

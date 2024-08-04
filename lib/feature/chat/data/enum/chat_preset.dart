@@ -11,20 +11,21 @@ enum ChatPreset {
     displayLabel: 'Activity',
     description: "Tell me what you're doing and I'll find what you need!",
     textPreset:
-        "I'm planning to go$selectionTarget\nCan you help me find what I need?",
+        "I'm planning to go$selectionTarget\nCan you help me find what products I should purchase?",
   ),
   recipeGenerator(
-    displayLabel: 'Recipe Generator',
+    displayLabel: 'Generate Recipe',
     description:
         "Whip up a new recipe and I'll get the ingredients for it too!",
     textPreset:
-        'Give me the recipe for$selectionTarget\nList down the ingredients I need to make it.',
+        "I want to make$selectionTarget\nCan you give me the recipe and the ingredients I'll need to follow it?",
   ),
   ecoWarrior(
     displayLabel: 'Eco-Warrior',
     description:
         "I'll help you find our green and sustainably sourced products.",
-    textPreset: 'Can you help me find green and sustainably sourced products?',
+    textPreset:
+        'Can you help me find your green and sustainably sourced products?',
   );
 
   const ChatPreset({

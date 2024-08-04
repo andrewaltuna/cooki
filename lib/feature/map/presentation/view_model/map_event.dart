@@ -41,3 +41,25 @@ class MapRequestCoordsFlagUpdated extends MapEvent {
   @override
   List<Object> get props => [shouldFetchUserCoords];
 }
+
+class MapShoppingListSet extends MapEvent {
+  const MapShoppingListSet([this.shoppingListId = '']);
+
+  final String shoppingListId;
+
+  @override
+  List<Object> get props => [shoppingListId];
+}
+
+class MapProductSet extends MapEvent {
+  const MapProductSet([this.productId = '']);
+
+  final String productId;
+
+  @override
+  List<Object> get props => [productId];
+}
+
+class MapProductDirectionsRequested extends MapEvent {
+  const MapProductDirectionsRequested();
+}

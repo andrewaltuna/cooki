@@ -1,10 +1,10 @@
 import 'package:cooki/common/component/button/primary_button.dart';
+import 'package:cooki/common/component/indicator/error_indicator.dart';
 import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/helper/toast_helper.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
 import 'package:cooki/feature/shopping_list/data/di/shopping_list_service_locator.dart';
-import 'package:cooki/feature/shopping_list/data/model/shopping_list_item.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_helper.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/interfered_restrictions/interfered_restrictions_view_model.dart';
 import 'package:flutter/material.dart';
@@ -12,21 +12,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShoppingListItemRestrictions extends StatelessWidget {
   const ShoppingListItemRestrictions({
-    required this.item,
+    required this.itemId,
+    required this.productId,
     super.key,
   });
 
-  final ShoppingListItem item;
+  final String itemId;
+  final String productId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => InterferedRestrictionsViewModel(shoppingListRepository)
         ..add(
-          InterferedRestrictionsRequested(item.product.id),
+          InterferedRestrictionsRequested(productId),
         ),
       child: _RestrictionsView(
-        item: item,
+        itemId: itemId,
+        productId: productId,
       ),
     );
   }
@@ -34,10 +37,12 @@ class ShoppingListItemRestrictions extends StatelessWidget {
 
 class _RestrictionsView extends StatelessWidget {
   const _RestrictionsView({
-    required this.item,
+    required this.itemId,
+    required this.productId,
   });
 
-  final ShoppingListItem item;
+  final String itemId;
+  final String productId;
 
   void _errorListener(
     BuildContext context,
@@ -49,7 +54,10 @@ class _RestrictionsView extends StatelessWidget {
   }
 
   void _onSubmit(BuildContext context, List<Product> products) {
-    ShoppingListHelper.of(context).showAlternativeProductsModal(item, products);
+    ShoppingListHelper.of(context).showAlternativeProductsModal(
+      itemId,
+      products,
+    );
   }
 
   @override
@@ -63,6 +71,18 @@ class _RestrictionsView extends StatelessWidget {
           return const LoadingIndicator();
         }
 
+        if (state.status.isError) {
+          return ErrorIndicator(
+            onRetry: () => context
+                .read<InterferedRestrictionsViewModel>()
+                .add(InterferedRestrictionsRequested(productId)),
+          );
+        }
+
+        if (state.medications.isEmpty && state.dietaryRestrictions.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
         return Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,27 +91,27 @@ class _RestrictionsView extends StatelessWidget {
                 'Restrictions',
                 style: AppTextStyles.titleMedium,
               ),
-              const SizedBox(height: 4),
-              _RestrictionInformation(
-                label: 'Dietary restrictions',
-                items: state.dietaryRestrictions
-                    .map((restriction) => restriction.displayLabel)
-                    .toList(),
-              ),
-              const SizedBox(height: 4),
-              _RestrictionInformation(
-                label: 'Medications',
-                items: state.medications
-                    .map((medication) => medication.displayLabel)
-                    .toList(),
-              ),
+              if (state.dietaryRestrictions.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                _RestrictionInformation(
+                  label: 'Dietary restrictions',
+                  items: state.dietaryRestrictions
+                      .map((restriction) => restriction.displayLabel)
+                      .toList(),
+                ),
+              ],
+              if (state.medications.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                _RestrictionInformation(
+                  label: 'Medications',
+                  items: state.medications
+                      .map((medication) => medication.displayLabel)
+                      .toList(),
+                ),
+              ],
               const SizedBox(height: 16),
               PrimaryButton(
                 label: 'View Alternative Products',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
                 onPress: () => _onSubmit(
                   context,
                   state.alternativeProducts,

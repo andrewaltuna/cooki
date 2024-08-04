@@ -22,7 +22,6 @@ class ShoppingListScreen extends StatelessWidget {
       hasBackButton: true,
       actions: [
         ShoppingListPopupMenu(
-          parentContext: context,
           shoppingList: shoppingList,
         ),
       ],

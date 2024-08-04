@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:cooki/common/component/button/custom_icon_button.dart';
 import 'package:cooki/common/component/button/ink_well_button.dart';
+import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
-import 'package:cooki/common/screen/error_screen.dart';
-import 'package:cooki/common/screen/loading_screen.dart';
+import 'package:cooki/common/component/indicator/error_indicator.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/shopping_list/data/model/shopping_list.dart';
@@ -16,10 +16,6 @@ import 'package:go_router/go_router.dart';
 class ShoppingListCatalogView extends StatelessWidget {
   const ShoppingListCatalogView({super.key});
 
-  void _onSubmitted(BuildContext context) {
-    ShoppingListHelper.of(context).showCreateShoppingListModal();
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<ShoppingListCatalogViewModel>().state;
@@ -28,12 +24,18 @@ class ShoppingListCatalogView extends StatelessWidget {
     final shoppingLists = state.shoppingLists;
 
     if (status.isLoading) {
-      return const LoadingScreen();
+      return const Center(
+        child: LoadingIndicator(),
+      );
     }
 
     if (status.isError) {
-      return const ErrorScreen(
-        errorMessage: 'Something went wrong.',
+      return Center(
+        child: ErrorIndicator(
+          onRetry: () => context.read<ShoppingListCatalogViewModel>().add(
+                const ShoppingListCatalogRequested(),
+              ),
+        ),
       );
     }
 
@@ -64,7 +66,7 @@ class ShoppingListCatalogView extends StatelessWidget {
           right: 16,
           child: CustomIconButton(
             icon: Icons.add,
-            onPressed: () => _onSubmitted(context),
+            onPressed: () => ShoppingListHelper.of(context).showCreateDialog(),
           ),
         ),
       ],
