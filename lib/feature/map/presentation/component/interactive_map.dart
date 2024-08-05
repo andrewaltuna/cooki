@@ -1,3 +1,4 @@
+import 'package:cooki/common/component/app_images.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/feature/map/data/model/coordinates.dart';
@@ -53,7 +54,7 @@ class InteractiveMap extends HookWidget {
         ),
         child: Stack(
           children: [
-            Image.asset('assets/imgs/map.png'),
+            AppImages.map,
             CustomPaint(
               painter: MapDirectionsPainter(
                 directions: state.directions,

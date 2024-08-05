@@ -25,7 +25,7 @@ class AppIcons {
   static SvgPicture get halal => SvgPicture.asset('$_prefsPath/halal.svg');
   static SvgPicture get glutenFree =>
       SvgPicture.asset('$_prefsPath/gluten_free.svg');
-  static SvgPicture get soyFree => SvgPicture.asset('$_prefsPath/deli.svg');
+  static SvgPicture get soyFree => SvgPicture.asset('$_prefsPath/soy_free.svg');
   static SvgPicture get nutFree => SvgPicture.asset('$_prefsPath/nut_free.svg');
   static SvgPicture get eggFree => SvgPicture.asset('$_prefsPath/egg_free.svg');
 

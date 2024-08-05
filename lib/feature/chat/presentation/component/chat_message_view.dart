@@ -1,3 +1,4 @@
+import 'package:cooki/common/component/app_images.dart';
 import 'package:cooki/common/component/button/custom_icon_button.dart';
 import 'package:cooki/common/extension/screen_size.dart';
 import 'package:cooki/common/theme/app_colors.dart';
@@ -81,12 +82,7 @@ class _CookiHeader extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          height: 34,
-          child: Image.asset(
-            'assets/imgs/cooki_chat.png',
-          ),
-        ),
+        AppImages.cookiChat.copyWith(height: 34),
         const SizedBox(width: 12),
         Text(
           'Cooki',
