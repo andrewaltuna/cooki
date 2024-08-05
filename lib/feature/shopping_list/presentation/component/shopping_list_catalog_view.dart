@@ -41,26 +41,31 @@ class ShoppingListCatalogView extends StatelessWidget {
 
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ListView(
-            children: shoppingLists.mapIndexed(
-              (index, shoppingList) {
-                final isLast = index == shoppingLists.length - 1;
+        if (shoppingLists.isEmpty)
+          const Center(
+            child: _EmptyIndicator(),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListView(
+              children: shoppingLists.mapIndexed(
+                (index, shoppingList) {
+                  final isLast = index == shoppingLists.length - 1;
 
-                return Padding(
-                  padding: EdgeInsets.only(
-                    top: 16,
-                    bottom: isLast ? 16 : 0,
-                  ),
-                  child: _ShoppingListCard(
-                    shoppingList: shoppingList,
-                  ),
-                );
-              },
-            ).toList(),
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      top: 16,
+                      bottom: isLast ? 16 : 0,
+                    ),
+                    child: _ShoppingListCard(
+                      shoppingList: shoppingList,
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
           ),
-        ),
         Positioned(
           bottom: 16,
           right: 16,
@@ -124,6 +129,33 @@ class _ShoppingListInformation extends StatelessWidget {
         Text(
           '${shoppingList.items.length} items',
           style: AppTextStyles.bodySmall,
+        ),
+      ],
+    );
+  }
+}
+
+class _EmptyIndicator extends StatelessWidget {
+  const _EmptyIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(
+          'assets/imgs/cooki.png',
+          height: 50,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'No items to display',
+          style: AppTextStyles.titleSmall,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Start by creating a shopping list',
+          style: AppTextStyles.bodyMedium,
         ),
       ],
     );

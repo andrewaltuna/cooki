@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:cooki/common/component/button/primary_button.dart';
 import 'package:cooki/common/component/dropdown/custom_dropdown_menu.dart';
 import 'package:cooki/common/component/form/custom_form_field.dart';
@@ -16,6 +15,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _productEmptyError = 'Product cannot be empty';
 const _quantityEmptyError = 'Quantity cannot be empty';
+const _quantityInvalidError = 'Quantity must be at least 1';
 const _labelEmptyError = 'Label cannot be empty';
 
 class ShoppingListItemForm extends HookWidget {
@@ -30,50 +30,36 @@ class ShoppingListItemForm extends HookWidget {
     ShoppingListItemFormOutput input,
   ) onSubmit;
 
-  void _onLabelChange(BuildContext context, String value) {
-    context.read<ShoppingListItemFormViewModel>()
-      ..add(
-        const ItemFormLabelErrorChanged(),
-      )
-      ..add(
-        ItemFormLabelChanged(
-          value,
-        ),
-      );
+  void _onLabelChanged(
+    BuildContext context,
+    String value,
+  ) {
+    context
+        .read<ShoppingListItemFormViewModel>()
+        .add(ItemFormLabelChanged(value));
   }
 
-  void _onQuantityChange(BuildContext context, String value) {
+  void _onQuantityChanged(
+    BuildContext context,
+    String value,
+  ) {
     final quantity = int.tryParse(value);
     if (quantity == null) return;
 
-    context.read<ShoppingListItemFormViewModel>()
-      ..add(
-        const ItemFormQuantityErrorChanged(),
-      )
-      ..add(
-        ItemFormQuantityChanged(
-          quantity,
-        ),
-      );
+    context.read<ShoppingListItemFormViewModel>().add(
+          ItemFormQuantityChanged(quantity),
+        );
   }
 
-  void _onProductSelected(BuildContext context, Product? value) {
-    if (value == null) {
-      context.read<ShoppingListItemFormViewModel>().add(
-            const ItemFormProductIdErrorChanged(
-              _productEmptyError,
-            ),
-          );
-      return;
-    }
+  void _onProductSelected(
+    BuildContext context,
+    Product? value,
+  ) {
+    if (value == null) return;
 
-    context.read<ShoppingListItemFormViewModel>()
-      ..add(const ItemFormProductIdErrorChanged())
-      ..add(
-        ItemFormProductSelected(
-          value.id,
-        ),
-      );
+    context.read<ShoppingListItemFormViewModel>().add(
+          ItemFormProductSelected(value.id),
+        );
   }
 
   void _onSubmit(BuildContext context) {
@@ -98,77 +84,69 @@ class ShoppingListItemForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ShoppingListItemFormViewModel>();
+    final state = context.watch<ShoppingListItemFormViewModel>().state;
 
-    return BlocBuilder<ShoppingListItemFormViewModel,
-        ShoppingListItemFormState>(
-      builder: (context, state) {
-        if (state.status.isInitial) {
-          return const LoadingScreen();
-        }
+    if (state.status.isInitial) {
+      return const LoadingScreen();
+    }
 
-        final products = context.read<ProductViewModel>().state.products;
-        final initialProduct = products
-            .firstWhereOrNull((product) => product.id == state.productId);
+    final (
+      products,
+      initialProduct,
+    ) = context.select(
+      (ProductViewModel viewModel) => (
+        viewModel.state.products,
+        viewModel.state.productById(state.productId),
+      ),
+    );
 
-        return Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 24.0,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Form(
-                key: _formKey,
+    final initialQuantity =
+        state.quantity > 0 ? state.quantity.toString() : null;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomFormField(
                       icon: Icons.edit_outlined,
                       initialText: state.label,
                       hintText: 'Label',
                       textInputAction: TextInputAction.next,
-                      onChanged: (value) => _onLabelChange(context, value),
-                      errorText:
-                          state.labelError.isEmpty ? null : state.labelError,
+                      onChanged: (value) => _onLabelChanged(context, value),
                       validator: (value) {
-                        if (value == '') {
-                          viewModel.add(
-                            const ItemFormLabelErrorChanged(
-                              _labelEmptyError,
-                            ),
-                          );
-                        }
+                        if (value == '') return _labelEmptyError;
 
                         return null;
                       },
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     CustomFormField(
                       icon: Icons.numbers,
-                      initialText: state.quantity.toString(),
+                      initialText: initialQuantity,
                       hintText: 'Quantity',
-                      onChanged: (value) => _onQuantityChange(context, value),
+                      onChanged: (value) => _onQuantityChanged(context, value),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
-                      errorText: state.quantityError.isEmpty
-                          ? null
-                          : state.quantityError,
                       validator: (value) {
-                        if (value == '') {
-                          viewModel.add(
-                            const ItemFormQuantityErrorChanged(
-                              _quantityEmptyError,
-                            ),
-                          );
+                        if (value == '') return _quantityEmptyError;
+
+                        if (int.parse(value ?? '') <= 0) {
+                          return _quantityInvalidError;
                         }
 
                         return null;
                       },
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     CustomDropdownMenu(
                       initialSelection: initialProduct,
                       hintText: 'Select Product',
@@ -184,24 +162,27 @@ class ShoppingListItemForm extends HookWidget {
                     ),
                     if (state.productIdError.isNotEmpty) ...[
                       const SizedBox(height: 8),
-                      Text(
-                        state.productIdError,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.fontWarning,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: Text(
+                          state.productIdError,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.fontWarning,
+                          ),
                         ),
                       ),
-                    ]
+                    ],
                   ],
                 ),
               ),
-              PrimaryButton(
-                label: 'Save',
-                onPress: () => _onSubmit(context),
-              ),
-            ],
-          ),
-        );
-      },
+            ),
+            PrimaryButton(
+              label: 'Save',
+              onPress: () => _onSubmit(context),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

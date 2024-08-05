@@ -13,8 +13,6 @@ class ShoppingListItemFormViewModel
     on<ItemFormProductSelected>(_onProductSelected);
     on<ItemFormLabelChanged>(_onLabelChanged);
     on<ItemFormQuantityChanged>(_onQuantityChanged);
-    on<ItemFormLabelErrorChanged>(_onLabelErrorChanged);
-    on<ItemFormQuantityErrorChanged>(_onQuantityErrorChanged);
     on<ItemFormProductIdErrorChanged>(_onProductIdErrorChanged);
   }
 
@@ -39,6 +37,7 @@ class ShoppingListItemFormViewModel
     emit(
       state.copyWith(
         productId: event.productId,
+        productIdError: '',
       ),
     );
   }
@@ -61,28 +60,6 @@ class ShoppingListItemFormViewModel
     emit(
       state.copyWith(
         quantity: event.quantity,
-      ),
-    );
-  }
-
-  void _onLabelErrorChanged(
-    ItemFormLabelErrorChanged event,
-    Emitter<ShoppingListItemFormState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        labelError: event.labelError,
-      ),
-    );
-  }
-
-  void _onQuantityErrorChanged(
-    ItemFormQuantityErrorChanged event,
-    Emitter<ShoppingListItemFormState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        quantityError: event.quantityError,
       ),
     );
   }
