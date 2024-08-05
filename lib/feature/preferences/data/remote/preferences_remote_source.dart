@@ -42,10 +42,6 @@ class PreferencesRemoteSource {
 
         return PreferencesOutput.fromJson(result);
       },
-      onError: (error) {
-        print(error);
-        throw Exception();
-      },
     );
   }
 }
@@ -65,7 +61,6 @@ const _getPreferencesQuery = r'''
       medications {
         genericName
       }
-      promoNotifications
     }
   }
 ''';
@@ -85,7 +80,6 @@ const _updatePreferencesMutation = r'''
       medications {
         genericName
       }
-      promoNotifications
     }
   }
 ''';

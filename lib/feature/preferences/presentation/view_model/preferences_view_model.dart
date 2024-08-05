@@ -15,7 +15,6 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
     on<PreferencesRequested>(_onRequested);
     on<PreferencesProductCategorySelected>(_onProductCategorySelected);
     on<PreferencesDietaryRestrictionSelected>(_onDietaryRestrictionSelected);
-    on<PreferencesPromoNotificationsToggled>(_onPromoNotificationsToggled);
     on<PreferencesMedicationAdded>(_onMedicationAdded);
     on<PreferencesMedicationRemoved>(_onMedicationRemoved);
     on<PreferencesSaved>(_onSaved);
@@ -37,7 +36,6 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
           status: ViewModelStatus.success,
           productCategories: result.productCategories,
           dietaryRestrictions: result.dietaryRestrictions,
-          promoNotifications: result.promoNotifications,
           medications: result.medications,
         ),
       );
@@ -104,13 +102,6 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
     emit(state.copyWith(medications: updatedMedications));
   }
 
-  void _onPromoNotificationsToggled(
-    PreferencesPromoNotificationsToggled event,
-    Emitter<PreferencesState> emit,
-  ) {
-    emit(state.copyWith(promoNotifications: !state.promoNotifications));
-  }
-
   Future<void> _onSaved(
     PreferencesSaved event,
     Emitter<PreferencesState> emit,
@@ -124,7 +115,6 @@ class PreferencesViewModel extends Bloc<PreferencesEvent, PreferencesState> {
         productCategories: Set.from(state.productCategories),
         dietaryRestrictions: Set.from(state.dietaryRestrictions),
         medications: Set.from(state.medications),
-        promoNotifications: state.promoNotifications,
       );
 
       await _repository.updatePreferences(input);

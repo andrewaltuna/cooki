@@ -1,4 +1,6 @@
 import 'package:cooki/common/component/button/primary_button.dart';
+import 'package:cooki/common/component/indicator/error_indicator.dart';
+import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/enum/view_model_status.dart';
 import 'package:cooki/feature/account/presentation/view_model/account_view_model.dart';
@@ -40,21 +42,56 @@ class PreferencesScreen extends StatelessWidget {
           onPressed: () => _onSignedOut(context),
         ),
       ],
-      body: PreferencesPageView(
-        footerBuilder: (_, __) {
-          return BlocSelector<PreferencesViewModel, PreferencesState,
-              ViewModelStatus>(
-            selector: (state) => state.submissionStatus,
-            builder: (context, submissionStatus) {
-              return PrimaryButton(
-                label: 'Save',
-                isLoading: submissionStatus.isLoading,
-                onPress: () => _onSaved(context),
-              );
-            },
-          );
-        },
+      body: _PreferencesView(
+        onSaved: () => _onSaved(context),
       ),
+    );
+  }
+}
+
+class _PreferencesView extends StatelessWidget {
+  const _PreferencesView({
+    required this.onSaved,
+  });
+
+  final VoidCallback onSaved;
+
+  @override
+  Widget build(BuildContext context) {
+    final status = context.select(
+      (PreferencesViewModel viewModel) => viewModel.state.status,
+    );
+
+    if (status.isLoading) {
+      return const Center(
+        child: LoadingIndicator(),
+      );
+    }
+
+    if (status.isError) {
+      return Center(
+        child: ErrorIndicator(
+          onRetry: () => context.read<PreferencesViewModel>().add(
+                const PreferencesRequested(),
+              ),
+        ),
+      );
+    }
+
+    return PreferencesPageView(
+      footerBuilder: (_, __) {
+        return BlocSelector<PreferencesViewModel, PreferencesState,
+            ViewModelStatus>(
+          selector: (state) => state.submissionStatus,
+          builder: (context, submissionStatus) {
+            return PrimaryButton(
+              label: 'Save',
+              isLoading: submissionStatus.isLoading,
+              onPress: onSaved,
+            );
+          },
+        );
+      },
     );
   }
 }
