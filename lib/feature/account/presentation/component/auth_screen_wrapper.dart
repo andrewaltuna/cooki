@@ -1,3 +1,4 @@
+import 'package:cooki/common/component/app_images.dart';
 import 'package:cooki/common/component/main_scaffold.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
@@ -30,10 +31,7 @@ class AuthScreenWrapper extends StatelessWidget {
           Container(
             height: 200,
             alignment: Alignment.center,
-            child: Image.asset(
-              'assets/imgs/logo_alt.png',
-              height: 150,
-            ),
+            child: AppImages.logoAlt.copyWith(height: 150),
           ),
           Expanded(
             child: Container(

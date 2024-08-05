@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:cooki/common/component/app_images.dart';
 import 'package:cooki/common/component/button/custom_icon_button.dart';
 import 'package:cooki/common/component/button/ink_well_button.dart';
 import 'package:cooki/common/component/indicator/loading_indicator.dart';
@@ -143,10 +144,7 @@ class _EmptyIndicator extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(
-          'assets/imgs/cooki.png',
-          height: 50,
-        ),
+        AppImages.cooki.copyWith(height: 50),
         const SizedBox(height: 16),
         Text(
           'No items to display',
