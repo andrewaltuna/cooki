@@ -1,5 +1,5 @@
-import 'package:cooki/common/component/app_icons.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
+import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/feature/map/data/model/coordinates.dart';
 import 'package:cooki/feature/map/presentation/component/map_painter.dart';
 import 'package:cooki/feature/map/presentation/component/map_user_indicator.dart';
@@ -38,12 +38,22 @@ class InteractiveMap extends HookWidget {
       maxScale: 4,
       minScale: 0.1,
       boundaryMargin: EdgeInsets.all(mapSize.longestSide / 3),
-      child: SizedBox(
+      child: Container(
         width: mapSize.width,
         height: mapSize.height,
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadow,
+              blurRadius: 20,
+              spreadRadius: 5,
+              offset: Offset(0, 10),
+            ),
+          ],
+        ),
         child: Stack(
           children: [
-            AppIcons.map,
+            Image.asset('assets/imgs/map.png'),
             CustomPaint(
               painter: MapDirectionsPainter(
                 directions: state.directions,
