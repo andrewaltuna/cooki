@@ -6,7 +6,7 @@ class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
     super.key,
     required this.icon,
-    this.color = AppColors.backgroundSecondary,
+    this.color = AppColors.fontSecondary,
     this.backgroundColor = AppColors.accent,
     this.iconSize = 24.0,
     this.padding = 16.0,

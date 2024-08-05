@@ -30,6 +30,13 @@ class ProductState extends Equatable {
       status == ViewModelStatus.initial ||
       (status == ViewModelStatus.loading && products.isEmpty);
 
+  Product productById(String id) {
+    return products.firstWhere(
+      (element) => element.id == id,
+      orElse: () => Product.empty,
+    );
+  }
+
   @override
   List<Object?> get props => [
         status,

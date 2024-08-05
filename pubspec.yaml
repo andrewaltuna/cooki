@@ -61,7 +61,6 @@ flutter:
     - assets/icons/
     - assets/icons/preferences/
     - assets/icons/chat/
-    - assets/icons/map/
     - assets/imgs/
 
   fonts:

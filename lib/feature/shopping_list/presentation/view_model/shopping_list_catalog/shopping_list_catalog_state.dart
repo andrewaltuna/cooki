@@ -45,6 +45,7 @@ class ShoppingListCatalogState extends Equatable {
   ShoppingList shoppingListById(String id) {
     return shoppingLists.firstWhere(
       (list) => list.id == id,
+      orElse: () => ShoppingList.empty,
     );
   }
 
