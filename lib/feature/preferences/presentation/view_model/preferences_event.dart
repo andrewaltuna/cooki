@@ -52,10 +52,6 @@ class PreferencesMedicationRemoved extends PreferencesEvent {
   List<Object> get props => [index];
 }
 
-class PreferencesPromoNotificationsToggled extends PreferencesEvent {
-  const PreferencesPromoNotificationsToggled();
-}
-
 class PreferencesSaved extends PreferencesEvent {
   const PreferencesSaved();
 }

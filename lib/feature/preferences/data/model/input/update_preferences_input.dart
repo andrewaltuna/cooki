@@ -9,13 +9,11 @@ class UpdatePreferencesInput extends Equatable {
     required this.productCategories,
     required this.dietaryRestrictions,
     required this.medications,
-    required this.promoNotifications,
   });
 
   final Set<ProductCategory> productCategories;
   final Set<DietaryRestriction> dietaryRestrictions;
   final Set<Medication> medications;
-  final bool promoNotifications;
 
   Map<String, dynamic> toJson() {
     return {
@@ -40,7 +38,6 @@ class UpdatePreferencesInput extends Equatable {
             },
           )
           .toList(),
-      'promoNotifications': promoNotifications,
     };
   }
 
@@ -49,6 +46,5 @@ class UpdatePreferencesInput extends Equatable {
         productCategories,
         dietaryRestrictions,
         medications,
-        promoNotifications,
       ];
 }

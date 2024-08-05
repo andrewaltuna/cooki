@@ -1,7 +1,5 @@
 import 'package:cooki/common/component/indicator/page_view_indicator.dart';
-import 'package:cooki/common/component/checkbox/labeled_checkbox.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
-import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/preferences/presentation/component/preferences_dietary_restrictions_page.dart';
 import 'package:cooki/feature/preferences/presentation/component/preferences_medications_page.dart';
 import 'package:cooki/feature/preferences/presentation/component/preferences_product_categories_page.dart';
@@ -11,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _numPages = 4;
+const _numPages = 3;
 const _contentPadding = 24.0;
 
 class PreferencesPageView extends HookWidget {
@@ -77,7 +75,6 @@ class PreferencesPageView extends HookWidget {
                       PreferencesMedicationsPage(
                         items: state.medications,
                       ),
-                      const _NotificationsSection(),
                     ].map((page) => _PagePadding(child: page)).toList(),
                   );
                 },
@@ -107,34 +104,6 @@ class PreferencesPageView extends HookWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _NotificationsSection extends StatelessWidget {
-  const _NotificationsSection();
-
-  @override
-  Widget build(BuildContext context) {
-    final promoNotifications = context.select(
-      (PreferencesViewModel viewModel) => viewModel.state.promoNotifications,
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Notifications',
-          style: AppTextStyles.titleSmall,
-        ),
-        LabeledCheckbox(
-          label: 'Special offers and promotions',
-          value: promoNotifications,
-          onChanged: (_) => context.read<PreferencesViewModel>().add(
-                const PreferencesPromoNotificationsToggled(),
-              ),
-        ),
-      ],
     );
   }
 }

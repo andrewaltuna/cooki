@@ -8,7 +8,6 @@ class PreferencesOutput extends Equatable {
   const PreferencesOutput({
     required this.productCategories,
     required this.dietaryRestrictions,
-    required this.promoNotifications,
     required this.medications,
   });
 
@@ -16,7 +15,6 @@ class PreferencesOutput extends Equatable {
     final productCategories = json['productCategories'] as List;
     final dietaryRestrictions = json['dietaryRestrictions'] as List;
     final medications = json['medications'] as List;
-    final promoNotifications = json['promoNotifications'] as bool;
 
     return PreferencesOutput(
       productCategories: productCategories
@@ -43,20 +41,17 @@ class PreferencesOutput extends Equatable {
             ),
           )
           .toList(),
-      promoNotifications: promoNotifications,
     );
   }
 
   final List<ProductCategory> productCategories;
   final List<DietaryRestriction> dietaryRestrictions;
   final List<Medication> medications;
-  final bool promoNotifications;
 
   @override
   List<Object?> get props => [
         productCategories,
         dietaryRestrictions,
         medications,
-        promoNotifications,
       ];
 }

@@ -7,7 +7,6 @@ class PreferencesState extends Equatable {
     this.productCategories = const [],
     this.dietaryRestrictions = const [],
     this.medications = const [],
-    this.promoNotifications = false,
     this.error,
   });
 
@@ -16,7 +15,6 @@ class PreferencesState extends Equatable {
   final List<ProductCategory> productCategories;
   final List<DietaryRestriction> dietaryRestrictions;
   final List<Medication> medications;
-  final bool promoNotifications;
   final Exception? error;
 
   PreferencesState copyWith({
@@ -25,7 +23,6 @@ class PreferencesState extends Equatable {
     List<ProductCategory>? productCategories,
     List<DietaryRestriction>? dietaryRestrictions,
     List<Medication>? medications,
-    bool? promoNotifications,
     Exception? error,
   }) {
     return PreferencesState(
@@ -34,7 +31,6 @@ class PreferencesState extends Equatable {
       productCategories: productCategories ?? this.productCategories,
       dietaryRestrictions: dietaryRestrictions ?? this.dietaryRestrictions,
       medications: medications ?? this.medications,
-      promoNotifications: promoNotifications ?? this.promoNotifications,
       error: error ?? this.error,
     );
   }
@@ -51,7 +47,6 @@ class PreferencesState extends Equatable {
         submissionStatus,
         productCategories,
         dietaryRestrictions,
-        promoNotifications,
         medications,
         error,
       ];
