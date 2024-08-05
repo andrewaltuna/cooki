@@ -98,6 +98,9 @@ class CustomFormField extends StatelessWidget {
               horizontal: 12,
               vertical: 12,
             ),
+            errorStyle: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.fontWarning,
+            ),
           ),
         ),
       ],

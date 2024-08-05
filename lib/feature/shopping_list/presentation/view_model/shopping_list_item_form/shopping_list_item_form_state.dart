@@ -6,8 +6,6 @@ class ShoppingListItemFormState extends Equatable {
     this.label = '',
     this.productId = '',
     this.quantity = 0,
-    this.labelError = '',
-    this.quantityError = '',
     this.productIdError = '',
   });
 
@@ -15,8 +13,6 @@ class ShoppingListItemFormState extends Equatable {
   final String label;
   final String productId;
   final int quantity;
-  final String labelError;
-  final String quantityError;
   final String productIdError;
 
   ShoppingListItemFormState copyWith({
@@ -24,8 +20,6 @@ class ShoppingListItemFormState extends Equatable {
     String? label,
     String? productId,
     int? quantity,
-    String? labelError,
-    String? quantityError,
     String? productIdError,
   }) {
     return ShoppingListItemFormState(
@@ -33,8 +27,6 @@ class ShoppingListItemFormState extends Equatable {
       label: label ?? this.label,
       productId: productId ?? this.productId,
       quantity: quantity ?? this.quantity,
-      labelError: labelError ?? this.labelError,
-      quantityError: quantityError ?? this.quantityError,
       productIdError: productIdError ?? this.productIdError,
     );
   }
@@ -53,8 +45,6 @@ class ShoppingListItemFormState extends Equatable {
         productId,
         quantity,
         status,
-        labelError,
-        quantityError,
         productIdError,
       ];
 }

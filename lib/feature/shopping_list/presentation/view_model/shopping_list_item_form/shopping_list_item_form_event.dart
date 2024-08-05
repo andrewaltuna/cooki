@@ -59,28 +59,6 @@ class ItemFormQuantityChanged extends ShoppingListItemFormEvent {
   List<Object> get props => [quantity];
 }
 
-class ItemFormLabelErrorChanged extends ShoppingListItemFormEvent {
-  const ItemFormLabelErrorChanged([
-    this.labelError = '',
-  ]);
-
-  final String labelError;
-
-  @override
-  List<Object> get props => [labelError];
-}
-
-class ItemFormQuantityErrorChanged extends ShoppingListItemFormEvent {
-  const ItemFormQuantityErrorChanged([
-    this.quantityError = '',
-  ]);
-
-  final String quantityError;
-
-  @override
-  List<Object> get props => [quantityError];
-}
-
 class ItemFormProductIdErrorChanged extends ShoppingListItemFormEvent {
   const ItemFormProductIdErrorChanged([
     this.productIdError = '',
