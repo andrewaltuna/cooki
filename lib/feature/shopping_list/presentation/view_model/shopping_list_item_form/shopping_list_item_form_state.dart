@@ -3,14 +3,14 @@ part of 'shopping_list_item_form_view_model.dart';
 class ShoppingListItemFormState extends Equatable {
   const ShoppingListItemFormState({
     this.status = ViewModelStatus.initial,
-    this.label = '',
+    this.section = '',
     this.productId = '',
     this.quantity = 0,
     this.productIdError = '',
   });
 
   final ViewModelStatus status;
-  final String label;
+  final String section;
   final String productId;
   final int quantity;
   final String productIdError;
@@ -18,13 +18,14 @@ class ShoppingListItemFormState extends Equatable {
   ShoppingListItemFormState copyWith({
     ViewModelStatus? status,
     String? label,
+    String? section,
     String? productId,
     int? quantity,
     String? productIdError,
   }) {
     return ShoppingListItemFormState(
       status: status ?? this.status,
-      label: label ?? this.label,
+      section: section ?? this.section,
       productId: productId ?? this.productId,
       quantity: quantity ?? this.quantity,
       productIdError: productIdError ?? this.productIdError,
@@ -33,7 +34,6 @@ class ShoppingListItemFormState extends Equatable {
 
   ShoppingListItemFormOutput toFormOutput() {
     return ShoppingListItemFormOutput(
-      label: label,
       productId: productId,
       quantity: quantity,
     );
@@ -41,7 +41,7 @@ class ShoppingListItemFormState extends Equatable {
 
   @override
   List<Object?> get props => [
-        label,
+        section,
         productId,
         quantity,
         status,

@@ -3,6 +3,8 @@ import 'package:cooki/feature/map/data/model/coordinates.dart';
 import 'package:cooki/feature/map/data/model/input/product_directions_input.dart';
 import 'package:cooki/feature/map/data/model/map_details.dart';
 import 'package:cooki/feature/beacon/data/model/entity/beacon_details.dart';
+import 'package:cooki/feature/map/data/model/nearby_sections_details.dart';
+import 'package:cooki/feature/product/data/remote/product_remote_source.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class MapRemoteSource {
@@ -69,6 +71,27 @@ class MapRemoteSource {
       },
     );
   }
+
+  Future<NearbySectionsDetails> getNearbySections(
+    Coordinates input,
+  ) async {
+    final response = await _client.query(
+      QueryOptions(
+        document: gql(_getNearbySectionsQuery),
+        variables: {
+          'input': input.toJson(),
+        },
+      ),
+    );
+
+    return response.result(
+      onSuccess: (data) {
+        final result = data['getNearestSections'];
+
+        return NearbySectionsDetails.fromJson(result);
+      },
+    );
+  }
 }
 
 const _getMapDetailsQuery = r'''
@@ -98,3 +121,15 @@ const _getProductDirections = r'''
     }
   }
 ''';
+
+const _getNearbySectionsQuery = productsOutputFragment +
+    r'''
+      query getNearbySections($input: PositionInput!) {
+        getNearestSections(currentPosition: $input) {
+          section
+          products {
+            ...ProductsOutputFragment
+          }
+        }
+      }
+    ''';

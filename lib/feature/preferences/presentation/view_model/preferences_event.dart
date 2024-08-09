@@ -7,7 +7,6 @@ sealed class PreferencesEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Sets initial values based on user preferences
 class PreferencesRequested extends PreferencesEvent {
   const PreferencesRequested();
 }

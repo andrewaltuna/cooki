@@ -12,6 +12,7 @@ class CustomIconButton extends StatelessWidget {
     this.padding = 16.0,
     this.size,
     this.isLoading = false,
+    this.isElevated = false,
     this.onPressed,
   });
 
@@ -22,11 +23,25 @@ class CustomIconButton extends StatelessWidget {
   final double padding;
   final double? size;
   final bool isLoading;
+  final bool isElevated;
   final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: isElevated
+          ? const BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.shadow,
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            )
+          : null,
       height: size,
       width: size,
       child: IconButton(

@@ -52,8 +52,6 @@ class AuthenticatedBlocs extends StatelessWidget {
             ..add(const ShoppingListCatalogRequested()),
         ),
         BlocProvider(
-          // Fetch early since we don't have any write operations
-          // and its needed on multiple screens
           lazy: false,
           create: (_) => ProductViewModel(productRepository)
             ..add(const ProductsRequested()),

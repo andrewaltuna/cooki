@@ -22,8 +22,9 @@ class DialogHelper {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Padding(
+        child: Container(
           padding: args.contentPadding,
+          constraints: args.constraints,
           child: args.builder(context),
         ),
       ),
@@ -88,13 +89,15 @@ class DialogHelper {
 class CustomDialogArgs {
   const CustomDialogArgs({
     required this.builder,
-    this.contentPadding = const EdgeInsets.fromLTRB(16, 32, 16, 16),
+    this.contentPadding = const EdgeInsets.fromLTRB(16, 24, 16, 16),
     this.barrierDismissable = false,
+    this.constraints,
   });
 
   final Widget Function(BuildContext) builder;
   final EdgeInsetsGeometry contentPadding;
   final bool barrierDismissable;
+  final BoxConstraints? constraints;
 }
 
 class DefaultDialogArgs {

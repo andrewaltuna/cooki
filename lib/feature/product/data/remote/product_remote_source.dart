@@ -42,34 +42,38 @@ class ProductRemoteSource {
   }
 }
 
-const _getProductsQuery = r'''
-  query getProducts {
-    products {
-      _id
-      productCategory
-      section
-      brand
-      key_ingredients
-      description
-      price
-      unitSize
-      manufacturer
+const productsOutputFragment = r'''
+  fragment ProductsOutputFragment on ProductsOutput {
+    _id
+    brand
+    name
+    description
+    imageUrl
+    manufacturer {
+      name
+      certificates
     }
+    productCategory
+    price
+    section
+    unitSize
   }
 ''';
 
-const _getProductQuery = r'''
-  query getProduct($id: String!) {
-    product(_id: $id) {
-      _id
-      productCategory
-      section
-      brand
-      key_ingredients
-      description
-      price
-      unitSize
-      manufacturer
-    }
-  }
-''';
+const _getProductsQuery = productsOutputFragment +
+    r'''
+      query getProducts {
+        products {
+          ...ProductsOutputFragment    
+        }
+      }
+    ''';
+
+const _getProductQuery = productsOutputFragment +
+    r'''
+      query getProduct($id: String!) {
+        product(_id: $id) {
+          ...ProductsOutputFragment    
+        }
+      }
+    ''';

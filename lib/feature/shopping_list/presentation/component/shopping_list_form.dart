@@ -68,7 +68,7 @@ class ShoppingListForm extends HookWidget {
               keyboardType: TextInputType.number,
               icon: Icons.attach_money,
               textInputAction: TextInputAction.next,
-              hintText: 'Budget (in PHP)',
+              hintText: 'Budget (USD)',
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
                   RegExp(r'^\d*\.?\d*'),

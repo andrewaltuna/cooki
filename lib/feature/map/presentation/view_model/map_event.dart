@@ -63,3 +63,7 @@ class MapProductSet extends MapEvent {
 class MapProductDirectionsRequested extends MapEvent {
   const MapProductDirectionsRequested();
 }
+
+class MapNearbySectionToggled extends MapEvent {
+  const MapNearbySectionToggled();
+}

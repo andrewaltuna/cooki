@@ -40,9 +40,9 @@ class ShoppingListItemUpdateView extends StatelessWidget {
           create: (_) => ShoppingListItemFormViewModel()
             ..add(
               ItemFormInitialized(
-                shoppingListItem.label,
-                shoppingListItem.product.id,
-                shoppingListItem.quantity,
+                section: shoppingListItem.product.sectionLabel,
+                productId: shoppingListItem.product.id,
+                quantity: shoppingListItem.quantity,
               ),
             ),
           child: ShoppingListItemForm(

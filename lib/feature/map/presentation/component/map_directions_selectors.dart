@@ -58,7 +58,7 @@ class MapDirectionsSelectors extends HookWidget {
       text: selectedShoppingList.name,
     );
     final productController = useTextEditingController(
-      text: selectedProduct.brand,
+      text: selectedProduct.name,
     );
 
     return Padding(
@@ -123,7 +123,9 @@ class _ShoppingListSelector extends StatelessWidget {
       controller: controller,
       icon: const Icon(Icons.shopping_cart),
       hintText: 'Select shopping list',
-      fillColor: AppColors.backgroundTextField,
+      fillColor: AppColors.backgroundPrimary,
+      hasShadow: true,
+      hasBorder: false,
       onSelected: (value) => _onSelected(context, value),
       entries: shoppingLists
           .map(
@@ -161,13 +163,15 @@ class _ProductSelector extends StatelessWidget {
       controller: controller,
       icon: const Icon(Icons.label),
       hintText: 'Select product',
-      fillColor: AppColors.backgroundTextField,
+      fillColor: AppColors.backgroundPrimary,
+      hasShadow: true,
+      hasBorder: false,
       onSelected: (value) => _onSelected(context, value),
       entries: products
           .map(
             (product) => CustomDropdownMenuEntry(
               value: product.id,
-              label: product.brand,
+              label: product.name,
             ),
           )
           .toList(),
@@ -189,8 +193,6 @@ class _ClearButton extends StatelessWidget {
       iconSize: 20,
       padding: 0,
       icon: Icons.clear,
-      color: AppColors.fontPrimary,
-      backgroundColor: AppColors.backgroundSecondary,
       onPressed: onCleared,
     );
   }

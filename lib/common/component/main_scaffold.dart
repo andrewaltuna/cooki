@@ -54,7 +54,7 @@ class MainScaffold extends StatelessWidget {
                         subtitle ?? '',
                         style: AppTextStyles.bodySmall,
                       ),
-                    ]
+                    ],
                   ],
                 ),
                 centerTitle: true,

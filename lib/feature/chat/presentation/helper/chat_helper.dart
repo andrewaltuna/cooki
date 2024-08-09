@@ -1,8 +1,6 @@
 import 'package:cooki/common/helper/dialog_helper.dart';
-import 'package:cooki/feature/chat/presentation/component/certifications_dialog_content.dart';
-import 'package:cooki/feature/chat/presentation/view_model/bloc/certifications_view_model.dart';
+import 'package:cooki/feature/chat/presentation/component/certifications_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatHelper {
   const ChatHelper._(this._context);
@@ -16,11 +14,10 @@ class ChatHelper {
       CustomDialogArgs(
         barrierDismissable: true,
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        builder: (_) => ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 350),
-          child: BlocProvider(
-            create: (_) => CertificationsViewModel(),
-            child: const CertificationsDialogContent(),
+        constraints: const BoxConstraints(maxHeight: 375),
+        builder: (_) => const SizedBox.expand(
+          child: CertificationsPageView(
+            title: 'Our Sustainability Badges',
           ),
         ),
       ),

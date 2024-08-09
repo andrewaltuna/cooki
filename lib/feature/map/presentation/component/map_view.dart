@@ -6,6 +6,8 @@ import 'package:cooki/common/component/indicator/loading_indicator.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/map/presentation/component/interactive_map.dart';
 import 'package:cooki/feature/map/presentation/component/map_directions_selectors.dart';
+import 'package:cooki/feature/map/presentation/component/map_nearby_section_indicator.dart';
+import 'package:cooki/feature/map/presentation/component/map_nearby_section_products_list_view.dart';
 import 'package:cooki/feature/map/presentation/view_model/map_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,11 +96,10 @@ class MapView extends HookWidget {
           controller: controller,
           onLoad: () => _onRecenter(context),
         ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: _RecenterButton(
-            onRecenter: () => _onRecenter(context),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: _BottomOverlay(
+            onRecentered: () => _onRecenter(context),
           ),
         ),
         const MapDirectionsSelectors(),
@@ -107,18 +108,56 @@ class MapView extends HookWidget {
   }
 }
 
-class _RecenterButton extends StatelessWidget {
-  const _RecenterButton({
-    required this.onRecenter,
+class _BottomOverlay extends StatelessWidget {
+  const _BottomOverlay({
+    required this.onRecentered,
   });
 
-  final VoidCallback onRecenter;
+  final VoidCallback onRecentered;
 
   @override
   Widget build(BuildContext context) {
-    return CustomIconButton(
-      icon: Icons.filter_center_focus,
-      onPressed: onRecenter,
+    final (
+      showNearbySection,
+      nearbySections,
+    ) = context.select(
+      (MapViewModel viewModel) => (
+        viewModel.state.showNearbySection,
+        viewModel.state.nearbySectionsDetails,
+      ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: MapNearbySectionsIndicator(
+                  sectionLabels: nearbySections.sections,
+                  onPressed: () => context
+                      .read<MapViewModel>()
+                      .add(const MapNearbySectionToggled()),
+                  areProductsVisible: showNearbySection,
+                ),
+              ),
+              CustomIconButton(
+                icon: Icons.filter_center_focus,
+                isElevated: true,
+                onPressed: onRecentered,
+              ),
+            ],
+          ),
+          MapNearbySectionProductsView(
+            visible: showNearbySection,
+            products: nearbySections.products,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cooki/common/component/animation/animated_slide_switcher.dart';
 import 'package:cooki/common/hook/use_on_widget_load.dart';
 import 'package:cooki/feature/chat/presentation/component/chat_history_list_view.dart';
 import 'package:cooki/feature/chat/presentation/component/chat_history_preset_view.dart';
@@ -40,7 +41,9 @@ class ChatHistoryView extends HookWidget {
       listenWhen: (previous, current) => previous.history != current.history,
       listener: (_, __) => _scrollToBottom(),
       builder: (context, state) {
-        return _AnimatedSwitcherWrapper(
+        return AnimatedSlideSwitcher(
+          beginOffsetDy: -1,
+          durationInMs: 500,
           child: state.history.isEmpty
               ? ChatHistoryPresetView(
                   chatFocusNode: chatFocusNode,
@@ -52,35 +55,6 @@ class ChatHistoryView extends HookWidget {
                 ),
         );
       },
-    );
-  }
-}
-
-class _AnimatedSwitcherWrapper extends StatelessWidget {
-  const _AnimatedSwitcherWrapper({
-    required this.child,
-  });
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      switchInCurve: Curves.easeOut,
-      switchOutCurve: Curves.easeIn,
-      duration: const Duration(milliseconds: 500),
-      transitionBuilder: (child, animation) {
-        final position = Tween<Offset>(
-          begin: const Offset(0, -1),
-          end: Offset.zero,
-        ).animate(animation);
-
-        return SlideTransition(
-          position: position,
-          child: child,
-        );
-      },
-      child: child,
     );
   }
 }

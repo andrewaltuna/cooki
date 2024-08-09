@@ -79,50 +79,46 @@ class _RestrictionsView extends StatelessWidget {
           );
         }
 
-        if (state.medications.isEmpty && state.dietaryRestrictions.isEmpty) {
-          return const SizedBox.shrink();
-        }
+        final hasDietaryConflict = state.dietaryRestrictions.isNotEmpty;
+        final hasMedicationConflict = state.medications.isNotEmpty;
+        final hasConflicts = hasDietaryConflict || hasMedicationConflict;
 
-        return Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (hasConflicts) ...[
               Text(
                 'Restrictions',
-                style: AppTextStyles.titleMedium,
+                style: AppTextStyles.titleVerySmall,
               ),
-              if (state.dietaryRestrictions.isNotEmpty) ...[
-                const SizedBox(height: 4),
+              if (hasDietaryConflict)
                 _RestrictionInformation(
                   label: 'Dietary restrictions',
                   items: state.dietaryRestrictions
                       .map((restriction) => restriction.displayLabel)
                       .toList(),
                 ),
-              ],
-              if (state.medications.isNotEmpty) ...[
-                const SizedBox(height: 4),
+              if (hasMedicationConflict)
                 _RestrictionInformation(
                   label: 'Medications',
                   items: state.medications
                       .map((medication) => medication.displayLabel)
                       .toList(),
                 ),
-              ],
               const SizedBox(height: 16),
-              PrimaryButton(
-                label: 'View Alternative Products',
-                onPress: () => _onSubmit(
-                  context,
-                  state.alternativeProducts,
-                ),
-                prefixIcon: const Icon(
-                  Icons.switch_access_shortcut,
-                  color: Colors.white,
-                ),
-              ),
             ],
-          ),
+            PrimaryButton(
+              label: 'View Alternative Products',
+              onPress: () => _onSubmit(
+                context,
+                state.alternativeProducts,
+              ),
+              prefixIcon: const Icon(
+                Icons.switch_access_shortcut,
+                color: Colors.white,
+              ),
+            ),
+          ],
         );
       },
     );

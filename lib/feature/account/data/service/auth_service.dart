@@ -18,9 +18,7 @@ class AuthService implements AuthServiceInterface {
   Future<void> reloadUser() async {
     try {
       await _firebaseAuth.currentUser?.reload();
-    } catch (error) {
-      print(error);
-    }
+    } catch (_) {}
   }
 
   @override
@@ -28,7 +26,6 @@ class AuthService implements AuthServiceInterface {
     try {
       return await currentUser?.getIdToken(refresh);
     } catch (error) {
-      print(error);
       rethrow;
     }
   }

@@ -15,7 +15,7 @@ abstract interface class ShoppingListRepositoryInterface {
   );
   Future<ShoppingList> createShoppingList(CreateShoppingListInput input);
   Future<ShoppingList> updateShoppingList(UpdateShoppingListInput input);
-  Future<ShoppingList> deleteShoppingList(String id);
+  Future<void> deleteShoppingList(String id);
 
   // Shopping list item events
   Future<ShoppingListItem> getShoppingListItem(String id);
@@ -25,7 +25,7 @@ abstract interface class ShoppingListRepositoryInterface {
   Future<ShoppingListItem> updateShoppingListItem(
     UpdateShoppingListItemInput input,
   );
-  Future<ShoppingListItem> deleteShoppingListItem(
+  Future<void> deleteShoppingListItem(
     String id,
   );
   Future<InterferedRestrictionsOutput> getInterferedRestrictions(

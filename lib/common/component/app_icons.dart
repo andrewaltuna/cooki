@@ -9,6 +9,7 @@ class AppIcons {
 
   static const _prefsPath = '$_basePath/preferences';
   static const _chatPath = '$_basePath/chat';
+  static const _certsPath = '$_basePath/certifications';
 
   // Product category
   static SvgPicture get frozen => SvgPicture.asset('$_prefsPath/frozen.svg');
@@ -37,16 +38,24 @@ class AppIcons {
       SvgPicture.asset('$_chatPath/recipe_generator.svg');
   static SvgPicture get specialOffers =>
       SvgPicture.asset('$_chatPath/special_offers.svg');
+
+  // Certifications
+  static SvgPicture get certifications =>
+      SvgPicture.asset('$_certsPath/certifications.svg');
 }
 
 extension SvgPictureExtension on SvgPicture {
   SvgPicture copyWith({
+    double? height,
+    double? width,
     Color? color,
   }) {
     final assetName = (bytesLoader as SvgAssetLoader).assetName;
 
     return SvgPicture.asset(
       assetName,
+      height: height,
+      width: width,
       colorFilter: color == null
           ? colorFilter
           : ColorFilter.mode(

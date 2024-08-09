@@ -18,7 +18,7 @@ class MapDirectionsPainter extends CustomPainter {
     final centerY = size.height / 2;
 
     final directionPaint = Paint()
-      ..color = Colors.blue // Color for the direction lines
+      ..color = Colors.blue
       ..style = PaintingStyle.stroke
       ..strokeWidth = 12
       ..strokeCap = StrokeCap.round;

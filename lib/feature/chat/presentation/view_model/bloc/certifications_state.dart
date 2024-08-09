@@ -2,7 +2,7 @@ part of 'certifications_view_model.dart';
 
 class CertificationsState extends Equatable {
   const CertificationsState({
-    this.certification = Certification.usdaOrganic,
+    this.certification = Certification.usda,
     this.isDetailView = false,
   });
 

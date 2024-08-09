@@ -35,7 +35,7 @@ class ChatMessage extends Equatable {
   factory ChatMessage.error([String? message]) {
     return ChatMessage(
       sender: ChatMessageSender.error,
-      body: '\u24D8 ${message ?? 'An error occurred. Please try again.'}',
+      body: '\u24D8 ${message ?? 'An error occurred'}',
       convertibleItems: const [],
     );
   }

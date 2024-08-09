@@ -158,9 +158,9 @@ class ShoppingListCatalogViewModel
         ),
       );
 
-      final shoppingLists = state.shoppingLists
-          .where((list) => list.id != event.shoppingListId)
-          .toList();
+      final shoppingLists = [...state.shoppingLists]..removeWhere(
+          (shoppingList) => shoppingList.id == event.shoppingListId,
+        );
 
       emit(
         state.copyWith(

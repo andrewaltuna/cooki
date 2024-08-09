@@ -1,5 +1,6 @@
 import 'package:cooki/common/helper/dialog_helper.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
+import 'package:cooki/feature/product/presentation/component/product_information_view.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_item_alternative_products.dart';
 import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_create_form.dart';
 import 'package:cooki/common/navigation/app_routes.dart';
@@ -19,6 +20,15 @@ class ShoppingListHelper {
       ShoppingListHelper._(context);
 
   final BuildContext _context;
+
+  static String formatSectionLabel(String section) {
+    return section.split(' ').map((word) {
+      if (word.toLowerCase().contains('and')) {
+        return word.toLowerCase();
+      }
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
+  }
 
   void showCreateDialog() {
     DialogHelper.of(_context).showCustomDialog(
@@ -152,6 +162,19 @@ class ShoppingListHelper {
             itemId: itemId,
             products: products,
           ),
+        ),
+      ),
+    );
+  }
+
+  void showProductInformationDialog(Product product) {
+    DialogHelper.of(_context).showCustomDialog(
+      CustomDialogArgs(
+        barrierDismissable: true,
+        constraints: const BoxConstraints(maxHeight: 475),
+        contentPadding: const EdgeInsets.all(16),
+        builder: (_) => ProductInformationView(
+          product: product,
         ),
       ),
     );

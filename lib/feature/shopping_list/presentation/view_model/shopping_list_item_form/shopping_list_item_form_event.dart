@@ -8,22 +8,33 @@ class ShoppingListItemFormEvent extends Equatable {
 }
 
 class ItemFormInitialized extends ShoppingListItemFormEvent {
-  const ItemFormInitialized([
-    this.label,
+  const ItemFormInitialized({
+    this.section,
     this.productId,
     this.quantity,
-  ]);
+  });
 
-  final String? label;
+  final String? section;
   final String? productId;
   final int? quantity;
 
   @override
   List<Object?> get props => [
-        label,
+        section,
         productId,
         quantity,
       ];
+}
+
+class ItemFormSectionSelected extends ShoppingListItemFormEvent {
+  const ItemFormSectionSelected(
+    this.section,
+  );
+
+  final String section;
+
+  @override
+  List<Object> get props => [section];
 }
 
 class ItemFormProductSelected extends ShoppingListItemFormEvent {
@@ -35,17 +46,6 @@ class ItemFormProductSelected extends ShoppingListItemFormEvent {
 
   @override
   List<Object> get props => [productId];
-}
-
-class ItemFormLabelChanged extends ShoppingListItemFormEvent {
-  const ItemFormLabelChanged(
-    this.label,
-  );
-
-  final String label;
-
-  @override
-  List<Object> get props => [label];
 }
 
 class ItemFormQuantityChanged extends ShoppingListItemFormEvent {
