@@ -72,6 +72,7 @@ class ShoppingListCatalogView extends StatelessWidget {
           right: 16,
           child: CustomIconButton(
             icon: Icons.add,
+            isElevated: true,
             onPressed: () => ShoppingListHelper.of(context).showCreateDialog(),
           ),
         ),

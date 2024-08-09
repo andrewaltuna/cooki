@@ -22,9 +22,6 @@ class AccountRemoteSource {
         return UserOutput.fromJson(result);
       },
       onError: (error) {
-        // TODO: add proper handling for user not found error
-        final code = error.graphqlErrors.first.extensions?['code'];
-        print(code);
         return null;
       },
     );

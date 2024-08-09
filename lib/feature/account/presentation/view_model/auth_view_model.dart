@@ -52,8 +52,6 @@ class AuthViewModel extends Bloc<AuthEvent, AuthState> {
       if (isAuthenticated) {
         final user = await _accountRepository.getUserProfile();
 
-        print('User: $user');
-
         emit(
           state.copyWith(
             isAuthenticated: isAuthenticated,

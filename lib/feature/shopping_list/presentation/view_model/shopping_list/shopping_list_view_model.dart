@@ -56,12 +56,10 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      final shoppingList = state.shoppingList;
-
       emit(
         state.copyWith(
           updateStatus: ViewModelStatus.success,
-          shoppingList: shoppingList.copyWith(
+          shoppingList: state.shoppingList.copyWith(
             name: result.name,
             budget: result.budget,
           ),
@@ -119,7 +117,6 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       final response = await _repository.createShoppingListItem(
         CreateShoppingListItemInput(
           shoppingListId: event.shoppingListId,
-          label: event.formOutput.label,
           productId: event.formOutput.productId,
           quantity: event.formOutput.quantity,
         ),
@@ -158,7 +155,6 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
       final response = await _repository.updateShoppingListItem(
         UpdateShoppingListItemInput(
           id: event.itemId,
-          label: event.formOutput.label,
           productId: event.formOutput.productId,
           quantity: event.formOutput.quantity,
         ),
@@ -236,19 +232,19 @@ class ShoppingListViewModel extends Bloc<ShoppingListEvent, ShoppingListState> {
         ),
       );
 
-      final response = await _repository.deleteShoppingListItem(
+      await _repository.deleteShoppingListItem(
         event.id,
       );
 
-      final shoppingList = state.shoppingList;
+      final items = [...state.shoppingList.items]..removeWhere(
+          (item) => item.id == event.id,
+        );
 
       emit(
         state.copyWith(
           deleteItemStatus: ViewModelStatus.success,
-          shoppingList: shoppingList.copyWith(
-            items: shoppingList.items
-                .where((item) => item.id != response.id)
-                .toList(),
+          shoppingList: state.shoppingList.copyWith(
+            items: items,
           ),
         ),
       );

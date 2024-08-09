@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 typedef ShoppingListItemsByCategory
     = Map<ProductCategory, List<ShoppingListItem>>;
 
+typedef ShoppingListItemsBySection = Map<String, List<ShoppingListItem>>;
+
 class ShoppingList extends Equatable {
   const ShoppingList({
     required this.id,
@@ -68,6 +70,11 @@ class ShoppingList extends Equatable {
   ShoppingListItemsByCategory get itemsByCategory => groupBy(
         items,
         (ShoppingListItem item) => item.product.category,
+      );
+
+  ShoppingListItemsBySection get itemsBySection => groupBy(
+        items,
+        (ShoppingListItem item) => item.product.sectionLabel,
       );
 
   int get itemsCheckedCount =>

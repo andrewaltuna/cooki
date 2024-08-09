@@ -11,6 +11,7 @@ class AppColors {
   // Background
   static const backgroundPrimary = Color(0xFFF8F9FA);
   static const backgroundSecondary = Color(0xFFDEE2E6);
+  static const backgroundTertiary = secondary;
   static const backgroundTextField = backgroundSecondary;
 
   // Dropdown
@@ -25,4 +26,8 @@ class AppColors {
 
   // Shadow
   static const shadow = Color(0x33000000);
+  static const shadowSolid = Color(0xFF000000);
+
+  // Badges
+  static const badgeCertification = Color(0xFF52B788);
 }

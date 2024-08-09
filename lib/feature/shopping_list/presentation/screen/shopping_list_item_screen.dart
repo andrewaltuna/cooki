@@ -52,14 +52,17 @@ class ShoppingListItemScreen extends StatelessWidget {
         contentPadding: EdgeInsets.zero,
         body: Stack(
           children: [
-            ShoppingListItemView(
-              itemId: shoppingListItemId,
+            Positioned.fill(
+              child: ShoppingListItemView(
+                itemId: shoppingListItemId,
+              ),
             ),
             Positioned(
               right: 16,
               bottom: 16,
               child: CustomIconButton(
                 icon: Icons.edit,
+                isElevated: true,
                 onPressed: () => context.go(
                   '${AppRoutes.shoppingLists}/$shoppingListId/item/$shoppingListItemId/edit-item',
                 ),

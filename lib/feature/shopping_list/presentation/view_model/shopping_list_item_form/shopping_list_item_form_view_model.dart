@@ -10,8 +10,8 @@ class ShoppingListItemFormViewModel
     extends Bloc<ShoppingListItemFormEvent, ShoppingListItemFormState> {
   ShoppingListItemFormViewModel() : super(const ShoppingListItemFormState()) {
     on<ItemFormInitialized>(_onInitialized);
+    on<ItemFormSectionSelected>(_onSectionSelected);
     on<ItemFormProductSelected>(_onProductSelected);
-    on<ItemFormLabelChanged>(_onLabelChanged);
     on<ItemFormQuantityChanged>(_onQuantityChanged);
     on<ItemFormProductIdErrorChanged>(_onProductIdErrorChanged);
   }
@@ -23,9 +23,23 @@ class ShoppingListItemFormViewModel
     emit(
       state.copyWith(
         status: ViewModelStatus.success,
-        label: event.label,
+        section: event.section,
         productId: event.productId,
         quantity: event.quantity,
+      ),
+    );
+  }
+
+  void _onSectionSelected(
+    ItemFormSectionSelected event,
+    Emitter<ShoppingListItemFormState> emit,
+  ) {
+    if (event.section == state.section) return;
+
+    emit(
+      state.copyWith(
+        section: event.section,
+        productId: '',
       ),
     );
   }
@@ -38,17 +52,6 @@ class ShoppingListItemFormViewModel
       state.copyWith(
         productId: event.productId,
         productIdError: '',
-      ),
-    );
-  }
-
-  void _onLabelChanged(
-    ItemFormLabelChanged event,
-    Emitter<ShoppingListItemFormState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        label: event.label,
       ),
     );
   }

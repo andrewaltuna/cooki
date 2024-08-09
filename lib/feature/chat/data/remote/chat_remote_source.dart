@@ -7,14 +7,13 @@ class ChatRemoteSource {
 
   final GraphQLClient _graphQlClient;
 
-  // Example only, API might be removed in the future
   Future<ChatMessage> chat(
     String message,
     bool isFirstMessage,
   ) async {
     final response = await _graphQlClient.query(
       QueryOptions(
-        document: gql(_createGeminiHealthCheckMutation),
+        document: gql(_chatQuery),
         variables: {
           'message': message,
           'isFirstMessage': isFirstMessage,
@@ -34,13 +33,12 @@ class ChatRemoteSource {
   }
 }
 
-const _createGeminiHealthCheckMutation = r'''
-  mutation chat($message: String!, $isFirstMessage: Boolean!) {
+const _chatQuery = r'''
+  query chat($message: String!, $isFirstMessage: Boolean!) {
     chat(message: $message, isFirstMessage: $isFirstMessage) {
       message
       products {
         productId
-        label
         quantity
       }
     }

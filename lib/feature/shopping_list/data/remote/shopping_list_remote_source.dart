@@ -1,4 +1,5 @@
 import 'package:cooki/common/extension/graphql_extensions.dart';
+import 'package:cooki/feature/product/data/remote/product_remote_source.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_gemini_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_input.dart';
 import 'package:cooki/feature/shopping_list/data/model/input/create_shopping_list_item_input.dart';
@@ -114,7 +115,7 @@ class ShoppingListRemoteSource {
     );
   }
 
-  Future<ShoppingList> deleteShoppingList(String id) async {
+  Future<void> deleteShoppingList(String id) async {
     final response = await _graphQLClient.mutate(
       MutationOptions(
         document: gql(_deleteShoppingListMutation),
@@ -126,9 +127,7 @@ class ShoppingListRemoteSource {
 
     return response.result(
       onSuccess: (data) {
-        final result = Map<String, dynamic>.from(data['removeShoppingList']);
-
-        return ShoppingList.fromJson(result);
+        return;
       },
     );
   }
@@ -195,7 +194,7 @@ class ShoppingListRemoteSource {
     );
   }
 
-  Future<ShoppingListItem> deleteShoppingListItem(String id) async {
+  Future<void> deleteShoppingListItem(String id) async {
     final response = await _graphQLClient.mutate(
       MutationOptions(
         document: gql(_deleteShoppingListItemMutation),
@@ -207,9 +206,7 @@ class ShoppingListRemoteSource {
 
     return response.result(
       onSuccess: (data) {
-        final result = data['removeShoppingListItem'];
-
-        return ShoppingListItem.fromJson(result);
+        return;
       },
     );
   }
@@ -236,18 +233,7 @@ class ShoppingListRemoteSource {
   }
 }
 
-const String _productsOutputFragment = r'''
-  fragment ProductsOutputFragment on ProductsOutput {
-    _id
-    brand
-    productCategory
-    price
-    section
-    unitSize
-  }
-''';
-
-const _shoppingListItemOutputFragment = _productsOutputFragment +
+const _shoppingListItemOutputFragment = productsOutputFragment +
     r'''
       fragment ShoppingListItemOutputFragment on ItemsOutput {
         _id
@@ -380,7 +366,7 @@ const _deleteShoppingListItemMutation = r'''
   }
 ''';
 
-const _getInterferedRestrictionsQuery = _productsOutputFragment +
+const _getInterferedRestrictionsQuery = productsOutputFragment +
     r'''
       query GetInterferedRestrictions($productId: String!) {
         getInterferedRestrictions(productId: $productId) {

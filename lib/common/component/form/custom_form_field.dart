@@ -15,6 +15,7 @@ class CustomFormField extends StatelessWidget {
     this.obscureText = false,
     this.minLines = 1,
     this.maxLines = 1,
+    this.maxLength,
     this.fillColor = AppColors.backgroundTextField,
     this.inputBorder,
     this.keyboardType,
@@ -39,6 +40,7 @@ class CustomFormField extends StatelessWidget {
   final bool obscureText;
   final int? minLines;
   final int? maxLines;
+  final int? maxLength;
   final Color? fillColor;
   final InputBorder? inputBorder;
   final TextInputType? keyboardType;
@@ -75,6 +77,7 @@ class CustomFormField extends StatelessWidget {
           focusNode: focusNode,
           minLines: minLines,
           maxLines: maxLines,
+          maxLength: maxLength,
           onChanged: onChanged,
           onFieldSubmitted: onSubmitted,
           onEditingComplete: onEditingComplete,
@@ -86,6 +89,7 @@ class CustomFormField extends StatelessWidget {
           style: AppTextStyles.bodyMedium,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
+            counterText: '',
             hintText: hintText ?? 'Aa',
             errorText: errorText,
             prefixIcon: icon != null ? Icon(icon, size: 15) : null,

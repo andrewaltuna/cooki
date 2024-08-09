@@ -1,4 +1,7 @@
+import 'package:cooki/feature/chat/data/enum/certification.dart';
 import 'package:cooki/feature/preferences/data/enum/product_category.dart';
+import 'package:cooki/feature/product/data/model/product_manufacturer.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_helper.dart';
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
@@ -7,7 +10,8 @@ class Product extends Equatable {
     required this.category,
     required this.section,
     required this.brand,
-    required this.keyIngredients,
+    required this.name,
+    required this.imageUrl,
     required this.description,
     required this.price,
     required this.unitSize,
@@ -19,21 +23,18 @@ class Product extends Equatable {
     category: ProductCategory.produce,
     section: '',
     brand: '',
-    keyIngredients: [],
+    name: '',
+    imageUrl: '',
     description: '',
     price: 0.0,
     unitSize: '',
-    manufacturer: '',
+    manufacturer: ProductManufacturer.empty,
   );
 
-  factory Product.fromJson(Map<String, dynamic>? json) {
-    if (json == null) {
-      return empty;
-    }
-    final productCategory = json['productCategory'] as dynamic;
-    final keyIngredients = json['key_ingredients'] as List?;
+  factory Product.fromJson(Map<String, dynamic> json) {
+    final productCategory = json['productCategory'] as String;
 
-    return empty.copyWith(
+    return Product(
       id: json['_id'],
       category: ProductCategory.values.firstWhere(
         (element) => element.displayLabel == productCategory,
@@ -41,12 +42,12 @@ class Product extends Equatable {
       ),
       section: json['section'],
       brand: json['brand'],
-      keyIngredients:
-          keyIngredients?.map((ingredient) => ingredient as String).toList(),
+      name: json['name'],
+      imageUrl: json['imageUrl'],
       description: json['description'],
       price: json['price'],
       unitSize: json['unitSize'],
-      manufacturer: json['manufacturer'],
+      manufacturer: ProductManufacturer.fromJson(json['manufacturer']),
     );
   }
 
@@ -54,29 +55,32 @@ class Product extends Equatable {
   final ProductCategory category;
   final String section;
   final String brand;
-  final List<String> keyIngredients;
+  final String name;
+  final String imageUrl;
   final String description;
   final num price;
   final String unitSize;
-  final String manufacturer;
+  final ProductManufacturer manufacturer;
 
   Product copyWith({
     String? id,
     ProductCategory? category,
     String? section,
     String? brand,
-    List<String>? keyIngredients,
+    String? name,
+    String? imageUrl,
     String? description,
     num? price,
     String? unitSize,
-    String? manufacturer,
+    ProductManufacturer? manufacturer,
   }) {
     return Product(
       id: id ?? this.id,
       category: category ?? this.category,
       section: section ?? this.section,
       brand: brand ?? this.brand,
-      keyIngredients: keyIngredients ?? this.keyIngredients,
+      name: name ?? this.name,
+      imageUrl: imageUrl ?? this.imageUrl,
       description: description ?? this.description,
       price: price ?? this.price,
       unitSize: unitSize ?? this.unitSize,
@@ -84,13 +88,23 @@ class Product extends Equatable {
     );
   }
 
+  bool get isEmpty => this == Product.empty;
+  bool get isNotEmpty => !isEmpty;
+
+  List<Certification> get certifications => manufacturer.certifications;
+
+  String get sectionLabel => ShoppingListHelper.formatSectionLabel(section);
+
+  String get pricePerUnitLabel => '$unitSize / USD ${price.toStringAsFixed(2)}';
+
   @override
   List<Object?> get props => [
         id,
         category,
         section,
         brand,
-        keyIngredients,
+        name,
+        imageUrl,
         description,
         price,
         unitSize,

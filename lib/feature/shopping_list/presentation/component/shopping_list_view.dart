@@ -28,9 +28,12 @@ class ShoppingListView extends StatelessWidget {
                 shoppingList: shoppingList,
               ),
             ),
-            ShoppingListSummary(
-              totalPrice: shoppingList.totalPrice,
-              budget: shoppingList.budget,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 80),
+              child: ShoppingListSummary(
+                totalPrice: shoppingList.totalPrice,
+                budget: shoppingList.budget,
+              ),
             ),
           ],
         ),
@@ -57,11 +60,11 @@ class _ShoppingListDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      children: shoppingList.itemsByCategory.entries
+      children: shoppingList.itemsBySection.entries
           .map(
             (entry) => ShoppingListItemSection(
               shoppingListId: shoppingList.id,
-              category: entry.key,
+              section: entry.key,
               items: entry.value,
             ),
           )
@@ -83,10 +86,11 @@ class _ShoppingListActions extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         CustomIconButton(
+          icon: Icons.add,
+          isElevated: true,
           onPressed: () => context.go(
             '${AppRoutes.shoppingLists}/$shoppingListId/create-item',
           ),
-          icon: Icons.add,
         ),
       ],
     );

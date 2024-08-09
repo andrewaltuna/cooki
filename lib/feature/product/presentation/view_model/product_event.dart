@@ -10,14 +10,3 @@ class ProductEvent extends Equatable {
 class ProductsRequested extends ProductEvent {
   const ProductsRequested();
 }
-
-class ProductRequested extends ProductEvent {
-  const ProductRequested(this.id);
-
-  final String id;
-
-  @override
-  List<Object?> get props => [
-        id,
-      ];
-}

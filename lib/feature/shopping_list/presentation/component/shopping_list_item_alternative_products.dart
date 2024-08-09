@@ -1,7 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:cooki/common/component/button/ink_well_button.dart';
 import 'package:cooki/common/theme/app_colors.dart';
 import 'package:cooki/common/theme/app_text_styles.dart';
 import 'package:cooki/feature/product/data/model/product.dart';
+import 'package:cooki/feature/product/presentation/component/product_information_collapsed_view.dart';
+import 'package:cooki/feature/shopping_list/presentation/component/shopping_list_helper.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/interfered_restrictions/interfered_restrictions_view_model.dart';
 import 'package:cooki/feature/shopping_list/presentation/view_model/shopping_list/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
@@ -54,26 +57,28 @@ class ShoppingListItemAlternativeProducts extends StatelessWidget {
               child: _ModalHeader(),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(12),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: products.mapIndexed(
-                  (index, product) {
-                    final isLastItem = index == products.length - 1;
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: products.mapIndexed(
+                    (index, product) {
+                      final isLastItem = index == products.length - 1;
 
-                    return Column(
-                      children: [
-                        _ProductDetails(
-                          shoppingListItemId: itemId,
-                          product: product,
-                        ),
-                        if (!isLastItem) const Divider(height: 12),
-                      ],
-                    );
-                  },
-                ).toList(),
+                      return Column(
+                        children: [
+                          _ProductDetails(
+                            shoppingListItemId: itemId,
+                            product: product,
+                          ),
+                          if (!isLastItem) const Divider(height: 12),
+                        ],
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
             ),
           ),
@@ -129,29 +134,25 @@ class _ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              product.brand,
-              style: AppTextStyles.titleSmall,
+    return InkWellButton(
+      backgroundColor: Colors.transparent,
+      onPressed: () =>
+          ShoppingListHelper.of(context).showProductInformationDialog(
+        product,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: ProductInformationCollapsedView(
+              product: product,
             ),
-            Text(
-              '${product.unitSize} / Php ${product.price}',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.fontTertiary,
-              ),
-            ),
-          ],
-        ),
-        IconButton(
-          onPressed: () => _onPress(context),
-          icon: const Icon(Icons.switch_access_shortcut),
-        ),
-      ],
+          ),
+          IconButton(
+            onPressed: () => _onPress(context),
+            icon: const Icon(Icons.switch_access_shortcut),
+          ),
+        ],
+      ),
     );
   }
 }

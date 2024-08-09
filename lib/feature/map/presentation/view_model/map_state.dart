@@ -11,6 +11,8 @@ class MapState extends Equatable {
     this.directions = const [],
     this.selectedShoppingListId = '',
     this.selectedProductId = '',
+    this.showNearbySection = true,
+    this.nearbySectionsDetails = NearbySectionsDetails.empty,
   });
 
   final ViewModelStatus status;
@@ -28,6 +30,10 @@ class MapState extends Equatable {
   final String selectedShoppingListId;
   final String selectedProductId;
 
+  // Overlay
+  final bool showNearbySection;
+  final NearbySectionsDetails nearbySectionsDetails;
+
   MapState copyWith({
     ViewModelStatus? status,
     ViewModelStatus? userPositionStatus,
@@ -38,6 +44,8 @@ class MapState extends Equatable {
     Directions? directions,
     String? selectedShoppingListId,
     String? selectedProductId,
+    bool? showNearbySection,
+    NearbySectionsDetails? nearbySectionsDetails,
   }) {
     return MapState(
       status: status ?? this.status,
@@ -50,6 +58,9 @@ class MapState extends Equatable {
       selectedShoppingListId:
           selectedShoppingListId ?? this.selectedShoppingListId,
       selectedProductId: selectedProductId ?? this.selectedProductId,
+      showNearbySection: showNearbySection ?? this.showNearbySection,
+      nearbySectionsDetails:
+          nearbySectionsDetails ?? this.nearbySectionsDetails,
     );
   }
 
@@ -100,5 +111,7 @@ class MapState extends Equatable {
         directions,
         selectedShoppingListId,
         selectedProductId,
+        showNearbySection,
+        nearbySectionsDetails,
       ];
 }

@@ -1,10 +1,8 @@
-import 'package:cooki/common/component/app_icons.dart';
 import 'package:cooki/common/component/app_images.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 enum Certification {
-  usdaOrganic(
+  usda(
     label: 'USDA Organic',
     description:
         'This label indicates that the product is grown and processed according to federal guidelines that promote ecological balance, conserve biodiversity, and reduce reliance on synthetic fertilizers and pesticides, supporting sustainable farming practices.',
@@ -14,7 +12,7 @@ enum Certification {
     description:
         'This label ensures that farmers and workers are paid fair wages and work in safe conditions, while also promoting environmental sustainability by encouraging organic farming and reducing harmful chemicals.',
   ),
-  rainforestAlliance(
+  rfa(
     label: 'Rainforest Alliance Certified',
     description:
         'Products with this label are sourced from farms that meet comprehensive standards for environmental protection, including biodiversity conservation, soil and water management, and forest preservation.',
@@ -64,9 +62,9 @@ enum Certification {
   final String description;
 
   Image get image => switch (this) {
-        usdaOrganic => AppImages.usdaOrganic,
+        usda => AppImages.usdaOrganic,
         fairTrade => AppImages.fairTrade,
-        rainforestAlliance => AppImages.rainforestAlliance,
+        rfa => AppImages.rainforestAlliance,
         gmoFree => AppImages.gmoFree,
         msc => AppImages.msc,
         bCorp => AppImages.bCorp,
@@ -75,6 +73,4 @@ enum Certification {
         locallyGrown => AppImages.locallyGrown,
         plantBased => AppImages.plantBased,
       };
-
-  SvgPicture get icon => AppIcons.deli;
 }

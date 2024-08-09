@@ -72,7 +72,7 @@ class _SummaryRow extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            'Php ${detail.toStringAsFixed(2)}',
+            'USD ${detail.toStringAsFixed(2)}',
             style: AppTextStyles.titleSmall.copyWith(
               color: color,
             ),
