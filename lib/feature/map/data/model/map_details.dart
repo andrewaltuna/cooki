@@ -1,4 +1,4 @@
-import 'package:cooki/constant/app_constants.dart';
+import 'package:cooki/constant/map_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ class MapDetails extends Equatable {
     final width = json['width'] as num;
     final height = json['height'] as num;
 
-    final scaledBy = AppConstants.mapFixedHeight / height;
+    final scaledBy = MapConstants.fixedHeight / height;
 
     return MapDetails(
       size: Size(
