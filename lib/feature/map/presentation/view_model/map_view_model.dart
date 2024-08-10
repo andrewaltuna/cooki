@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cooki/common/enum/view_model_status.dart';
+import 'package:cooki/constant/map_constants.dart';
 import 'package:cooki/feature/map/data/model/coordinates.dart';
 import 'package:cooki/feature/map/data/model/input/product_directions_input.dart';
 import 'package:cooki/feature/map/data/model/map_details.dart';
@@ -85,7 +86,11 @@ class MapViewModel extends Bloc<MapEvent, MapState> {
         ),
       );
 
-      final coordinates = await _repository.getUserPosition(event.beacons);
+      // Get user position depending on setting.
+      final coordinates = MapConstants.useFixedUserLocation
+          ? MapConstants.fixedUserLocation
+          : await _repository.getUserPosition(event.beacons);
+
       final scaledCoordinates = coordinates.scaleTo(
         state.mapDetails.scaledBy,
       );

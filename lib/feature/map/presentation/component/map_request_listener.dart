@@ -1,3 +1,4 @@
+import 'package:cooki/constant/map_constants.dart';
 import 'package:cooki/feature/map/presentation/view_model/map_view_model.dart';
 import 'package:cooki/feature/beacon/presentation/view_model/beacon_view_model.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,10 @@ class MapRequestListener extends StatelessWidget {
         final beacons =
             context.read<BeaconViewModel>().state.closestBeaconsOrNull(3);
 
-        if (beacons == null) return;
+        if (beacons == null && !MapConstants.useFixedUserLocation) return;
 
         context.read<MapViewModel>().add(
-              MapUserCoordinatesRequested(beacons),
+              MapUserCoordinatesRequested(beacons ?? []),
             );
       },
       child: child,
