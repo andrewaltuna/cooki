@@ -1,5 +1,6 @@
 import 'package:cooki/constant/app_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 final _authLink = AuthLink(
@@ -9,8 +10,9 @@ final _authLink = AuthLink(
 
       final bearerToken = 'Bearer $token';
 
-      // For debugging
-      print('REQUEST WITH TOKEN: $bearerToken');
+      if (kDebugMode) {
+        print('REQUEST WITH TOKEN: $bearerToken');
+      }
 
       return bearerToken;
     } catch (error) {
