@@ -1,5 +1,6 @@
 import 'package:cooki/common/theme/app_theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
@@ -23,7 +24,9 @@ void main() async {
   try {
     await flutterBeacon.initializeScanning;
   } on PlatformException catch (error) {
-    print('flutterBeacon ERROR: ${error.toString()}');
+    if (kDebugMode) {
+      print('flutterBeacon ERROR: ${error.toString()}');
+    }
   }
 
   await PermissionHelper.requestBeaconPermissions();
