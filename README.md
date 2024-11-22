@@ -2,6 +2,9 @@
 
 A smart shopping assistant that combines AI and IoT technology to enhance the grocery shopping experience.
 
+## Showcase
+[![YouTube](http://i.ytimg.com/vi/t6vxzBi99hQ/hqdefault.jpg)](https://www.youtube.com/watch?v=t6vxzBi99hQ)
+
 ## Overview
 
 Cooki transforms traditional grocery shopping by leveraging:
