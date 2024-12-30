@@ -3,6 +3,9 @@
 A smart shopping assistant that combines AI and IoT technology to enhance the grocery shopping experience.
 
 ## Showcase
+
+Get an overview of the app by watching the showcase below!
+
 [![YouTube](http://i.ytimg.com/vi/t6vxzBi99hQ/hqdefault.jpg)](https://www.youtube.com/watch?v=t6vxzBi99hQ)
 
 ## Overview
@@ -32,79 +35,6 @@ Cooki transforms traditional grocery shopping by leveraging:
 - Dietary restriction compliance checks
 - Eco-friendly product recommendations
 - Manufacturer sustainability tracking
-
-## Technical Stack
-
-- **Framework**: Flutter (SDK ≥3.4.1)
-- **State Management**: 
-  - Flutter Bloc
-  - Flutter Hooks
-  - Equatable
-- **Navigation**: Go Router
-- **Backend Integration**: GraphQL
-- **IoT**: Flutter Beacon
-- **Authentication**: Firebase Auth
-- **UI Components**: Custom Material Design implementation
-
-## Getting Started
-
-1. Ensure you have Flutter ≥3.4.1 installed
-2. Clone the repository
-3. Install dependencies:
-
-```bash
-flutter pub get
-```
-
-environment:
-  sdk: '>=3.4.1 <4.0.0'
-
-dependencies:
-  flutter:
-    sdk: flutter
-
-  # Firebase
-  firebase_core: ^3.1.0
-  firebase_auth: ^5.1.0
-
-  # Beacon
-  flutter_beacon: ^0.5.1
-
-  # Navigation
-  go_router: ^14.2.0
-
-  # State
-  flutter_bloc: ^8.1.6
-  flutter_hooks: ^0.20.5
-  equatable: ^2.0.5
-
-  # Permissions
-  permission_handler: ^11.3.1
-  app_settings: ^5.1.1
-
-  # UI
-  fluttertoast: ^8.2.6
-  flutter_markdown: ^0.7.3
-
-  # Assets
-  ionicons: ^0.2.2
-  flutter_svg: ^2.0.10+1
-
-  # API
-  graphql_flutter: ^5.2.0-beta.7
-
-  # Utils
-  collection: ^1.18.0
-
-  # Other
-  flutter_launcher_icons: ^0.13.1
-  shimmer: ^3.0.0
-  cached_network_image: ^3.4.0
-  expandable_page_view: ^1.0.17
-
-```bash
-flutter run
-```
 
 ## Required Permissions
 
