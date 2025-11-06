@@ -6,7 +6,7 @@ A smart shopping assistant that combines AI and IoT technology to enhance the gr
 
 Get an overview of the app by watching the showcase below!
 
-[![YouTube](http://i.ytimg.com/vi/t6vxzBi99hQ/hqdefault.jpg)](https://www.youtube.com/watch?v=t6vxzBi99hQ)
+[![Watch the video](https://img.youtube.com/vi/cvDF8t7V1Jw/maxresdefault.jpg)](https://www.youtube.com/watch?v=cvDF8t7V1Jw)
 
 ## Overview
 
